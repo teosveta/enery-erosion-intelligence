@@ -1,9 +1,14 @@
 """
 Erosion Intelligence Platform — Configuration
 All API keys, credentials, and site data live here.
+Secrets are loaded from backend/.env (never commit that file).
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load .env from the same directory as this file (backend/.env)
+load_dotenv(Path(__file__).parent / ".env")
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 BASE_DIR     = Path(__file__).parent.parent          # enery-dashboard/
@@ -32,15 +37,28 @@ def get_timelapse_path() -> Path:
     return mock
 
 # ── Gemini ──────────────────────────────────────────────────────────────────
-GEMINI_API_KEY = os.getenv(
-    "GEMINI_API_KEY",
-    "AIzaSyBoLY6mvAU7JYv0CUOYyVK_Q_fm_4TH_zo"
-)
-GEMINI_MODEL   = "gemini-2.0-flash"
-GEMINI_URL     = (
-    f"https://generativelanguage.googleapis.com/v1beta/models/"
-    f"{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
-)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    import warnings
+    warnings.warn(
+        "GEMINI_API_KEY is not set. AI features will be unavailable. "
+        "Create backend/.env with GEMINI_API_KEY=<your key>.",
+        RuntimeWarning,
+        stacklevel=2,
+    )
+
+GEMINI_MODEL = "gemini-2.0-flash"
+
+def get_gemini_url() -> str:
+    """Build Gemini URL dynamically so key changes are picked up at runtime."""
+    key = os.getenv("GEMINI_API_KEY") or GEMINI_API_KEY or ""
+    return (
+        f"https://generativelanguage.googleapis.com/v1beta/models/"
+        f"{GEMINI_MODEL}:generateContent?key={key}"
+    )
+
+# Convenience alias — evaluated once at import but key is already loaded via load_dotenv()
+GEMINI_URL = get_gemini_url()
 GEMINI_SYSTEM_INSTRUCTION = """
 You are the AI engine of the Erosion Intelligence Platform — a monitoring system for soil erosion at solar PV parks. Your primary tasks:
 
@@ -68,8 +86,16 @@ Always respond with valid JSON when performing analysis tasks. Use scientific te
 """.strip()
 
 # ── Copernicus / Sentinel Hub ───────────────────────────────────────────────
-COPERNICUS_CLIENT_ID     = os.getenv("COPERNICUS_CLIENT_ID",     "sh-fc7c9435-e7b5-4fa9-a0fa-117115f1a341")
-COPERNICUS_CLIENT_SECRET = os.getenv("COPERNICUS_CLIENT_SECRET", "G6XfLo3p6OQwivQ83L2k4nwVGBwzk9EU")
+COPERNICUS_CLIENT_ID     = os.getenv("COPERNICUS_CLIENT_ID")
+COPERNICUS_CLIENT_SECRET = os.getenv("COPERNICUS_CLIENT_SECRET")
+if not COPERNICUS_CLIENT_ID or not COPERNICUS_CLIENT_SECRET:
+    import warnings
+    warnings.warn(
+        "Copernicus credentials not set — NDVI satellite data will be unavailable. "
+        "Set COPERNICUS_CLIENT_ID and COPERNICUS_CLIENT_SECRET in backend/.env.",
+        RuntimeWarning,
+        stacklevel=2,
+    )
 COPERNICUS_TOKEN_URL     = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
 COPERNICUS_PROCESS_URL   = "https://sh.dataspace.copernicus.eu/api/v1/process"
 

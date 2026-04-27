@@ -304,16 +304,10 @@ async function loadLiveDashboardData() {
   const dash = await fetchDashboard();
   if (!dash) return;
 
-  // Update weather widget
+  // Update weather widget (delegates to live.js updateWeatherCard for full logic)
   const wr = dash.weather || {};
-  const nextRainEl = document.querySelector('.weather-amount');
-  if (nextRainEl && wr.next_rain_mm) {
-    nextRainEl.textContent = `${wr.next_rain_mm}mm`;
-  }
-  const nextRainDate = document.querySelector('.weather-date');
-  if (nextRainDate && wr.next_rain_date) {
-    const d = new Date(wr.next_rain_date);
-    nextRainDate.textContent = `${d.toLocaleDateString('en', { month: 'short', day: 'numeric' })},`;
+  if (typeof updateWeatherCard === 'function') {
+    updateWeatherCard(wr);
   }
 
   // Update NDVI on chart if available

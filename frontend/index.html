@@ -52,7 +52,7 @@
           <path d="M10 2a6 6 0 016 6v3l1.5 2.5H2.5L4 11V8a6 6 0 016-6z" stroke="currentColor" stroke-width="1.5"/>
           <path d="M8 16a2 2 0 004 0" stroke="currentColor" stroke-width="1.5"/>
         </svg>
-        <span class="notif-badge">3</span>
+        <span class="notif-badge" style="display:none"></span>
       </button>
       <div class="user-profile">
         <div class="user-avatar">AM</div>
@@ -245,31 +245,38 @@
           <div class="card weather-card" data-card-modal="weather">
             <div class="card-header-row">
               <span class="card-label">Weather Summary</span>
+              <span class="weather-today-badge" id="weather-today-date">—</span>
             </div>
-            <div class="weather-body">
-              <div class="weather-icon-wrap">
-                <svg viewBox="0 0 48 48" fill="none" width="52" height="52">
-                  <circle cx="24" cy="20" r="10" fill="#94a3b8" opacity="0.3"/>
-                  <ellipse cx="24" cy="22" rx="14" ry="10" fill="#64748b" opacity="0.5"/>
-                  <ellipse cx="24" cy="24" rx="16" ry="10" fill="#4a6080"/>
-                  <line x1="18" y1="32" x2="15" y2="40" stroke="#60a5fa" stroke-width="2" stroke-linecap="round"/>
-                  <line x1="24" y1="32" x2="21" y2="40" stroke="#60a5fa" stroke-width="2" stroke-linecap="round"/>
-                  <line x1="30" y1="32" x2="27" y2="40" stroke="#60a5fa" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+
+            <!-- Current conditions row -->
+            <div class="weather-conditions-row">
+              <div class="weather-icon-wrap" id="weather-icon-wrap">
+                <!-- icon updated by live.js -->
+                <span class="weather-cond-icon" id="weather-cond-icon">🌤️</span>
               </div>
-              <div class="weather-data">
-                <span class="weather-label">Next Rain:</span>
-                <div class="weather-main">
-                  <span class="weather-date">—</span>
-                  <span class="weather-amount">—</span>
-                  <span class="rain-drops">💧</span>
+              <div class="weather-temp-block">
+                <span class="weather-temp" id="weather-temp">—</span>
+                <span class="weather-temp-unit">°C</span>
+              </div>
+              <div class="weather-right-col">
+                <div class="weather-cond-label" id="weather-cond-label">Fetching…</div>
+                <div class="weather-precip-today">
+                  <span class="wci-label">Precip today</span>
+                  <span class="wci-val" id="weather-precip-today">— mm</span>
                 </div>
               </div>
             </div>
-            <div class="weather-dots">
-              <span class="dot active"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
+
+            <!-- Next rain info -->
+            <div class="weather-next-rain" id="weather-next-rain-row">
+              <span class="wnr-label">Next rain</span>
+              <span class="wnr-date" id="weather-next-rain-date">—</span>
+              <span class="wnr-mm" id="weather-next-rain-mm"></span>
+            </div>
+
+            <!-- 4-day forecast strip -->
+            <div class="weather-dots" id="weather-forecast-strip">
+              <!-- populated by live.js updateForecastDots -->
             </div>
           </div>
 
@@ -284,7 +291,7 @@
                 <span class="map-coords">43.5556°N, 25.5918°E</span>
               </div>
               <div class="map-meta-right">
-                <span class="map-timestamp">Apr 27, 2026 · 09:42</span>
+                <span class="map-timestamp" id="map-timestamp-label">—</span>
                 <div class="map-filter-select">
                   <select id="zone-filter">
                     <option value="all">Filter: All Zones</option>
@@ -337,25 +344,8 @@
               <h3 class="alerts-bar-title">Recent Erosion &amp; Weather Alerts</h3>
               <button class="icon-btn-sm">···</button>
             </div>
-            <div class="alerts-list">
-              <div class="alert-row">
-                <span class="alert-date">Apr 27</span>
-                <span class="alert-icon rain">💧</span>
-                <span class="alert-text">High Rainfall Event (18mm) — Zone 3 erosion risk elevated</span>
-                <span class="alert-tag danger">Z3</span>
-              </div>
-              <div class="alert-row">
-                <span class="alert-date">Apr 25</span>
-                <span class="alert-icon fire">⚠️</span>
-                <span class="alert-text">Erosion Detected — Smart Pin Z3-P04 shows bare patch expansion</span>
-                <span class="alert-tag warning">P04</span>
-              </div>
-              <div class="alert-row">
-                <span class="alert-date">Apr 22</span>
-                <span class="alert-icon info">🌿</span>
-                <span class="alert-text">NDVI Drop in Zone 3 — Vegetation cover decreased 8% vs. prior week</span>
-                <span class="alert-tag info">Z3</span>
-              </div>
+            <div class="alerts-list" id="dashboard-alerts-list">
+              <div class="alert-row-loading" style="color:var(--text-3);font-size:11px;padding:10px 14px">Loading alerts…</div>
             </div>
           </div>
         </div>
@@ -453,18 +443,91 @@
     <!-- ─────────────────── ANALYTICS SECTION ─────────────────── -->
     <section id="section-analytics" class="app-section">
       <div class="section-page analytics-page">
+
+        <!-- Page header with time range pills -->
         <div class="page-header">
           <h1 class="page-title">Analytics</h1>
           <div class="page-actions">
-            <select class="select-sm"><option>Last 6 months</option><option>Last year</option><option>All time</option></select>
-            <button class="btn-secondary">Export CSV</button>
+            <div class="time-range-pills" id="time-range-pills">
+              <button class="trp-btn" data-range="3m" onclick="setAnalyticsTimeRange('3m')">3M</button>
+              <button class="trp-btn active" data-range="6m" onclick="setAnalyticsTimeRange('6m')">6M</button>
+              <button class="trp-btn" data-range="1y" onclick="setAnalyticsTimeRange('1y')">1Y</button>
+              <button class="trp-btn" data-range="all" onclick="setAnalyticsTimeRange('all')">All</button>
+            </div>
+            <button class="btn-secondary btn-sm" onclick="exportAnalyticsCSV()">↓ CSV</button>
           </div>
         </div>
+
+        <!-- Zone filter chips row -->
+        <div class="analytics-zone-filter-row">
+          <span class="azf-label">Zones:</span>
+          <div class="zone-filter-chips" id="analytics-zone-chips">
+            <!-- rendered by renderAnalyticsZoneChips() -->
+          </div>
+          <button class="azf-all-btn" onclick="selectAllAnalyticsZones()">All</button>
+          <button class="azf-all-btn" onclick="clearAllAnalyticsZones()">None</button>
+        </div>
+
+        <!-- KPI Summary Strip -->
+        <div class="analytics-kpi-strip">
+          <div class="akpi-card">
+            <div class="akpi-icon">📡</div>
+            <div class="akpi-content">
+              <div class="akpi-label">NDVI (Zone 3)</div>
+              <div class="akpi-value" id="akpi-ndvi">—</div>
+              <div class="akpi-delta" id="akpi-ndvi-delta">—</div>
+            </div>
+            <canvas class="akpi-spark" id="spark-ndvi" width="80" height="28"></canvas>
+          </div>
+          <div class="akpi-card">
+            <div class="akpi-icon" style="color:var(--red)">⚠</div>
+            <div class="akpi-content">
+              <div class="akpi-label">Erosion Risk</div>
+              <div class="akpi-value" id="akpi-risk">—</div>
+              <div class="akpi-delta" id="akpi-risk-delta">—</div>
+            </div>
+            <canvas class="akpi-spark" id="spark-risk" width="80" height="28"></canvas>
+          </div>
+          <div class="akpi-card">
+            <div class="akpi-icon" style="color:var(--yellow)">🌱</div>
+            <div class="akpi-content">
+              <div class="akpi-label">Carbon Stock</div>
+              <div class="akpi-value" id="akpi-carbon">—</div>
+              <div class="akpi-delta" id="akpi-carbon-delta">—</div>
+            </div>
+            <canvas class="akpi-spark" id="spark-carbon" width="80" height="28"></canvas>
+          </div>
+          <div class="akpi-card">
+            <div class="akpi-icon" style="color:var(--teal)">🦋</div>
+            <div class="akpi-content">
+              <div class="akpi-label">Species Richness</div>
+              <div class="akpi-value" id="akpi-species">—</div>
+              <div class="akpi-delta" id="akpi-species-delta">—</div>
+            </div>
+            <canvas class="akpi-spark" id="spark-species" width="80" height="28"></canvas>
+          </div>
+          <div class="akpi-card">
+            <div class="akpi-icon" style="color:var(--blue)">🌿</div>
+            <div class="akpi-content">
+              <div class="akpi-label">Avg Vegetation</div>
+              <div class="akpi-value" id="akpi-veg">—</div>
+              <div class="akpi-delta" id="akpi-veg-delta">—</div>
+            </div>
+            <canvas class="akpi-spark" id="spark-veg" width="80" height="28"></canvas>
+          </div>
+        </div>
+
+        <!-- Main chart grid -->
         <div class="analytics-grid">
+
+          <!-- Before / After Timeline (full width) -->
           <div class="card analytics-card wide" data-card-modal="before-after">
             <div class="card-header-row">
               <span class="card-label">Before / After Timeline</span>
-              <button class="btn-secondary btn-sm" id="btn-ai-change" onclick="runAIChangeDetection()" style="font-size:10px;padding:3px 8px">🤖 AI Change Detection</button>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="ba-time-span" id="ba-time-span" style="font-size:10px;color:var(--text-3)">—</span>
+                <button class="btn-secondary btn-sm" id="btn-ai-change" onclick="runAIChangeDetection()">🤖 AI Change Detection</button>
+              </div>
             </div>
             <div class="before-after-grid">
               <div class="ba-slot">
@@ -474,7 +537,10 @@
                 </div>
                 <div class="ba-analysis" id="ba-before-analysis"></div>
               </div>
-              <div class="ba-arrow">→</div>
+              <div class="ba-mid">
+                <div class="ba-arrow">→</div>
+                <div class="ba-elapsed" id="ba-elapsed">—</div>
+              </div>
               <div class="ba-slot">
                 <div class="ba-img" id="ba-after" style="position:relative;overflow:hidden">
                   <img id="ba-after-img" src="" style="width:100%;height:100%;object-fit:cover;display:none">
@@ -483,24 +549,61 @@
                 <div class="ba-analysis" id="ba-after-analysis"></div>
               </div>
             </div>
+            <div class="ba-ai-result" id="ba-ai-result" style="display:none"></div>
           </div>
+
+          <!-- NDVI All Zones -->
           <div class="card analytics-card" data-card-modal="ndvi-all-zones">
-            <div class="card-header-row"><span class="card-label">NDVI Trend (All Zones)</span></div>
+            <div class="card-header-row">
+              <span class="card-label">NDVI Trend (All Zones)</span>
+              <div class="chart-view-toggle">
+                <button class="cvt active" data-chart="ndvi" onclick="setChartMode('ndvi','line',this)">Line</button>
+                <button class="cvt" data-chart="ndvi" onclick="setChartMode('ndvi','area',this)">Area</button>
+              </div>
+            </div>
             <div class="chart-container-lg"><canvas id="analytics-ndvi-chart"></canvas></div>
           </div>
+
+          <!-- SOM & Bulk Density -->
           <div class="card analytics-card" data-card-modal="som-bulk-density">
-            <div class="card-header-row"><span class="card-label">Soil Organic Matter &amp; Bulk Density</span></div>
+            <div class="card-header-row">
+              <span class="card-label">Soil Organic Matter &amp; Bulk Density</span>
+              <span style="font-size:10px;color:var(--text-3)">size = area (ha)</span>
+            </div>
             <div class="chart-container-lg"><canvas id="analytics-som-chart"></canvas></div>
           </div>
+
+          <!-- Carbon Trend -->
           <div class="card analytics-card" data-card-modal="carbon-trend">
-            <div class="card-header-row"><span class="card-label">Soil Carbon Calculation Trend</span></div>
+            <div class="card-header-row">
+              <span class="card-label">Soil Carbon Calculation Trend</span>
+              <span class="trend-badge-pill" id="carbon-trend-pill" style="display:none">—</span>
+            </div>
             <div class="chart-container-lg"><canvas id="analytics-carbon-chart"></canvas></div>
           </div>
+
+          <!-- Biodiversity Radar -->
           <div class="card analytics-card" data-card-modal="bio-score">
             <div class="card-header-row"><span class="card-label">Biodiversity Score</span></div>
             <div class="chart-container-lg"><canvas id="analytics-bio-chart"></canvas></div>
           </div>
+
         </div>
+
+        <!-- AI Insights Panel -->
+        <div class="card analytics-insights-card">
+          <div class="card-header-row">
+            <span class="card-label">🤖 AI Trend Analysis</span>
+            <button class="btn-primary btn-sm" id="btn-ai-analytics" onclick="runAIAnalyticsInsights()">Generate Insights</button>
+          </div>
+          <div class="insights-body" id="analytics-insights-body">
+            <div class="insights-empty">
+              <span class="insights-empty-icon">🔍</span>
+              <span>Click "Generate Insights" for an AI-powered analysis of erosion trends, vegetation recovery, carbon sequestration, and biodiversity data across all zones.</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -569,83 +672,307 @@
     <section id="section-carbon" class="app-section">
       <div class="section-page carbon-page">
         <div class="page-header">
-          <h1 class="page-title">Carbon Accounting &amp; Soil Carbon Section</h1>
+          <h1 class="page-title">Carbon Accounting</h1>
           <div class="page-actions">
-            <button class="btn-secondary">Download Data</button>
-            <button class="btn-primary">Export PDF</button>
+            <button class="btn-secondary" onclick="exportCarbonCSV()">↓ CSV</button>
+            <button class="btn-primary" onclick="exportCarbonPDF()">↓ PDF</button>
           </div>
         </div>
-        <div class="carbon-kpi-row">
-          <div class="card kpi-card">
-            <span class="kpi-label">Total Carbon Stock (tC/ha)</span>
+
+        <!-- ── KPI strip with sparklines ── -->
+        <div class="carbon-kpi-strip">
+          <div class="card ckpi-card">
+            <div class="ckpi-top">
+              <span class="ckpi-label">Carbon Stock</span>
+              <canvas class="ckpi-spark" id="spark-c-stock" width="80" height="28"></canvas>
+            </div>
             <span class="kpi-value" id="kpi-carbon-stock">—</span>
+            <span class="ckpi-unit">tC / ha</span>
             <span class="kpi-delta" id="kpi-carbon-stock-delta" style="color:var(--text-3)">—</span>
           </div>
-          <div class="card kpi-card">
-            <span class="kpi-label">CO₂ Equivalent (tCO₂/ha)</span>
+          <div class="card ckpi-card">
+            <div class="ckpi-top">
+              <span class="ckpi-label">CO₂ Equivalent</span>
+              <canvas class="ckpi-spark" id="spark-c-co2e" width="80" height="28"></canvas>
+            </div>
             <span class="kpi-value" id="kpi-co2e">—</span>
+            <span class="ckpi-unit">tCO₂ / ha</span>
             <span class="kpi-delta" id="kpi-co2e-delta" style="color:var(--text-3)">—</span>
           </div>
-          <div class="card kpi-card">
-            <span class="kpi-label">Average Soil Organic Matter (SOM%)</span>
+          <div class="card ckpi-card">
+            <div class="ckpi-top">
+              <span class="ckpi-label">Avg Soil Organic Matter</span>
+              <canvas class="ckpi-spark" id="spark-c-som" width="80" height="28"></canvas>
+            </div>
             <span class="kpi-value" id="kpi-som">—</span>
+            <span class="ckpi-unit">SOM %</span>
             <span class="kpi-delta" id="kpi-som-range" style="color:var(--text-3)">—</span>
           </div>
-          <div class="card kpi-card carbon-calc-card" data-card-modal="carbon-calc">
-            <span class="kpi-label">Soil Carbon Calculator</span>
-            <form class="carbon-form" id="carbon-form">
-              <div class="form-row">
-                <label>SOM %</label><input type="number" step="0.1" value="3.5" id="inp-som">
-              </div>
-              <div class="form-row">
-                <label>Bulk Density (g/cm³)</label><input type="number" step="0.01" value="1.34" id="inp-bd">
-              </div>
-              <div class="form-row">
-                <label>Depth (cm)</label><input type="number" value="15" id="inp-depth">
-              </div>
-              <button type="button" class="btn-primary btn-sm" onclick="calculateCarbon()">Calculate</button>
-              <div class="carbon-result" id="carbon-result"></div>
-            </form>
+          <div class="card ckpi-card ckpi-credit-card">
+            <div class="ckpi-top">
+              <span class="ckpi-label">Carbon Credit Value</span>
+              <span class="ckpi-live-badge">● LIVE</span>
+            </div>
+            <span class="kpi-value ckpi-credit-val" id="kpi-credit-val">—</span>
+            <span class="ckpi-unit">€ / ha · yr</span>
+            <span class="ckpi-delta-credit">@ €<span id="kpi-price-label">50</span>/tCO₂e</span>
           </div>
         </div>
+
+        <!-- ── Body row: Enhanced Calculator + Zone Comparison ── -->
+        <div class="carbon-body-row">
+
+          <!-- Enhanced Carbon Calculator -->
+          <div class="card carbon-calc-card-v2">
+            <div class="card-header-row">
+              <span class="card-label">Soil Carbon Calculator</span>
+              <span class="calc-formula-hint" title="Organic Carbon % × Bulk Density × Depth (cm) × 100 ÷ 1000 = tC/ha">ƒ OC · BD · d</span>
+            </div>
+            <div class="calc-sliders" id="carbon-calc-sliders">
+
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <span class="calc-slider-label">SOM %</span>
+                  <span class="calc-slider-val" id="disp-som">3.5%</span>
+                </div>
+                <input type="range" class="calc-range" id="inp-som"
+                       min="0.5" max="8" step="0.1" value="3.5"
+                       oninput="onCalcSlider()">
+                <div class="calc-range-ticks"><span>0.5</span><span>4</span><span>8</span></div>
+              </div>
+
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <span class="calc-slider-label">Bulk Density (g/cm³)</span>
+                  <span class="calc-slider-val" id="disp-bd">1.34</span>
+                </div>
+                <input type="range" class="calc-range" id="inp-bd"
+                       min="0.80" max="1.80" step="0.01" value="1.34"
+                       oninput="onCalcSlider()">
+                <div class="calc-range-ticks"><span>0.8</span><span>1.3</span><span>1.8</span></div>
+              </div>
+
+              <div class="calc-slider-group">
+                <div class="calc-slider-header">
+                  <span class="calc-slider-label">Sampling Depth (cm)</span>
+                  <span class="calc-slider-val" id="disp-depth">15 cm</span>
+                </div>
+                <input type="range" class="calc-range" id="inp-depth"
+                       min="5" max="60" step="5" value="15"
+                       oninput="onCalcSlider()">
+                <div class="calc-range-ticks"><span>5</span><span>30</span><span>60</span></div>
+              </div>
+
+              <!-- Visual result bar with benchmark markers -->
+              <div class="calc-result-bar-wrap">
+                <div class="calc-result-bar-label">
+                  <span>Carbon Stock</span>
+                  <span style="font-size:9px;color:var(--text-3)">0 → 10 tC/ha</span>
+                </div>
+                <div class="calc-result-bar-track">
+                  <div class="calc-result-bar-fill" id="calc-result-bar-fill"></div>
+                  <div class="calc-bench-mark" style="left:38%" title="Bulgaria national avg ~3.8 tC/ha">
+                    <div class="cbm-tick"></div><span class="cbm-label">BG</span>
+                  </div>
+                  <div class="calc-bench-mark" style="left:43%" title="Site average 4.30 tC/ha">
+                    <div class="cbm-tick cbm-site"></div><span class="cbm-label cbm-label-site">Site</span>
+                  </div>
+                  <div class="calc-bench-mark" style="left:45%" title="EU average ~4.5 tC/ha">
+                    <div class="cbm-tick cbm-eu"></div><span class="cbm-label">EU</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live result panel -->
+              <div class="calc-result-panel" id="calc-result-panel">
+                <div class="calc-result-main">
+                  <span class="calc-result-tc" id="calc-tc">—</span>
+                  <span class="calc-result-unit">tC/ha</span>
+                </div>
+                <div class="calc-result-co2" id="calc-co2-row">
+                  <span id="calc-co2">—</span> tCO₂/ha
+                </div>
+                <div class="calc-vs-site" id="calc-vs-site"></div>
+              </div>
+
+              <!-- Carbon price converter -->
+              <div class="calc-price-block">
+                <div class="calc-price-header">
+                  <span class="calc-price-label">💶 Carbon Price</span>
+                  <span class="calc-price-display">€<span id="disp-price">50</span>/tCO₂e</span>
+                </div>
+                <input type="range" class="calc-range" id="inp-price"
+                       min="10" max="150" step="5" value="50"
+                       style="--pct:33.3%"
+                       oninput="onCarbonPriceSlide()">
+                <div class="calc-range-ticks"><span>€10</span><span>€80</span><span>€150</span></div>
+                <div class="calc-price-result" id="calc-price-result">
+                  <div class="cpr-row">
+                    <span class="cpr-label">Offset value</span>
+                    <span class="cpr-val" id="calc-offset-val">—</span>
+                    <span class="cpr-unit">€/ha/yr</span>
+                  </div>
+                  <div class="cpr-row">
+                    <span class="cpr-label">Zone 3 total (41.96 ha)</span>
+                    <span class="cpr-val cpr-big" id="calc-zone-total">—</span>
+                    <span class="cpr-unit">/yr</span>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn-primary btn-sm calc-save-btn" id="calc-save-btn" onclick="saveCalcResult()">
+                💾 Save to Records
+              </button>
+            </div>
+          </div>
+
+          <!-- Zone Carbon Comparison (horizontal bar) -->
+          <div class="card carbon-zones-card">
+            <div class="card-header-row">
+              <span class="card-label">Carbon Stock by Zone</span>
+              <span style="font-size:10px;color:var(--text-3)">estimated tC/ha</span>
+            </div>
+            <div class="chart-container-lg"><canvas id="carbon-zones-chart"></canvas></div>
+          </div>
+
+        </div><!-- /carbon-body-row -->
+
+        <!-- ── Trajectory + Site Metrics ── -->
         <div class="carbon-charts-row">
           <div class="card" style="flex:2" data-card-modal="carbon-trajectory">
-            <div class="card-header-row"><span class="card-label">Carbon Sequestration Trajectory</span></div>
+            <div class="card-header-row">
+              <span class="card-label">Carbon Sequestration Trajectory</span>
+              <div class="traj-rate-ctrl">
+                <span class="traj-rate-label">Rate: <strong id="disp-seq-rate">0.30</strong> tC/ha/yr</span>
+                <input type="range" id="inp-seq-rate"
+                       min="0.05" max="1.0" step="0.05" value="0.30"
+                       class="calc-range traj-range" style="--pct:26.3%"
+                       oninput="onSeqRateChange()">
+              </div>
+            </div>
             <div class="chart-container-lg"><canvas id="carbon-trajectory-chart"></canvas></div>
           </div>
           <div class="card" style="flex:1" data-card-modal="key-metrics">
-            <div class="card-header-row"><span class="card-label">Key Metrics</span></div>
+            <div class="card-header-row"><span class="card-label">Site Metrics</span></div>
             <div class="carbon-metrics">
               <div class="metric-row"><span>Organic Carbon</span><span class="metric-val" id="metric-org-carbon">—</span></div>
               <div class="metric-row"><span>CO₂ Stored</span><span class="metric-val" id="metric-co2-stored">—</span></div>
               <div class="metric-row"><span>Annual Sequestration</span><span class="metric-val" id="metric-annual-seq">—</span></div>
+              <div class="metric-row"><span>SOM Range</span><span class="metric-val" id="metric-som-range">—</span></div>
               <div class="metric-row"><span>Soil Health Score</span><span class="metric-val" id="metric-soil-health">—</span></div>
+              <div class="metric-divider"></div>
+              <div class="metric-row">
+                <span style="color:var(--green)">Credit Revenue (est.)</span>
+                <span class="metric-val success-text" id="metric-credit-revenue">—</span>
+              </div>
+              <div class="metric-row">
+                <span style="color:var(--green)">10-yr Seq. Value</span>
+                <span class="metric-val" id="metric-10yr-value">—</span>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- ── Sortable data table ── -->
         <div class="card" style="margin-top:12px">
-          <div class="card-header-row"><span class="card-label">Carbon Data Breakdown</span></div>
-          <table class="data-table">
-            <thead><tr><th>Field</th><th>Sampling Date</th><th>Depth</th><th>SOM %</th><th>Bulk Density</th><th>Carbon Stock</th><th>CO₂e</th><th>Change</th></tr></thead>
+          <div class="card-header-row">
+            <span class="card-label">Carbon Data Breakdown</span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:10px;color:var(--text-3)">↕ click headers to sort</span>
+              <button class="btn-secondary btn-sm" onclick="renderCarbonTable()">↻ Refresh</button>
+            </div>
+          </div>
+          <table class="data-table sortable-table" id="carbon-data-table">
+            <thead>
+              <tr>
+                <th class="sortable-col" onclick="sortCarbonTable('field')">Field <span class="sort-icon">↕</span></th>
+                <th class="sortable-col" onclick="sortCarbonTable('date')">Date <span class="sort-icon">↕</span></th>
+                <th>Depth</th>
+                <th class="sortable-col" onclick="sortCarbonTable('som')">SOM % <span class="sort-icon">↕</span></th>
+                <th>Bulk Density</th>
+                <th class="sortable-col" onclick="sortCarbonTable('carbon')">Carbon Stock <span class="sort-icon">↕</span></th>
+                <th>CO₂e</th>
+                <th>Change</th>
+              </tr>
+            </thead>
             <tbody id="carbon-table-body"></tbody>
           </table>
         </div>
+
       </div>
     </section>
 
     <!-- ─────────────────── BIODIVERSITY SECTION ─────────────────── -->
     <section id="section-biodiversity" class="app-section">
       <div class="section-page biodiversity-page">
+
+        <!-- Page header -->
         <div class="page-header">
           <h1 class="page-title">Biodiversity Dashboard</h1>
           <div class="page-actions">
-            <span class="page-subtitle" style="margin-right:12px">Tsenovo Ridge Reserve</span>
-            <button class="btn-secondary" id="btn-ai-bio" onclick="runAIBiodiversity()">🤖 AI Biodiversity Analysis</button>
+            <div class="bio-season-pills" id="bio-season-pills">
+              <button class="bsp-btn active" onclick="setBioSeason('all',this)">All Seasons</button>
+              <button class="bsp-btn" onclick="setBioSeason('spring',this)">🌸 Spring</button>
+              <button class="bsp-btn" onclick="setBioSeason('summer',this)">☀️ Summer</button>
+              <button class="bsp-btn" onclick="setBioSeason('autumn',this)">🍂 Autumn</button>
+              <button class="bsp-btn" onclick="setBioSeason('winter',this)">❄️ Winter</button>
+            </div>
+            <button class="btn-secondary btn-sm" id="btn-ai-bio" onclick="runAIBiodiversity()">🤖 AI Analysis</button>
           </div>
         </div>
-        <div class="bio-kpi-row">
-          <div class="card bio-kpi-card" data-card-modal="shannon">
-            <span class="bio-kpi-label">Shannon H′ Diversity Index</span>
+
+        <!-- KPI Strip with sparklines -->
+        <div class="bio-kpi-strip">
+          <div class="card bkpi-card">
+            <canvas class="bkpi-spark" id="spark-b-richness" width="80" height="26"></canvas>
+            <div class="bkpi-bottom">
+              <span class="bkpi-label">Species Richness</span>
+              <span class="bkpi-value" id="bkpi-richness">41</span>
+              <span class="bkpi-delta positive">+5 ↑ vs last yr</span>
+            </div>
+          </div>
+          <div class="card bkpi-card">
+            <canvas class="bkpi-spark" id="spark-b-shannon" width="80" height="26"></canvas>
+            <div class="bkpi-bottom">
+              <span class="bkpi-label">Shannon H′</span>
+              <span class="bkpi-value" id="bkpi-shannon">3.82</span>
+              <span class="bkpi-delta positive">+0.14 improving</span>
+            </div>
+          </div>
+          <div class="card bkpi-card">
+            <canvas class="bkpi-spark" id="spark-b-protected" width="80" height="26"></canvas>
+            <div class="bkpi-bottom">
+              <span class="bkpi-label">Protected Species</span>
+              <span class="bkpi-value" id="bkpi-protected">9</span>
+              <span class="bkpi-delta neutral">of 16 observed</span>
+            </div>
+          </div>
+          <div class="card bkpi-card">
+            <canvas class="bkpi-spark" id="spark-b-veg" width="80" height="26"></canvas>
+            <div class="bkpi-bottom">
+              <span class="bkpi-label">Vegetation Cover</span>
+              <span class="bkpi-value" id="bkpi-vegcover">56<span class="bkpi-unit">%</span></span>
+              <span class="bkpi-delta positive">+11% ↑ 6m</span>
+            </div>
+          </div>
+          <div class="card bkpi-card">
+            <canvas class="bkpi-spark" id="spark-b-avian" width="80" height="26"></canvas>
+            <div class="bkpi-bottom">
+              <span class="bkpi-label">Total Avian Count</span>
+              <span class="bkpi-value" id="bkpi-avian">31</span>
+              <span class="bkpi-delta positive">↑ 3 individuals</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top row: Shannon gauge · Zone bio chart · EU targets -->
+        <div class="bio-top-row">
+          <!-- Shannon H′ gauge (live.js SVG IDs preserved) -->
+          <div class="card bio-shannon-card">
+            <div class="card-header-row">
+              <span class="card-label">Shannon H′ Index</span>
+              <span class="bio-trend success-text" id="shannon-trend">—</span>
+            </div>
             <div class="shannon-gauge">
               <svg viewBox="0 0 140 90" class="shannon-svg">
                 <defs>
@@ -657,116 +984,347 @@
                 </defs>
                 <path d="M 15,80 A 55,55 0 0 1 125,80" stroke="#1e2a38" stroke-width="12" fill="none" stroke-linecap="round"/>
                 <path d="M 15,80 A 55,55 0 0 1 125,80" stroke="url(#shannonGrad)" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.2"/>
-                <!-- arc updated by live.js -->
                 <path id="shannon-arc-fill" d="M 15,80 A 55,55 0 0 1 15.01,80" stroke="url(#shannonGrad)" stroke-width="12" fill="none" stroke-linecap="round"/>
                 <text id="shannon-value" x="70" y="68" text-anchor="middle" fill="#f0f4f8" font-size="22" font-weight="700" font-family="IBM Plex Mono">—</text>
                 <text x="70" y="82" text-anchor="middle" fill="#64748b" font-size="9" font-family="IBM Plex Sans">H′-prime</text>
               </svg>
             </div>
-            <span class="bio-trend" id="shannon-trend" style="color:var(--text-3)">—</span>
-          </div>
-          <div class="card bio-kpi-card" data-card-modal="seasonal-species">
-            <span class="bio-kpi-label">Seasonal Species Distribution</span>
-            <div class="chart-container-sm"><canvas id="bio-seasonal-chart"></canvas></div>
-          </div>
-          <div class="card bio-kpi-card" data-card-modal="species-observed">
-            <span class="bio-kpi-label">Species Observed</span>
-            <div class="species-stats">
-              <div class="species-stat"><span class="species-num" id="species-total">—</span><span>Total Observed</span></div>
-              <div class="species-stat"><span class="species-num warning-text" id="species-missing">—</span><span>Missing</span></div>
+            <div class="shannon-legend">
+              <div class="sl-item"><span style="color:var(--red)">●</span> Low &lt;1.5</div>
+              <div class="sl-item"><span style="color:var(--yellow)">●</span> Mid 1.5–3</div>
+              <div class="sl-item"><span style="color:var(--green)">●</span> High &gt;3</div>
+            </div>
+            <!-- Hidden live.js IDs -->
+            <div style="display:none">
+              <span id="species-total">—</span>
+              <span id="species-missing">—</span>
             </div>
           </div>
+
+          <!-- Zone biodiversity score chart (new) -->
+          <div class="card">
+            <div class="card-header-row">
+              <span class="card-label">Zone Biodiversity Score</span>
+              <span style="font-size:9px;color:var(--text-3)">composite NDVI + veg + risk</span>
+            </div>
+            <div class="chart-container-lg"><canvas id="bio-zones-chart"></canvas></div>
+          </div>
+
+          <!-- EU Biodiversity Targets -->
+          <div class="card bio-targets-card">
+            <div class="card-header-row">
+              <span class="card-label">EU Biodiversity Targets</span>
+              <span style="font-size:9px;color:var(--text-3)">2030 goals</span>
+            </div>
+            <div class="bio-targets-list" id="bio-targets-list"></div>
+          </div>
         </div>
+
+        <!-- Charts row -->
         <div class="bio-charts-row">
-          <div class="card" data-card-modal="flora-fauna">
-            <div class="card-header-row"><span class="card-label">Seasonal Flora &amp; Fauna Diversity</span></div>
+          <div class="card">
+            <div class="card-header-row">
+              <span class="card-label">Seasonal Flora &amp; Fauna</span>
+              <div class="bio-group-filter">
+                <button class="bgf-btn active" onclick="setBioDiversityView('all',this)">All</button>
+                <button class="bgf-btn" onclick="setBioDiversityView('spring',this)">Spring</button>
+                <button class="bgf-btn" onclick="setBioDiversityView('summer',this)">Summer</button>
+                <button class="bgf-btn" onclick="setBioDiversityView('autumn',this)">Autumn</button>
+              </div>
+            </div>
             <div class="chart-container-lg"><canvas id="bio-diversity-chart"></canvas></div>
           </div>
-          <div class="card" data-card-modal="avian-monitoring">
-            <div class="card-header-row"><span class="card-label">Avian Monitoring (Tsenovo Zone Alpha)</span></div>
+
+          <div class="card">
+            <div class="card-header-row">
+              <span class="card-label">Avian Monitoring</span>
+              <div class="bio-avian-filter">
+                <button class="baf-btn active" onclick="filterBirdList('all',this)">All</button>
+                <button class="baf-btn" onclick="filterBirdList('protected',this)">Protected</button>
+                <button class="baf-btn" onclick="filterBirdList('keystone',this)">Keystone</button>
+              </div>
+            </div>
             <div class="bird-list" id="bird-list"></div>
           </div>
-          <div class="card" data-card-modal="pollen">
-            <div class="card-header-row"><span class="card-label">Palynology (Pollen) Analysis</span></div>
+
+          <div class="card">
+            <div class="card-header-row">
+              <span class="card-label">Palynology (Pollen)</span>
+              <div class="pollen-month-ctrl">
+                <span class="pollen-month-label">Month: <strong id="disp-pollen-month">Apr</strong></span>
+                <input type="range" id="inp-pollen-month" class="calc-range" min="1" max="12" value="4"
+                       style="width:65px" oninput="onPollenMonthChange(this)">
+              </div>
+            </div>
             <div class="chart-container-lg"><canvas id="pollen-chart"></canvas></div>
           </div>
         </div>
+
+        <!-- Species Explorer (full-width table) -->
         <div class="card" style="margin-top:12px">
-          <div class="card-header-row"><span class="card-label">Regional Biodiversity Overview</span></div>
-          <div class="bio-overview-grid">
-            <div class="bio-overview-stat"><span class="bio-big-num" id="bio-total-species">—</span><span>Total Species</span></div>
-            <div class="bio-overview-stat"><span class="bio-big-num" id="bio-invasive-risk" style="color:var(--text-3)">—</span><span>Invasive Risk</span></div>
-            <div class="bio-overview-stat"><span class="bio-big-num warning-text" id="bio-keystone">—</span><span>Keystone Species</span></div>
+          <div class="card-header-row" style="flex-wrap:wrap;gap:8px">
+            <span class="card-label">Species Explorer</span>
+            <div class="species-filter-row">
+              <div class="species-group-tabs" id="species-group-tabs">
+                <button class="sgt-btn active" onclick="filterSpeciesTable('all',this)">All</button>
+                <button class="sgt-btn" onclick="filterSpeciesTable('birds',this)">🐦 Birds</button>
+                <button class="sgt-btn" onclick="filterSpeciesTable('plants',this)">🌿 Plants</button>
+                <button class="sgt-btn" onclick="filterSpeciesTable('insects',this)">🐝 Insects</button>
+                <button class="sgt-btn" onclick="filterSpeciesTable('mammals',this)">🦔 Mammals</button>
+                <button class="sgt-btn" onclick="filterSpeciesTable('amphibians',this)">🐸 Amphibians</button>
+              </div>
+              <select id="species-status-select" class="calc-select" onchange="filterSpeciesTable(null,null,this.value)">
+                <option value="all">All Status</option>
+                <option value="protected">Protected</option>
+                <option value="keystone">Keystone</option>
+                <option value="near-threatened">Near-Threatened</option>
+                <option value="invasive">Invasive</option>
+                <option value="common">Common</option>
+              </select>
+            </div>
+          </div>
+          <table class="data-table sortable-table" id="species-table">
+            <thead>
+              <tr>
+                <th class="sortable-col" onclick="sortSpeciesTable('name')">Species <span class="sort-icon">⇅</span></th>
+                <th>Latin Name</th>
+                <th>Group</th>
+                <th>Status</th>
+                <th>IUCN</th>
+                <th class="sortable-col" onclick="sortSpeciesTable('count')">Count <span class="sort-icon">⇅</span></th>
+                <th>Trend</th>
+                <th>Zone</th>
+              </tr>
+            </thead>
+            <tbody id="species-table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- AI Biodiversity Insights panel -->
+        <div class="card analytics-insights-card" style="margin-top:12px">
+          <div class="card-header-row">
+            <span class="card-label">🤖 AI Ecosystem Insights</span>
+            <button class="btn-secondary btn-sm" id="btn-ai-bio-panel" onclick="runAIBioInsights()">Generate Insights</button>
+          </div>
+          <div class="insights-body" id="bio-insights-body">
+            <div class="insights-empty">
+              <span class="insights-empty-icon">🦋</span>
+              <span>Click "Generate Insights" for AI-powered ecosystem analysis of Tsenovo Ridge</span>
+            </div>
           </div>
         </div>
+
+        <!-- Hidden IDs for live.js compatibility -->
+        <div style="display:none">
+          <span id="bio-total-species">—</span>
+          <span id="bio-invasive-risk">—</span>
+          <span id="bio-keystone">—</span>
+          <canvas id="bio-seasonal-chart" width="1" height="1"></canvas>
+        </div>
+
       </div>
     </section>
 
     <!-- ─────────────────── DATA LAYERS SECTION ─────────────────── -->
     <section id="section-data-layers" class="app-section">
       <div class="section-page data-layers-page">
+
+        <!-- ── PAGE HEADER ── -->
         <div class="page-header">
           <h1 class="page-title">Data Layers &amp; Integrations</h1>
           <div class="page-actions">
+            <button class="btn-secondary btn-sm" id="btn-refresh-all-layers" onclick="refreshAllLayers()">↺ Refresh All</button>
             <button class="btn-secondary" id="btn-ai-risk" onclick="runAIRiskScore(3)">🤖 Compute AI Risk Score</button>
           </div>
         </div>
-        <div class="data-layers-layout">
-          <div class="layers-sidebar">
+
+        <!-- ── INTEGRATION STATUS STRIP ── -->
+        <div class="integrations-strip" id="integrations-strip">
+          <div class="int-chip" data-layer="ndvi" onclick="selectLayer('ndvi')">
+            <span class="int-dot" id="int-dot-ndvi"></span>
+            <span class="int-label">Copernicus</span>
+            <span class="int-val" id="int-val-ndvi">—</span>
+          </div>
+          <div class="int-chip" data-layer="pins" onclick="selectLayer('pins')">
+            <span class="int-dot" id="int-dot-pins"></span>
+            <span class="int-label">Smart Pins</span>
+            <span class="int-val" id="int-val-pins">—</span>
+          </div>
+          <div class="int-chip" data-layer="weather" onclick="selectLayer('weather')">
+            <span class="int-dot" id="int-dot-weather"></span>
+            <span class="int-label">Open-Meteo</span>
+            <span class="int-val" id="int-val-weather">—</span>
+          </div>
+          <div class="int-chip" data-layer="nasa" onclick="selectLayer('nasa')">
+            <span class="int-dot" id="int-dot-nasa"></span>
+            <span class="int-label">NASA POWER</span>
+            <span class="int-val" id="int-val-nasa">—</span>
+          </div>
+          <div class="int-chip" data-layer="pvgis" onclick="selectLayer('pvgis')">
+            <span class="int-dot" id="int-dot-pvgis"></span>
+            <span class="int-label">PVGIS (JRC)</span>
+            <span class="int-val" id="int-val-pvgis">—</span>
+          </div>
+          <div class="int-chip" data-layer="soil" onclick="selectLayer('soil')">
+            <span class="int-dot" id="int-dot-soil"></span>
+            <span class="int-label">SoilGrids</span>
+            <span class="int-val" id="int-val-soil">—</span>
+          </div>
+          <div class="int-chip" data-layer="gbif" onclick="selectLayer('gbif')">
+            <span class="int-dot" id="int-dot-gbif"></span>
+            <span class="int-label">GBIF</span>
+            <span class="int-val" id="int-val-gbif">—</span>
+          </div>
+          <div class="int-chip" data-layer="carbon" onclick="selectLayer('carbon')">
+            <span class="int-dot" id="int-dot-carbon"></span>
+            <span class="int-label">Soil Lab</span>
+            <span class="int-val" id="int-val-carbon">—</span>
+          </div>
+        </div>
+
+        <!-- ── MAIN CONTENT: SOURCE LIST + DETAIL PANEL + MAP ── -->
+        <div class="data-layers-layout-v2">
+
+          <!-- LEFT: source list -->
+          <div class="layers-sidebar-v2">
             <div class="layers-list" id="layers-list">
-              <div class="layer-item active">
-                <div class="layer-toggle">
-                  <span class="toggle-dot on"></span>
+
+              <div class="layer-item-v2 active" data-layer="ndvi" onclick="selectLayer('ndvi')">
+                <div class="layer-icon-col">
+                  <div class="layer-src-icon ndvi-icon">🛰</div>
                 </div>
                 <div class="layer-info">
-                  <span class="layer-name">Sentinel-2 NDVI Satellite Data</span>
-                  <span class="layer-meta">Copernicus · Live, updates 5 days ago</span>
+                  <span class="layer-name">Sentinel-2 NDVI</span>
+                  <span class="layer-org">Copernicus Dataspace</span>
+                  <span class="layer-meta" id="lm-ndvi">Fetching…</span>
                 </div>
-                <span class="layer-badge success">Live</span>
+                <div class="layer-right-col">
+                  <span class="layer-badge success" id="lb-ndvi">Live</span>
+                </div>
               </div>
-              <div class="layer-item active">
-                <div class="layer-toggle"><span class="toggle-dot on"></span></div>
+
+              <div class="layer-item-v2" data-layer="pins" onclick="selectLayer('pins')">
+                <div class="layer-icon-col">
+                  <div class="layer-src-icon pins-icon">📍</div>
+                </div>
                 <div class="layer-info">
-                  <span class="layer-name">Smart Erosion Pin (Z3-Pin)</span>
-                  <span class="layer-meta">Active · 4 pins online</span>
+                  <span class="layer-name">Smart Erosion Pins</span>
+                  <span class="layer-org">On-site IoT Hardware</span>
+                  <span class="layer-meta" id="lm-pins">7 pins · 1 offline</span>
                 </div>
-                <span class="layer-badge success">Live</span>
+                <div class="layer-right-col">
+                  <span class="layer-badge success" id="lb-pins">Live</span>
+                </div>
               </div>
-              <div class="layer-item">
-                <div class="layer-toggle"><span class="toggle-dot off"></span></div>
+
+              <div class="layer-item-v2" data-layer="weather" onclick="selectLayer('weather')">
+                <div class="layer-icon-col">
+                  <div class="layer-src-icon weather-icon">🌦</div>
+                </div>
                 <div class="layer-info">
-                  <span class="layer-name">Historic Weather &amp; Precipitation</span>
-                  <span class="layer-meta">Open-Meteo · Active</span>
+                  <span class="layer-name">Weather &amp; Precipitation</span>
+                  <span class="layer-org">Open-Meteo · Free API</span>
+                  <span class="layer-meta" id="lm-weather">Loading…</span>
                 </div>
-                <span class="layer-badge warning">Cached</span>
+                <div class="layer-right-col">
+                  <span class="layer-badge warning" id="lb-weather">Cached</span>
+                </div>
               </div>
-              <div class="layer-item">
-                <div class="layer-toggle"><span class="toggle-dot off"></span></div>
+
+              <div class="layer-item-v2" data-layer="nasa" onclick="selectLayer('nasa')">
+                <div class="layer-icon-col">
+                  <div class="layer-src-icon nasa-icon">🚀</div>
+                </div>
                 <div class="layer-info">
-                  <span class="layer-name">SoilGrids (ISRIC) API</span>
-                  <span class="layer-meta">Active · 15 mins ago</span>
+                  <span class="layer-name">NASA POWER</span>
+                  <span class="layer-org">NASA Langley · RE Community</span>
+                  <span class="layer-meta" id="lm-nasa">Hourly solar &amp; precip</span>
                 </div>
-                <span class="layer-badge warning">Cached</span>
+                <div class="layer-right-col">
+                  <span class="layer-badge info" id="lb-nasa">API</span>
+                </div>
               </div>
-              <div class="layer-item">
-                <div class="layer-toggle"><span class="toggle-dot off"></span></div>
+
+              <div class="layer-item-v2" data-layer="pvgis" onclick="selectLayer('pvgis')">
+                <div class="layer-icon-col">
+                  <div class="layer-src-icon pvgis-icon">☀️</div>
+                </div>
                 <div class="layer-info">
-                  <span class="layer-name">GBIF Biodiversity Layer</span>
-                  <span class="layer-meta">Active · 15 mins ago</span>
+                  <span class="layer-name">PVGIS Solar Resource</span>
+                  <span class="layer-org">EU JRC · Free API</span>
+                  <span class="layer-meta" id="lm-pvgis">Monthly irradiance</span>
                 </div>
-                <span class="layer-badge info">API</span>
+                <div class="layer-right-col">
+                  <span class="layer-badge info" id="lb-pvgis">API</span>
+                </div>
               </div>
+
+              <div class="layer-item-v2" data-layer="soil" onclick="selectLayer('soil')">
+                <div class="layer-icon-col">
+                  <div class="layer-src-icon soil-icon">🌱</div>
+                </div>
+                <div class="layer-info">
+                  <span class="layer-name">SoilGrids (ISRIC)</span>
+                  <span class="layer-org">ISRIC World Soil Info</span>
+                  <span class="layer-meta" id="lm-soil">Loading…</span>
+                </div>
+                <div class="layer-right-col">
+                  <span class="layer-badge warning" id="lb-soil">Cached</span>
+                </div>
+              </div>
+
+              <div class="layer-item-v2" data-layer="gbif" onclick="selectLayer('gbif')">
+                <div class="layer-icon-col">
+                  <div class="layer-src-icon gbif-icon">🦋</div>
+                </div>
+                <div class="layer-info">
+                  <span class="layer-name">GBIF Biodiversity</span>
+                  <span class="layer-org">Global Biodiversity Info Facility</span>
+                  <span class="layer-meta" id="lm-gbif">Species occurrences</span>
+                </div>
+                <div class="layer-right-col">
+                  <span class="layer-badge info" id="lb-gbif">API</span>
+                </div>
+              </div>
+
+              <div class="layer-item-v2" data-layer="carbon" onclick="selectLayer('carbon')">
+                <div class="layer-icon-col">
+                  <div class="layer-src-icon carbon-icon">⚗️</div>
+                </div>
+                <div class="layer-info">
+                  <span class="layer-name">Soil Lab Records</span>
+                  <span class="layer-org">On-site sampling · JSON store</span>
+                  <span class="layer-meta" id="lm-carbon">Loading…</span>
+                </div>
+                <div class="layer-right-col">
+                  <span class="layer-badge success" id="lb-carbon">Local</span>
+                </div>
+              </div>
+
+            </div><!-- /layers-list -->
+          </div><!-- /layers-sidebar-v2 -->
+
+          <!-- CENTER: detail panel -->
+          <div class="layer-detail-panel" id="layer-detail-panel">
+            <!-- content injected by selectLayer() -->
+            <div class="layer-detail-placeholder">
+              <div class="ldp-icon">🌍</div>
+              <div class="ldp-hint">Select a data source to explore live values</div>
             </div>
           </div>
-          <div class="layers-map-panel">
+
+          <!-- RIGHT: map -->
+          <div class="layers-map-panel-v2">
             <div id="layers-map"></div>
+            <div class="map-layer-badge" id="map-layer-label">NDVI · Zone 3</div>
             <div class="layers-map-legend">
-              <span>NDVI</span>
+              <span class="legend-label">NDVI</span>
               <div class="ndvi-colorbar"></div>
               <div class="ndvi-colorbar-labels"><span>-1</span><span>0</span><span>+1</span></div>
             </div>
           </div>
-        </div>
+
+        </div><!-- /data-layers-layout-v2 -->
       </div>
     </section>
 
@@ -931,41 +1489,91 @@
 
         <!-- ─── Data Upload Tab ─── -->
         <div class="settings-content" id="settings-upload" style="display:none">
+
+          <!-- AI Photo Analysis card -->
+          <div class="card settings-card photo-upload-card">
+            <div class="card-header-row">
+              <span class="card-label">🤖 AI Photo Analysis</span>
+              <span class="card-sublabel" style="font-size:10px;color:var(--text-3)">Powered by Gemini 2.0 Flash</span>
+            </div>
+
+            <!-- Two-column layout: upload form | result panel -->
+            <div class="photo-upload-layout">
+
+              <!-- LEFT: upload form -->
+              <div class="photo-upload-form-col">
+                <!-- Drag & drop zone -->
+                <div class="photo-dropzone" id="photo-dropzone"
+                     ondragover="event.preventDefault();this.classList.add('drag-over')"
+                     ondragleave="this.classList.remove('drag-over')"
+                     ondrop="photoDrop(event)">
+                  <div class="photo-dropzone-inner" id="photo-dropzone-inner">
+                    <div class="photo-drop-icon">📷</div>
+                    <div class="photo-drop-text">Drag &amp; drop a photo here</div>
+                    <div class="photo-drop-sub">or click to browse</div>
+                  </div>
+                  <img id="photo-preview-img" class="photo-preview-img" src="" alt="" style="display:none">
+                  <input type="file" id="upload-photo-file" accept="image/*"
+                         style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%"
+                         onchange="photoFileSelected(this)">
+                </div>
+
+                <!-- Metadata fields -->
+                <div class="photo-meta-grid">
+                  <div class="form-group">
+                    <label>Zone</label>
+                    <select class="select-full" id="upload-photo-zone">
+                      <option value="3">Zone 3 — Active Erosion</option>
+                      <option value="1">Zone 1 — North Cluster</option>
+                      <option value="2">Zone 2 — Middle</option>
+                      <option value="7">Zone 7 — South</option>
+                      <option value="8">Zone 8 — Reference</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Pin / Device ID</label>
+                    <input type="text" class="input-full" id="upload-photo-pin"
+                           placeholder="P04 or manual" value="manual">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:6px">
+                  <label>Field Notes (optional)</label>
+                  <input type="text" class="input-full" id="upload-photo-notes"
+                         placeholder="e.g. Post-rain rill check, upper slope…">
+                </div>
+
+                <button class="btn-primary photo-analyze-btn" id="photo-analyze-btn"
+                        onclick="submitPhotoForAnalysis()">
+                  <span id="photo-analyze-btn-text">🤖 Analyze with AI</span>
+                </button>
+
+                <!-- Progress bar (hidden until upload) -->
+                <div class="photo-progress-wrap" id="photo-progress-wrap" style="display:none">
+                  <div class="photo-progress-bar" id="photo-progress-bar"></div>
+                  <span class="photo-progress-label" id="photo-progress-label">Uploading…</span>
+                </div>
+              </div>
+
+              <!-- RIGHT: analysis result panel -->
+              <div class="photo-result-col" id="photo-result-col">
+                <div class="photo-result-empty" id="photo-result-empty">
+                  <div style="font-size:32px;margin-bottom:8px">🔬</div>
+                  <div style="font-size:12px;color:var(--text-3)">AI analysis results will appear here</div>
+                  <div style="font-size:11px;color:var(--text-3);margin-top:4px">Upload a field photo to get instant<br>erosion severity, vegetation cover &amp; recommendations</div>
+                </div>
+                <div class="photo-result-content" id="photo-result-content" style="display:none"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent AI analyses gallery -->
           <div class="card settings-card">
-            <div class="card-header-row"><span class="card-label">📷 Photo Upload — AI Analysis</span></div>
-            <div class="settings-form-row">
-              <div class="form-group">
-                <label>Zone</label>
-                <select class="select-full" id="upload-photo-zone">
-                  <option value="3">Zone 3 (Active Erosion)</option>
-                  <option value="2">Zone 2</option>
-                  <option value="1">Zone 1</option>
-                  <option value="4">Zone 4</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Pin ID</label>
-                <input type="text" class="input-full" id="upload-photo-pin" placeholder="P04" value="manual">
-              </div>
+            <div class="card-header-row">
+              <span class="card-label">📁 Recent Photo Analyses</span>
+              <button class="btn-secondary btn-sm" onclick="loadPhotoHistory()">↻ Refresh</button>
             </div>
-            <div class="settings-form-row">
-              <div class="form-group" style="flex:2">
-                <label>Notes</label>
-                <input type="text" class="input-full" id="upload-photo-notes" placeholder="Field observations…">
-              </div>
-            </div>
-            <div class="settings-form-row">
-              <div class="form-group" style="flex:2">
-                <label>Photo File</label>
-                <input type="file" id="upload-photo-file" accept="image/*" style="background:var(--bg-3);border:1px solid var(--border);color:var(--text-1);padding:6px 10px;border-radius:6px;width:100%">
-              </div>
-              <button class="btn-primary btn-sm" onclick="
-                const f=document.getElementById('upload-photo-file').files[0];
-                const z=document.getElementById('upload-photo-zone').value;
-                const p=document.getElementById('upload-photo-pin').value;
-                const n=document.getElementById('upload-photo-notes').value;
-                if(f) handlePhotoUpload(f,parseInt(z),p,n); else showToast('Select a photo first');
-              ">Upload &amp; Analyze</button>
+            <div class="photo-history-grid" id="photo-history-grid">
+              <div style="color:var(--text-3);font-size:11px;padding:8px">Loading…</div>
             </div>
           </div>
 

@@ -10,31 +10,50 @@ from typing import Dict, List, Optional, Union
 
 import httpx
 
-from config import GEMINI_URL, GEMINI_SYSTEM_INSTRUCTION
+from config import GEMINI_URL, GEMINI_SYSTEM_INSTRUCTION, GEMINI_API_KEY, get_gemini_url
 
 log = logging.getLogger(__name__)
 
 # ── Core request helper ───────────────────────────────────────────────────────
 
 async def _gemini_request(parts: list, response_mime: str = "application/json") -> Union[Dict, str]:
+    url = get_gemini_url()
+    if not GEMINI_API_KEY:
+        raise RuntimeError(
+            "GEMINI_API_KEY is not configured. Add it to backend/.env and restart the server."
+        )
+
     payload = {
         "systemInstruction": {"parts": [{"text": GEMINI_SYSTEM_INSTRUCTION}]},
         "contents":          [{"parts": parts}],
         "generationConfig":  {"responseMimeType": response_mime, "temperature": 0.2},
     }
-    async with httpx.AsyncClient(timeout=45) as client:
-        resp = await client.post(GEMINI_URL, json=payload)
+    async with httpx.AsyncClient(timeout=60) as client:
+        resp = await client.post(url, json=payload)
+        if resp.status_code == 400:
+            log.error("Gemini 400: %s", resp.text[:500])
+            raise RuntimeError(f"Gemini API error 400: {resp.text[:200]}")
+        if resp.status_code == 403:
+            raise RuntimeError("Gemini API key invalid or quota exceeded (403).")
         resp.raise_for_status()
         data = resp.json()
 
-    raw = data["candidates"][0]["content"]["parts"][0]["text"]
+    candidates = data.get("candidates", [])
+    if not candidates:
+        raise RuntimeError(f"Gemini returned no candidates. Response: {data}")
+
+    raw = candidates[0]["content"]["parts"][0]["text"]
     if response_mime == "application/json":
         try:
             return json.loads(raw)
         except json.JSONDecodeError:
             # Strip markdown fences if present
-            raw = raw.strip().removeprefix("```json").removesuffix("```").strip()
-            return json.loads(raw)
+            stripped = raw.strip()
+            if stripped.startswith("```"):
+                stripped = stripped.split("\n", 1)[-1]
+            if stripped.endswith("```"):
+                stripped = stripped.rsplit("```", 1)[0]
+            return json.loads(stripped.strip())
     return raw
 
 # ── 1. Photo Analysis ─────────────────────────────────────────────────────────

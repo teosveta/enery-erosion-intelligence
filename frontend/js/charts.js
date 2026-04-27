@@ -187,63 +187,114 @@ function initAnalyticsNdviChart() {
   const el = document.getElementById('analytics-ndvi-chart');
   if (!el) return;
   const ctx = el.getContext('2d');
-  const months = ['Jan','Feb','Mar','Apr','May','Jun'];
-  // Instance stored so live.js can inject real /api/ndvi/all-zones data
-
-  const colors = ['#22c55e','#f59e0b','#ef4444','#3b82f6','#a855f7','#14b8a6','#f97316','#ec4899','#6366f1'];
 
   return window._chartInst.ndviAllZones = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: months,
+      labels: [],
       datasets: ZONES.map((z) => ({
         label: `Z${z.id}`,
         data: [],
         borderColor: z.color,
-        borderWidth: 1.5,
-        pointRadius: 0,
+        borderWidth: z.id === 3 ? 2.5 : 1.5,
+        pointRadius: z.id === 3 ? 3 : 0,
+        pointHoverRadius: 5,
         tension: 0.4,
-        fill: false
+        fill: false,
+        hidden: false
       }))
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: false,
-      plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } },
+      animation: { duration: 600 },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: { boxWidth: 10, font: { size: 10 }, padding: 8 },
+          onClick: (e, legendItem, legend) => {
+            const idx = legendItem.datasetIndex;
+            const chart = legend.chart;
+            const ds = chart.data.datasets[idx];
+            ds.hidden = !ds.hidden;
+            const zId = idx + 1;
+            if (typeof _analyticsActiveZones !== 'undefined') {
+              if (ds.hidden) _analyticsActiveZones.delete(zId);
+              else _analyticsActiveZones.add(zId);
+            }
+            // Sync chip
+            const chip = document.querySelector(`.azf-chip[data-zone-id="${zId}"]`);
+            if (chip) chip.classList.toggle('active', !ds.hidden);
+            chart.update();
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `Z${ctx.datasetIndex + 1}: ${(+ctx.raw).toFixed(3)}`
+          }
+        }
+      },
       scales: {
-        x: { grid: CHART_GRID, border: { display: false } },
-        y: { grid: CHART_GRID, border: { display: false }, min: 0, max: 1 }
+        x: { grid: CHART_GRID, border: { display: false }, ticks: { font: { size: 9 } } },
+        y: {
+          grid: CHART_GRID,
+          border: { display: false },
+          min: 0, max: 1,
+          ticks: { font: { size: 9 }, callback: v => v.toFixed(1) }
+        }
       }
     }
   });
 }
 
-/* ─── Analytics SOM chart ─── */
+/* ─── Analytics SOM chart (bubble = zone area) ─── */
 function initAnalyticsSomChart() {
   const el = document.getElementById('analytics-som-chart');
   if (!el) return;
   const ctx = el.getContext('2d');
 
   return window._chartInst.somBulkDensity = new Chart(ctx, {
-    type: 'scatter',
+    type: 'bubble',
     data: {
       datasets: [{
         label: 'Zones',
         data: [],
         backgroundColor: [],
         borderColor: [],
-        borderWidth: 1
+        borderWidth: 1.5
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: false,
-      plugins: { legend: NO_LEGEND },
+      animation: { duration: 600 },
+      plugins: {
+        legend: NO_LEGEND,
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const zone = ZONES[ctx.dataIndex];
+              return zone
+                ? [`${zone.name} — SOM: ${ctx.raw.y}%`, `BD: ${ctx.raw.x} g/cm³`, `Area: ${zone.area} ha`]
+                : `SOM: ${ctx.raw.y}%`;
+            }
+          }
+        }
+      },
       scales: {
-        x: { grid: CHART_GRID, border: { display: false }, title: { display: true, text: 'Bulk Density (g/cm³)', color: '#64748b', font: { size: 10 } } },
-        y: { grid: CHART_GRID, border: { display: false }, title: { display: true, text: 'SOM %', color: '#64748b', font: { size: 10 } } }
+        x: {
+          grid: CHART_GRID,
+          border: { display: false },
+          title: { display: true, text: 'Bulk Density (g/cm³)', color: '#64748b', font: { size: 10 } },
+          min: 0.8, max: 1.9
+        },
+        y: {
+          grid: CHART_GRID,
+          border: { display: false },
+          title: { display: true, text: 'SOM %', color: '#64748b', font: { size: 10 } },
+          min: 0, max: 8
+        }
       }
     }
   });
@@ -406,19 +457,63 @@ function initAnalyticsCarbonChart() {
     data: {
       labels: [],
       datasets: [
-        { label: 'Soil Carbon', data: [], backgroundColor: 'rgba(34,197,94,0.6)', borderRadius: 3 },
-        { label: 'CO₂e', data: [], backgroundColor: 'rgba(59,130,246,0.6)', borderRadius: 3 },
-        { label: 'Target (CO₂e)', data: [], type: 'line', borderColor: '#f59e0b', borderDash: [4,4], borderWidth: 1.5, pointRadius: 0, fill: false, backgroundColor: 'transparent' }
+        {
+          label: 'Carbon Stock (tC/ha)',
+          data: [],
+          backgroundColor: 'rgba(34,197,94,0.65)',
+          borderColor: '#22c55e',
+          borderWidth: 0,
+          borderRadius: 3,
+          order: 2
+        },
+        {
+          label: 'CO₂e (tCO₂/ha)',
+          data: [],
+          backgroundColor: 'rgba(59,130,246,0.55)',
+          borderColor: '#3b82f6',
+          borderWidth: 0,
+          borderRadius: 3,
+          order: 2
+        },
+        {
+          label: 'Target CO₂e',
+          data: [],
+          type: 'line',
+          borderColor: '#f59e0b',
+          borderDash: [4, 4],
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: false,
+          backgroundColor: 'transparent',
+          order: 1
+        }
       ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: false,
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } } },
+      animation: { duration: 600 },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const suffix = ctx.datasetIndex === 0 ? ' tC/ha'
+                           : ctx.datasetIndex === 1 ? ' tCO₂/ha'
+                           : ' tCO₂/ha (target)';
+              return `${ctx.dataset.label}: ${(+ctx.raw).toFixed(2)}${suffix}`;
+            }
+          }
+        }
+      },
       scales: {
-        x: { grid: { display: false }, border: { display: false } },
-        y: { grid: CHART_GRID, border: { display: false } }
+        x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 9 } } },
+        y: {
+          grid: CHART_GRID,
+          border: { display: false },
+          ticks: { font: { size: 9 }, callback: v => v.toFixed(1) }
+        }
       }
     }
   });
@@ -488,12 +583,131 @@ function initAnalyticsCharts() {
   if (!chartsInitialized.analyticsBio) { chartsInitialized.analyticsBio = initAnalyticsBioChart(); }
 }
 
+/* ─── Zone Carbon Comparison (horizontal bar) ─── */
+function initZoneCarbonChart() {
+  const el = document.getElementById('carbon-zones-chart');
+  if (!el) return;
+
+  // Estimated carbon stock per zone: derived from NDVI × health proxy + actual Z3 data
+  const estCarbon = ZONES.map(z => {
+    if (z.id === 3) return 4.30; // actual lab data
+    const base = 2.0 + z.ndvi * 6.5;
+    return +base.toFixed(2);
+  });
+
+  return window._chartInst.zoneCarbon = new Chart(el, {
+    type: 'bar',
+    data: {
+      labels: ZONES.map(z => z.name),
+      datasets: [{
+        label: 'Carbon Stock (tC/ha)',
+        data: estCarbon,
+        backgroundColor: ZONES.map(z => z.color + 'cc'),
+        borderColor:     ZONES.map(z => z.color),
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 700 },
+      plugins: {
+        legend: NO_LEGEND,
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const z = ZONES[ctx.dataIndex];
+              const isActual = z?.id === 3;
+              return [
+                `Stock: ${ctx.raw} tC/ha${isActual ? ' ✓ actual' : ' (est.)'}`,
+                `CO₂e: ${(ctx.raw * 3.67).toFixed(2)} tCO₂/ha`,
+                z ? `Area: ${z.area} ha` : ''
+              ].filter(Boolean);
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: CHART_GRID,
+          border: { display: false },
+          min: 0, max: 8,
+          ticks: { font: { size: 9 }, callback: v => v + ' tC' }
+        },
+        y: {
+          grid: { display: false },
+          border: { display: false },
+          ticks: { font: { size: 9 } }
+        }
+      }
+    }
+  });
+}
+
 function initCarbonCharts() {
-  if (!chartsInitialized.carbonTraj) { chartsInitialized.carbonTraj = initCarbonTrajectoryChart(); }
+  if (!chartsInitialized.carbonTraj)   { chartsInitialized.carbonTraj   = initCarbonTrajectoryChart(); }
+  if (!chartsInitialized.zoneCarbon)   { chartsInitialized.zoneCarbon   = initZoneCarbonChart(); }
+}
+
+/* ─── Zone Biodiversity Score (horizontal bar, one bar per zone) ─── */
+function initZoneBioChart() {
+  const el = document.getElementById('bio-zones-chart');
+  if (!el) return;
+
+  // Composite biodiversity index = 40% NDVI score + 35% vegetation pct + 25% inverse risk
+  const bioScores = ZONES.map(z => {
+    const ndviScore = Math.min(100, z.ndvi * 200);       // 0.5 → 100
+    const vegScore  = z.vegetation;
+    const safeScore = 100 - z.riskScore;
+    return +(ndviScore * 0.40 + vegScore * 0.35 + safeScore * 0.25).toFixed(1);
+  });
+
+  return window._chartInst.zoneBio = new Chart(el, {
+    type: 'bar',
+    data: {
+      labels: ZONES.map(z => z.name),
+      datasets: [{
+        label: 'Biodiversity Score',
+        data: bioScores,
+        backgroundColor: ZONES.map(z => z.color + 'bb'),
+        borderColor:     ZONES.map(z => z.color),
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 800 },
+      plugins: {
+        legend: NO_LEGEND,
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const z = ZONES[ctx.dataIndex];
+              return [
+                `Score: ${ctx.raw}/100`,
+                z ? `NDVI: ${z.ndvi}  ·  Veg: ${z.vegetation}%` : '',
+                z ? `Risk: ${z.riskScore}/100` : '',
+              ].filter(Boolean);
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: CHART_GRID, border: { display: false }, min: 0, max: 100, ticks: { font: { size: 9 } } },
+        y: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 9 } } }
+      }
+    }
+  });
 }
 
 function initBioCharts() {
-  if (!chartsInitialized.bioSeasonal) { chartsInitialized.bioSeasonal = initBioSeasonalChart(); }
+  if (!chartsInitialized.bioSeasonal)  { chartsInitialized.bioSeasonal  = initBioSeasonalChart(); }
   if (!chartsInitialized.bioDiversity) { chartsInitialized.bioDiversity = initBioDiversityChart(); }
-  if (!chartsInitialized.pollen) { chartsInitialized.pollen = initPollenChart(); }
+  if (!chartsInitialized.pollen)       { chartsInitialized.pollen       = initPollenChart(); }
+  if (!chartsInitialized.zoneBio)      { chartsInitialized.zoneBio      = initZoneBioChart(); }
 }

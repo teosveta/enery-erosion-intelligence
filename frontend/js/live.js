@@ -25,18 +25,18 @@ function _gaugeArcData(score) {
 
   const x1 = cx + r * Math.cos(startAngle);
   const y1 = cy - r * Math.sin(startAngle);
-  const x2 = cx + r * Math.cos(endAngle);
-  const y2 = cy - r * Math.sin(endAngle);
+  // For score 0 keep dot at start; for >0 calculate end position
+  const x2 = clampedScore <= 0 ? x1 : cx + r * Math.cos(endAngle);
+  const y2 = clampedScore <= 0 ? y1 : cy - r * Math.sin(endAngle);
   const largeArc = sweepAngle > Math.PI ? 1 : 0;
 
-  return {
-    path: clampedScore <= 0
-      ? null
-      : `M ${x1.toFixed(1)},${y1.toFixed(1)} A ${r},${r} 0 ${largeArc} 1 ${x2.toFixed(1)},${y2.toFixed(1)}`,
-    dotX: x2,
-    dotY: y2,
-    score: clampedScore
-  };
+  // Always return a valid path — use a hair-thin arc at score 0 so we can
+  // immediately clear the hardcoded HTML path before the animation begins.
+  const path = clampedScore <= 0
+    ? `M ${x1.toFixed(1)},${y1.toFixed(1)} A ${r},${r} 0 0 1 ${(x1 + 0.01).toFixed(2)},${y1.toFixed(1)}`
+    : `M ${x1.toFixed(1)},${y1.toFixed(1)} A ${r},${r} 0 ${largeArc} 1 ${x2.toFixed(1)},${y2.toFixed(1)}`;
+
+  return { path, dotX: x2, dotY: y2, score: clampedScore };
 }
 
 function updateGauge(targetScore) {
@@ -47,43 +47,76 @@ function updateGauge(targetScore) {
   const labelEl  = document.getElementById('gauge-risk-label');
   if (!fillEl) return;
 
-  // Determine risk colour
   const color = targetScore >= 70 ? '#ef4444' : targetScore >= 40 ? '#f59e0b' : '#22c55e';
   const level = targetScore >= 70 ? 'High' : targetScore >= 40 ? 'Moderate' : 'Low';
 
-  // Animate from current to target
-  const startVal  = parseInt(numEl?.textContent || '0') || 0;
+  // Detect first render (HTML placeholder "—" not yet replaced with a number)
+  const rawText       = numEl?.textContent;
+  const isFirstRender = !rawText || rawText === '—';
+
+  // On first render, immediately snap the fill + dots to the zero position so
+  // the hardcoded HTML arc (which sits at ~75%) is cleared before animating.
+  if (isFirstRender) {
+    const zero = _gaugeArcData(0);
+    fillEl.setAttribute('d', zero.path);
+    fillEl.setAttribute('stroke', color);
+    if (dotEl)    { dotEl.setAttribute('cx', zero.dotX.toFixed(1));    dotEl.setAttribute('cy', zero.dotY.toFixed(1));    dotEl.setAttribute('fill', color); }
+    if (dotInner) { dotInner.setAttribute('cx', zero.dotX.toFixed(1)); dotInner.setAttribute('cy', zero.dotY.toFixed(1)); }
+    if (numEl) numEl.textContent = '0';
+  }
+
+  const startVal  = isFirstRender ? 0 : (parseInt(rawText) || 0);
   const startTime = performance.now();
   const dur       = 1200; // ms
 
   function step(now) {
-    const t     = Math.min((now - startTime) / dur, 1);
-    const ease  = 1 - Math.pow(1 - t, 3); // cubic ease-out
-    const val   = Math.round(startVal + (targetScore - startVal) * ease);
-    const data  = _gaugeArcData(val);
+    const t    = Math.min((now - startTime) / dur, 1);
+    const ease = 1 - Math.pow(1 - t, 3); // cubic ease-out
+    const val  = Math.round(startVal + (targetScore - startVal) * ease);
+    const data = _gaugeArcData(val);
 
-    if (data.path) {
-      fillEl.setAttribute('d', data.path);
-      fillEl.setAttribute('stroke', color);
-    }
-    if (dotEl) {
-      dotEl.setAttribute('cx', data.dotX.toFixed(1));
-      dotEl.setAttribute('cy', data.dotY.toFixed(1));
-      dotEl.setAttribute('fill', color);
-    }
-    if (dotInner) {
-      dotInner.setAttribute('cx', data.dotX.toFixed(1));
-      dotInner.setAttribute('cy', data.dotY.toFixed(1));
-    }
-    if (numEl)  numEl.textContent  = val;
+    // path is always a valid string now — no null check needed
+    fillEl.setAttribute('d', data.path);
+    fillEl.setAttribute('stroke', color);
+    if (dotEl)    { dotEl.setAttribute('cx', data.dotX.toFixed(1));    dotEl.setAttribute('cy', data.dotY.toFixed(1));    dotEl.setAttribute('fill', color); }
+    if (dotInner) { dotInner.setAttribute('cx', data.dotX.toFixed(1)); dotInner.setAttribute('cy', data.dotY.toFixed(1)); }
+    if (numEl)    numEl.textContent = val;
     if (labelEl) {
-      labelEl.textContent  = level;
-      labelEl.className    = 'gauge-risk-label risk-' + (targetScore >= 70 ? 'high' : targetScore >= 40 ? 'moderate' : 'low');
+      labelEl.textContent = level;
+      labelEl.className   = 'gauge-risk-label risk-' + (targetScore >= 70 ? 'high' : targetScore >= 40 ? 'moderate' : 'low');
     }
 
     if (t < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
+}
+
+// ── Shannon H′ arc animation ───────────────────────────────────────────────────
+// Semi-circle: left=15,80 → right, sweeping through top. H' max = 5.
+function _shannonArcPath(fraction) {
+  const cx = 70, cy = 80, r = 55;
+  if (fraction <= 0.001) return 'M 15,80 A 55,55 0 0 1 15.01,80';
+  const endAngle = Math.PI - fraction * Math.PI; // 180° → 0° as fraction 0→1
+  const ex = cx + r * Math.cos(endAngle);
+  const ey = cy - r * Math.sin(endAngle);
+  return `M 15,80 A 55,55 0 ${fraction > 0.5 ? 1 : 0} 1 ${ex.toFixed(1)},${ey.toFixed(1)}`;
+}
+
+function _animateShannonArc(arcEl, targetFraction, valueEl) {
+  // Snap to zero first so we don't see a leftover stale arc during reveal
+  arcEl.setAttribute('d', _shannonArcPath(0));
+
+  const dur   = 1000; // ms
+  const start = performance.now();
+
+  (function step(now) {
+    const t    = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    arcEl.setAttribute('d', _shannonArcPath(ease * targetFraction));
+    // Sync the text value alongside the arc
+    if (valueEl) valueEl.textContent = (ease * targetFraction * 5).toFixed(2);
+    if (t < 1) requestAnimationFrame(step);
+  })(performance.now());
 }
 
 // ── Animated number counter ───────────────────────────────────────────────────
@@ -119,60 +152,110 @@ function flashAll() {
 
 // ── Weather card update ───────────────────────────────────────────────────────
 function updateWeatherCard(summary) {
-  if (!summary) return;
+  // ── Always stamp today's real date (never stale) ──────────────────────────
+  const now   = new Date();
+  const today = new Date(now); today.setHours(0, 0, 0, 0);
+  const todayLabel = now.toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 
+  const todayBadge = document.getElementById('weather-today-date');
+  if (todayBadge) todayBadge.textContent = todayLabel;
+
+  if (!summary) {
+    // No API data yet — at least the date badge is correct
+    return;
+  }
+
+  const forecastDays = summary.forecast_days || [];
   const nextRainDate = summary.next_rain_date;
   const nextRainMm   = summary.next_rain_mm;
   const totalMm      = summary.total_precipitation_mm;
   const avgTemp      = summary.avg_temperature_c;
 
-  // Next rain date
-  const dateEl = document.querySelector('.weather-date');
-  if (dateEl && nextRainDate) {
-    const d = new Date(nextRainDate);
-    dateEl.textContent = d.toLocaleDateString('en', { month: 'short', day: 'numeric' }) + ',';
+  // ── Today's conditions: pull from forecast_days[0] if it matches today ────
+  let todayPrecip = null;
+  let todayTemp   = null;
+  if (forecastDays.length > 0) {
+    const [d0, p0] = forecastDays[0];
+    if (d0) {
+      const fd0 = new Date(d0); fd0.setHours(0, 0, 0, 0);
+      if (fd0.getTime() === today.getTime()) {
+        todayPrecip = p0 ?? 0;
+      }
+    }
+  }
+  // Fallback temp from historical avg
+  todayTemp = avgTemp;
+
+  // Conditions icon + label
+  const precipVal = todayPrecip ?? 0;
+  let condIcon  = '☀️';
+  let condLabel = 'Dry / Clear';
+  if      (precipVal > 15) { condIcon = '⛈️';  condLabel = 'Heavy rain expected'; }
+  else if (precipVal > 5)  { condIcon = '🌧️';  condLabel = 'Rain expected'; }
+  else if (precipVal > 1)  { condIcon = '🌦️';  condLabel = 'Light showers'; }
+  else if (precipVal > 0)  { condIcon = '🌥️';  condLabel = 'Overcast'; }
+
+  const iconEl  = document.getElementById('weather-cond-icon');
+  const tempEl  = document.getElementById('weather-temp');
+  const condLbl = document.getElementById('weather-cond-label');
+  const precipEl = document.getElementById('weather-precip-today');
+  if (iconEl)   iconEl.textContent   = condIcon;
+  if (tempEl)   tempEl.textContent   = todayTemp != null ? todayTemp.toFixed(1) : '—';
+  if (condLbl)  condLbl.textContent  = condLabel;
+  if (precipEl) precipEl.textContent = todayPrecip != null ? todayPrecip.toFixed(1) + ' mm' : '— mm';
+
+  // ── Next rain row — guard against past/stale dates ────────────────────────
+  const nrDateEl = document.getElementById('weather-next-rain-date');
+  const nrMmEl   = document.getElementById('weather-next-rain-mm');
+  if (nrDateEl) {
+    if (nextRainDate) {
+      const d = new Date(nextRainDate); d.setHours(0, 0, 0, 0);
+      if (d.getTime() === today.getTime()) {
+        nrDateEl.textContent = 'Today';
+        nrDateEl.style.color = '#ef4444';
+      } else if (d > today) {
+        nrDateEl.textContent = d.toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric' });
+        nrDateEl.style.color = '#60a5fa';
+      } else {
+        // Stale — date is in the past
+        nrDateEl.textContent = 'No rain in 4-day forecast';
+        nrDateEl.style.color = 'var(--text-3)';
+      }
+    } else {
+      nrDateEl.textContent = 'No rain in 4-day forecast';
+      nrDateEl.style.color = 'var(--text-3)';
+    }
+  }
+  if (nrMmEl) {
+    const d = nextRainDate ? new Date(nextRainDate) : null;
+    const valid = d && d >= today;
+    nrMmEl.textContent = (valid && nextRainMm) ? nextRainMm.toFixed(1) + ' mm' : '';
   }
 
-  // Next rain amount
-  const amtEl = document.querySelector('.weather-amount');
-  if (amtEl && nextRainMm != null) {
-    amtEl.textContent = nextRainMm.toFixed(1) + 'mm';
-  }
-
-  // Inject extended stats row if not present
-  let statsRow = document.getElementById('weather-stats-row');
-  if (!statsRow) {
-    statsRow = document.createElement('div');
-    statsRow.id = 'weather-stats-row';
-    statsRow.className = 'weather-stats-row';
-    document.querySelector('.weather-card')?.appendChild(statsRow);
-  }
-
-  const alertCount = (summary.rainfall_alerts || []).length;
-  statsRow.innerHTML = `
-    <div class="wstat"><span class="wstat-label">Total 58d</span><span class="wstat-val">${totalMm != null ? totalMm.toFixed(0) : '—'}mm</span></div>
-    <div class="wstat"><span class="wstat-label">Avg Temp</span><span class="wstat-val">${avgTemp != null ? avgTemp.toFixed(1) : '—'}°C</span></div>
-    <div class="wstat"><span class="wstat-label">Alerts</span><span class="wstat-val ${alertCount > 0 ? 'danger-text' : 'success-text'}">${alertCount}</span></div>
-  `;
-
-  // Forecast dots
-  updateForecastDots(summary.forecast_days || []);
+  // ── Forecast strip ────────────────────────────────────────────────────────
+  updateForecastDots(forecastDays);
   flashCard('.weather-card');
 }
 
 function updateForecastDots(forecastDays) {
-  const container = document.querySelector('.weather-dots');
-  if (!container) return;
+  const container = document.getElementById('weather-forecast-strip') || document.querySelector('.weather-dots');
+  if (!container || forecastDays.length === 0) return;
 
-  // Replace static dots with labelled forecast
-  if (forecastDays.length === 0) return;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
 
   container.innerHTML = forecastDays.slice(0, 4).map(([dateStr, mm]) => {
-    const d = new Date(dateStr);
-    const label = d.toLocaleDateString('en', { weekday: 'short' });
-    const icon = mm > 10 ? '🌧️' : mm > 3 ? '🌦️' : mm > 0 ? '🌥️' : '☀️';
-    const cls = mm > 10 ? 'fc-heavy' : mm > 3 ? 'fc-mod' : 'fc-dry';
-    return `<div class="fc-day ${cls}"><span class="fc-icon">${icon}</span><span class="fc-label">${label}</span><span class="fc-mm">${mm.toFixed(0)}mm</span></div>`;
+    const d = new Date(dateStr); d.setHours(0, 0, 0, 0);
+    const isToday = d.getTime() === today.getTime();
+    const label = isToday ? 'Today' : d.toLocaleDateString('en', { weekday: 'short' });
+    const precipMm = mm ?? 0;
+    const icon = precipMm > 15 ? '⛈️' : precipMm > 5 ? '🌧️' : precipMm > 1 ? '🌦️' : precipMm > 0 ? '🌥️' : '☀️';
+    const cls  = precipMm > 10 ? 'fc-heavy' : precipMm > 3 ? 'fc-mod' : 'fc-dry';
+    const todayCls = isToday ? ' fc-today' : '';
+    return `<div class="fc-day ${cls}${todayCls}">
+      <span class="fc-icon">${icon}</span>
+      <span class="fc-label">${label}</span>
+      <span class="fc-mm">${precipMm.toFixed(0)}mm</span>
+    </div>`;
   }).join('');
 }
 
@@ -331,15 +414,17 @@ function updateTicker(dash, weather) {
 
 // ── Update alerts in the dashboard alerts bar ─────────────────────────────────
 function updateAlertsBar(alerts, weather) {
-  const list = document.querySelector('.alerts-list');
+  const list = document.getElementById('dashboard-alerts-list') || document.querySelector('.alerts-list');
   if (!list) return;
 
   const rows = [];
+  const today = new Date();
 
   // Weather alerts from API
   (weather?.summary?.rainfall_alerts || []).forEach(a => {
+    const d = a.date ? new Date(a.date) : today;
     rows.push({
-      date: a.date?.slice(5) || 'Now',
+      date: d.toLocaleDateString('en', { month: 'short', day: 'numeric' }),
       icon: '💧',
       text: `High Rainfall Event (${a.hourly_precipitation_mm?.toFixed(0) || '?'}mm/hr) — Zone 3 erosion risk elevated`,
       tag: 'Z3',
@@ -347,20 +432,36 @@ function updateAlertsBar(alerts, weather) {
     });
   });
 
-  // NDVI / system alerts from dashboard
+  // NDVI / system alerts from dashboard API
   (alerts || []).forEach(a => {
     const icon = a.type === 'ndvi' ? '🌿' : a.type === 'rainfall' ? '💧' : '⚠️';
     rows.push({
-      date: new Date().toLocaleDateString('en', { month: 'short', day: 'numeric' }),
+      date: today.toLocaleDateString('en', { month: 'short', day: 'numeric' }),
       icon,
       text: a.message,
-      tag: 'Z3',
+      tag: a.zone || 'Z3',
       cls: a.severity === 'high' ? 'danger' : 'warning'
     });
   });
 
-  // Always show at least the static rows if no live alerts
-  if (rows.length === 0) return;
+  // If no live alerts from API, fall back to ALERTS_DATA (curated static alerts)
+  if (rows.length === 0 && typeof ALERTS_DATA !== 'undefined') {
+    ALERTS_DATA.slice(0, 4).forEach(a => {
+      rows.push({
+        date: a.date || today.toLocaleDateString('en', { month: 'short', day: 'numeric' }),
+        icon: a.severity === 'critical' ? '⚠️' : a.title.toLowerCase().includes('rain') ? '💧' : '🌿',
+        text: a.title + ' — ' + a.description.slice(0, 80) + (a.description.length > 80 ? '…' : ''),
+        tag: a.zone,
+        cls: a.severity === 'critical' ? 'danger' : 'warning'
+      });
+    });
+  }
+
+  // Always replace content (never leave "Loading…" or old static rows)
+  if (rows.length === 0) {
+    list.innerHTML = '<div class="alert-row-empty" style="color:var(--text-3);font-size:11px;padding:10px 14px">No active alerts</div>';
+    return;
+  }
 
   list.innerHTML = rows.slice(0, 4).map(r => `
     <div class="alert-row ${r.cls}-border">
@@ -374,7 +475,7 @@ function updateAlertsBar(alerts, weather) {
 
 // ── Update map timestamp ──────────────────────────────────────────────────────
 function updateMapTimestamp() {
-  const el = document.querySelector('.map-timestamp');
+  const el = document.getElementById('map-timestamp-label') || document.querySelector('.map-timestamp');
   if (el) {
     const now = new Date();
     el.textContent = now.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -502,14 +603,15 @@ async function fetchAndUpdateCarbonKPIs() {
     const data = await apiFetch('/carbon/history');
     if (!data || !data.records || data.records.length === 0) return;
 
+    // DB stores records with field: timestamp / som_pct / bulk_density_g_cm3
     const records = data.records.slice().sort((a, b) =>
-      (a.created_at || '').localeCompare(b.created_at || ''));
+      (a.timestamp || a.created_at || '').localeCompare(b.timestamp || b.created_at || ''));
     const latest = records[records.length - 1];
     if (!latest) return;
 
     const carbonStock = parseFloat(latest.carbon_stock_t_per_ha) || 0;
     const co2e = carbonStock * 3.67;
-    const som  = parseFloat(latest.som_percent) || 0;
+    const som  = parseFloat(latest.som_pct ?? latest.som_percent) || 0;
 
     // KPI value spans
     const stockEl = document.getElementById('kpi-carbon-stock');
@@ -531,14 +633,16 @@ async function fetchAndUpdateCarbonKPIs() {
         el.className   = 'kpi-delta ' + (pct >= 0 ? 'up' : 'down');
       });
       const somRange  = document.getElementById('kpi-som-range');
-      const soms      = records.map(r => parseFloat(r.som_percent)).filter(Boolean);
+      const soms      = records.map(r => parseFloat(r.som_pct ?? r.som_percent)).filter(Boolean);
       if (somRange && soms.length >= 2) {
         somRange.textContent = Math.min(...soms).toFixed(1) + '% – ' + Math.max(...soms).toFixed(1) + '%';
       }
     }
 
     // Key Metrics panel
-    const seqRate = data.sequestration_rate;
+    // sequestration_rate is an object: { annual_sequestration_t_per_ha, total_change_t_per_ha, ... }
+    const seqRateObj = data.sequestration_rate;
+    const seqRate    = seqRateObj?.annual_sequestration_t_per_ha ?? null;
     const soilScore = _lastDash?.soil_health?.soil_health_score;
     _setInner('metric-org-carbon',  carbonStock.toFixed(2) + ' tC/ha');
     _setInner('metric-co2-stored',  co2e.toFixed(2) + ' tCO₂/ha');
@@ -574,7 +678,8 @@ async function fetchAndUpdateCarbonKPIs() {
     if (tChart && records.length > 0) {
       const byYear = {};
       records.forEach(r => {
-        const yr = (r.created_at || '').slice(0, 4);
+        const dateStr = r.timestamp || r.created_at || '';
+        const yr = dateStr.slice(0, 4);
         if (yr) byYear[yr] = parseFloat(r.carbon_stock_t_per_ha) || 0;
       });
       const allYears = ['2020','2021','2022','2023','2024','2025','2026','2027','2028','2029','2030'];
@@ -582,7 +687,7 @@ async function fetchAndUpdateCarbonKPIs() {
       const lastKnownYr  = Object.keys(byYear).sort().pop();
       const lastKnownVal = byYear[lastKnownYr] || carbonStock;
       const lastIdx      = allYears.indexOf(lastKnownYr);
-      const rate         = seqRate || 3;
+      const rate         = seqRate != null ? seqRate : 0.3;  // tC/ha/yr
       const bauData    = allYears.map((_, i) => i < lastIdx ? null : parseFloat((lastKnownVal + rate * (i - lastIdx)).toFixed(1)));
       const targetData = allYears.map((_, i) => i < lastIdx ? null : parseFloat((lastKnownVal + rate * 1.5 * (i - lastIdx)).toFixed(1)));
       tChart.data.datasets[0].data = actualData;
@@ -595,7 +700,7 @@ async function fetchAndUpdateCarbonKPIs() {
     const aChart = window._chartInst?.analyticsCarbon;
     if (aChart && records.length > 0) {
       const recs = records.slice(-8);
-      aChart.data.labels = recs.map(r => (r.created_at || '—').slice(0, 7));
+      aChart.data.labels = recs.map(r => (r.timestamp || r.created_at || '—').slice(0, 7));
       aChart.data.datasets[0].data = recs.map(r => parseFloat(r.carbon_stock_t_per_ha) || 0);
       aChart.data.datasets[1].data = recs.map(r => (parseFloat(r.carbon_stock_t_per_ha) || 0) * 3.67 / 4);
       aChart.data.datasets[2].data = recs.map(() => parseFloat((carbonStock * 1.1).toFixed(1)));
@@ -606,7 +711,7 @@ async function fetchAndUpdateCarbonKPIs() {
     const scChart = window._chartInst?.soilCarbon;
     if (scChart && records.length > 0) {
       const recs = records.slice(-11);
-      scChart.data.labels   = recs.map(r => (r.created_at || '').slice(0, 7));
+      scChart.data.labels   = recs.map(r => (r.timestamp || r.created_at || '').slice(0, 7));
       scChart.data.datasets[0].data = recs.map(r => parseFloat(r.carbon_stock_t_per_ha) || 0);
       scChart.update('none');
     }
@@ -666,21 +771,11 @@ async function fetchAndUpdateBiodiversityKPIs() {
     const bio = bioData || {};
     const h   = bio.shannon_h ?? bio.h_prime;
 
-    // Shannon H' value
-    const shannonEl = document.getElementById('shannon-value');
-    if (shannonEl && h != null) shannonEl.textContent = h.toFixed(2);
-
-    // Shannon arc fill — semicircle, H' max = 5
+    // Shannon arc fill + value counter — animated together
     const arcEl = document.getElementById('shannon-arc-fill');
     if (arcEl && h != null) {
-      const fraction = Math.min(Math.max(h / 5, 0), 1);
-      const cx = 70, cy = 80, r = 55;
-      const endAngle = Math.PI - fraction * Math.PI;
-      const ex = cx + r * Math.cos(endAngle);
-      const ey = cy - r * Math.sin(endAngle);
-      arcEl.setAttribute('d', fraction <= 0.001
-        ? 'M 15,80 A 55,55 0 0 1 15.01,80'
-        : `M 15,80 A 55,55 0 ${fraction > 0.5 ? 1 : 0} 1 ${ex.toFixed(1)},${ey.toFixed(1)}`);
+      const targetFraction = Math.min(Math.max(h / 5, 0), 1);
+      _animateShannonArc(arcEl, targetFraction, document.getElementById('shannon-value'));
     }
 
     // Shannon trend label
@@ -1423,48 +1518,691 @@ function wireZoneButtons() {
   });
 }
 
-// ── Data Layers live feed ─────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// DATA LAYERS — Interactive panel engine
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let _selectedLayer  = null;
+let _layerChartInst = null;   // Chart instance inside the detail panel
+
+// ── Map label map ──────────────────────────────────────────────────────────────
+const _LAYER_MAP_LABELS = {
+  ndvi:    'NDVI · Sentinel-2 · Zone 3',
+  pins:    'Smart Erosion Pins · Tsenovo',
+  weather: 'Open-Meteo Weather',
+  nasa:    'NASA POWER · Solar / Precip',
+  pvgis:   'PVGIS Solar Resource',
+  soil:    'SoilGrids ISRIC · Tsenovo',
+  gbif:    'GBIF Biodiversity · 5km radius',
+  carbon:  'Soil Lab Samples · Zone 3',
+};
+
+// ── Strip status helpers ──────────────────────────────────────────────────────
+function _setIntChip(id, dotClass, val) {
+  const dot = document.getElementById(`int-dot-${id}`);
+  const valEl = document.getElementById(`int-val-${id}`);
+  if (dot) dot.className = `int-dot ${dotClass}`;
+  if (valEl) valEl.textContent = val;
+}
+
+// ── Select a layer → render detail panel ────────────────────────────────────
+async function selectLayer(layerId) {
+  _selectedLayer = layerId;
+
+  // Highlight selected chip + sidebar item
+  document.querySelectorAll('.int-chip').forEach(c => c.classList.toggle('selected', c.dataset.layer === layerId));
+  document.querySelectorAll('.layer-item-v2').forEach(i => i.classList.toggle('active', i.dataset.layer === layerId));
+
+  // Update map badge label
+  const mapLabel = document.getElementById('map-layer-label');
+  if (mapLabel) mapLabel.textContent = _LAYER_MAP_LABELS[layerId] || layerId;
+
+  const panel = document.getElementById('layer-detail-panel');
+  if (!panel) return;
+
+  // Show loading state
+  panel.innerHTML = `<div class="ldp-loading"><span class="live-dot"></span> Loading ${layerId} data…</div>`;
+
+  // Destroy previous chart
+  if (_layerChartInst) { _layerChartInst.destroy(); _layerChartInst = null; }
+
+  try {
+    switch (layerId) {
+      case 'ndvi':    await _renderLayerNDVI(panel); break;
+      case 'pins':    await _renderLayerPins(panel); break;
+      case 'weather': await _renderLayerWeather(panel); break;
+      case 'nasa':    await _renderLayerNASA(panel); break;
+      case 'pvgis':   await _renderLayerPVGIS(panel); break;
+      case 'soil':    await _renderLayerSoil(panel); break;
+      case 'gbif':    await _renderLayerGBIF(panel); break;
+      case 'carbon':  await _renderLayerCarbon(panel); break;
+      default: panel.innerHTML = `<div class="ldp-error">Unknown layer: ${layerId}</div>`;
+    }
+  } catch (err) {
+    panel.innerHTML = `<div class="ldp-error">⚠ Failed to load ${layerId} data: ${err.message}</div>`;
+    console.error('[DataLayers]', layerId, err);
+  }
+}
+
+// ── Refresh all: update strip labels ────────────────────────────────────────
 async function updateDataLayersFeed() {
-  if (!_lastDash) return;
+  // Update the integration strip from cached dashboard data
+  const d = _lastDash;
+  if (!d) return;
 
-  const layerUpdates = {
-    'Sentinel': () => {
-      const ndvi = _lastDash?.ndvi;
-      return ndvi?.ndvi_mean != null ? `NDVI: ${ndvi.ndvi_mean.toFixed(3)} · ${ndvi.source}` : `Source: ${ndvi?.source || 'unavailable'}`;
-    },
-    'Smart': () => `7 pins online · Last: ${new Date().toLocaleTimeString()}`,
-    'Historic': () => {
-      const w = _lastDash?.weather;
-      return w ? `Temp: ${w.avg_temperature_c?.toFixed(1)}°C · Precip: ${w.total_precipitation_mm?.toFixed(0)}mm` : 'Loading…';
-    },
-    'SoilGrids': () => {
-      const s = _lastDash?.soil;
-      return s?.phh2o ? `pH: ${(s.phh2o / 10).toFixed(1)} · SOC: ${(s.soc / 10).toFixed(1)}‰ · Clay: ${(s.clay / 10).toFixed(0)}%` : 'Loading…';
-    },
-    'GBIF': () => {
-      const total = document.getElementById('bio-total-species')?.textContent;
-      const h     = document.getElementById('shannon-value')?.textContent;
-      const tStr  = total && total !== '—' ? `Species: ${total}` : 'Species: loading';
-      const hStr  = h && h !== '—' ? ` · Shannon H′: ${h}` : '';
-      return tStr + hStr;
-    },
-  };
+  const ndvi = d.ndvi;
+  if (ndvi?.ndvi_mean != null) {
+    const ok = ndvi.source !== 'mock';
+    _setIntChip('ndvi', ok ? 'ok' : 'warn', `NDVI ${ndvi.ndvi_mean.toFixed(3)}`);
+    _setMeta('ndvi', `NDVI Z3: ${ndvi.ndvi_mean.toFixed(3)} · ${ndvi.source}`);
+    _setBadge('ndvi', ok ? 'success' : 'warning', ok ? 'Live' : 'Mock');
+  }
 
-  document.querySelectorAll('.layer-item').forEach(item => {
-    const name = item.querySelector('.layer-name')?.textContent || '';
-    const metaEl = item.querySelector('.layer-meta');
-    if (!metaEl) return;
+  const w = d.weather;
+  if (w) {
+    _setIntChip('weather', 'ok', `${w.avg_temperature_c?.toFixed(1) ?? '—'}°C · ${w.total_precipitation_mm?.toFixed(0) ?? '—'}mm`);
+    _setMeta('weather', `Temp: ${w.avg_temperature_c?.toFixed(1) ?? '—'}°C · Precip: ${w.total_precipitation_mm?.toFixed(0) ?? '—'}mm`);
+    _setBadge('weather', 'success', 'Live');
+  }
 
-    for (const [key, fn] of Object.entries(layerUpdates)) {
-      if (name.includes(key)) {
-        metaEl.textContent = fn();
-        item.classList.add('active');
-        const badge = item.querySelector('.layer-badge');
-        if (badge) { badge.textContent = 'Live'; badge.className = 'layer-badge success'; }
-        break;
+  const s = d.soil;
+  if (s?.phh2o) {
+    const ph = (s.phh2o/10).toFixed(1), soc = (s.soc/10).toFixed(1);
+    _setIntChip('soil', 'ok', `pH ${ph} · SOC ${soc}‰`);
+    _setMeta('soil', `pH: ${ph} · SOC: ${soc}‰ · Clay: ${(s.clay/10).toFixed(0)}%`);
+    _setBadge('soil', 'success', 'Live');
+  }
+
+  // GBIF — from cached DOM values
+  const shannon = document.getElementById('shannon-value')?.textContent;
+  const bioTotal = document.getElementById('bio-total-species')?.textContent;
+  if (bioTotal && bioTotal !== '—') {
+    _setIntChip('gbif', 'ok', `${bioTotal} spp · H′${shannon ?? '—'}`);
+    _setMeta('gbif', `${bioTotal} species · Shannon H′: ${shannon ?? '—'}`);
+    _setBadge('gbif', 'success', 'Live');
+  }
+
+  _setIntChip('pins', 'ok', '7 pins · 1 offline');
+  _setMeta('pins', `7 pins active · 1 offline · ${new Date().toLocaleTimeString('en', {hour:'2-digit',minute:'2-digit'})}`);
+
+  // Re-render selected layer detail if visible
+  if (_selectedLayer) selectLayer(_selectedLayer);
+}
+
+function refreshAllLayers() {
+  // Trigger fresh data fetch for all sources
+  updateDataLayersFeed();
+  fetchAndUpdateBiodiversityKPIs();
+  // Also pre-warm NASA POWER and PVGIS (they cache themselves)
+  apiFetch('/nasa-power/summary').then(d => {
+    if (!d) return;
+    _setIntChip('nasa', 'ok', `${d.total_precip_mm?.toFixed(0) ?? '—'}mm · ${d.avg_solar_wm2?.toFixed(0) ?? '—'}W/m²`);
+    _setMeta('nasa', `30d precip: ${d.total_precip_mm?.toFixed(0) ?? '—'}mm · Solar: ${d.avg_solar_wm2?.toFixed(0) ?? '—'} W/m²`);
+    _setBadge('nasa', 'success', 'Live');
+  }).catch(() => { _setIntChip('nasa', 'warn', 'unavailable'); });
+
+  apiFetch('/pvgis/monthly').then(d => {
+    if (!d || !d.monthly?.length) return;
+    const yr = d.monthly.reduce((s, m) => s + (m.Hh_kwh_m2 || 0), 0);
+    _setIntChip('pvgis', 'ok', `${yr.toFixed(0)} kWh/m²/yr`);
+    _setMeta('pvgis', `Annual irradiance: ${yr.toFixed(0)} kWh/m²/yr`);
+    _setBadge('pvgis', 'success', 'Live');
+  }).catch(() => { _setIntChip('pvgis', 'warn', 'unavailable'); });
+
+  apiFetch('/carbon/history').then(d => {
+    if (!d?.records?.length) return;
+    const latest = d.records.slice(-1)[0];
+    const som = latest?.som_pct ?? latest?.som_percent;
+    const stock = latest?.carbon_stock_t_per_ha;
+    _setIntChip('carbon', 'ok', `${stock?.toFixed(2) ?? '—'} tC/ha`);
+    _setMeta('carbon', `Latest: SOM ${som?.toFixed(1) ?? '—'}% · ${stock?.toFixed(2) ?? '—'} tC/ha`);
+    _setBadge('carbon', 'success', 'Live');
+  }).catch(() => {});
+}
+
+// ── DOM helpers ──────────────────────────────────────────────────────────────
+function _setMeta(id, text)   { const el = document.getElementById(`lm-${id}`);  if (el) el.textContent = text; }
+function _setBadge(id, cls, text) {
+  const el = document.getElementById(`lb-${id}`);
+  if (!el) return;
+  el.textContent = text;
+  el.className = `layer-badge ${cls}`;
+}
+
+// ── HTML helpers ─────────────────────────────────────────────────────────────
+function _ldpHeader(icon, title, subtitle, statusText, statusOk) {
+  return `
+    <div class="ldp-header">
+      <div>
+        <div class="ldp-title-row"><span class="ldp-src-icon">${icon}</span><span class="ldp-title">${title}</span></div>
+        <div class="ldp-subtitle">${subtitle}</div>
+      </div>
+      <div class="ldp-status-chip">
+        <span class="${statusOk ? 'live-dot' : 'mock-dot'}"></span> ${statusText}
+      </div>
+    </div>`;
+}
+
+function _ldpMetrics(items) {
+  return `<div class="ldp-metrics">${items.map(([label, val, sub]) => `
+    <div class="ldp-metric">
+      <span class="ldp-metric-label">${label}</span>
+      <span class="ldp-metric-val">${val}</span>
+      ${sub ? `<span class="ldp-metric-sub">${sub}</span>` : ''}
+    </div>`).join('')}</div>`;
+}
+
+function _ldpChartWrap(canvasId, title, subtitle = '') {
+  return `
+    <div class="ldp-chart-wrap">
+      <div class="ldp-chart-title">${title}<span style="color:var(--text-3);font-weight:400;text-transform:none;letter-spacing:0">${subtitle}</span></div>
+      <canvas id="${canvasId}"></canvas>
+    </div>`;
+}
+
+// ── 1. Sentinel-2 NDVI Detail ────────────────────────────────────────────────
+async function _renderLayerNDVI(panel) {
+  const allNdvi = await apiFetch('/ndvi/all-zones');
+  const z3      = _lastDash?.ndvi || {};
+  const zones   = Object.entries(allNdvi || {}).map(([zid, d]) => ({
+    zone: `Z${zid}`, ndvi: d?.ndvi_mean ?? null, src: d?.source
+  }));
+
+  const ndviVal = z3.ndvi_mean;
+  const isLive  = z3.source && z3.source !== 'mock' && z3.source !== 'unavailable';
+
+  panel.innerHTML =
+    _ldpHeader('🛰', 'Sentinel-2 NDVI', 'Copernicus Dataspace · Sentinel Hub OAuth2', isLive ? 'Live Satellite' : 'Cached / Mock', isLive) +
+    _ldpMetrics([
+      ['Z3 NDVI', ndviVal != null ? ndviVal.toFixed(3) : '—', 'primary focus'],
+      ['Source',   z3.source || '—', ''],
+      ['Alert threshold', '0.300', 'below = alert'],
+      ['Status',  ndviVal != null ? (ndviVal < 0.30 ? '⚠ Critical' : ndviVal < 0.45 ? '↓ Low' : '✓ Healthy') : '—', ''],
+    ]) +
+    _ldpChartWrap('ldp-ndvi-chart', 'NDVI by Zone', zones.length ? '' : ' — awaiting data') +
+    `<div class="ldp-section-title">All Zones</div>
+    <table class="ldp-table">
+      <tr><th>Zone</th><th>NDVI</th><th>Source</th><th>Status</th></tr>
+      ${zones.map(z => {
+        const cls = z.ndvi == null ? '' : z.ndvi < 0.30 ? 'color:#ef4444' : z.ndvi < 0.45 ? 'color:#f59e0b' : 'color:#22c55e';
+        return `<tr><td>${z.zone}</td><td style="${cls}">${z.ndvi != null ? z.ndvi.toFixed(3) : '—'}</td><td style="color:var(--text-3)">${z.src || '—'}</td><td style="${cls}">${z.ndvi != null ? (z.ndvi < 0.30 ? 'Critical' : z.ndvi < 0.45 ? 'Low' : 'Healthy') : '—'}</td></tr>`;
+      }).join('')}
+    </table>`;
+
+  // Bar chart: NDVI by zone
+  const validZones = zones.filter(z => z.ndvi != null);
+  if (validZones.length > 0) {
+    const ctx = document.getElementById('ldp-ndvi-chart');
+    if (ctx) _layerChartInst = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: validZones.map(z => z.zone),
+        datasets: [{
+          data: validZones.map(z => z.ndvi),
+          backgroundColor: validZones.map(z => z.ndvi < 0.30 ? '#ef444488' : z.ndvi < 0.45 ? '#f59e0b88' : '#22c55e88'),
+          borderColor: validZones.map(z => z.ndvi < 0.30 ? '#ef4444' : z.ndvi < 0.45 ? '#f59e0b' : '#22c55e'),
+          borderWidth: 1, borderRadius: 3,
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } },
+        scales: { y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b', font: { size: 9 } } },
+                  x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9 } } } } }
+    });
+  }
+
+  _setIntChip('ndvi', isLive ? 'ok' : 'warn', `NDVI ${ndviVal?.toFixed(3) ?? '—'}`);
+}
+
+// ── 2. Smart Erosion Pins Detail ─────────────────────────────────────────────
+async function _renderLayerPins(panel) {
+  const [pinStatus, history] = await Promise.all([
+    apiFetch('/smart-pin/status'),
+    apiFetch('/smart-pin/history?limit=20'),
+  ]);
+
+  const pins   = pinStatus?.pins || [];
+  const onlineCount = pins.filter(p => p.status === 'active').length;
+  const recentAnalyses = history || [];
+  const latest = recentAnalyses[recentAnalyses.length - 1];
+
+  panel.innerHTML =
+    _ldpHeader('📍', 'Smart Erosion Pins', 'On-site IoT · Raspberry Pi + Camera', `${onlineCount}/${pins.length} Online`, onlineCount > 0) +
+    _ldpMetrics([
+      ['Total Pins', pins.length, ''],
+      ['Online',     onlineCount, 'active'],
+      ['Offline',    pins.length - onlineCount, ''],
+      ['Analyses',   recentAnalyses.length, 'in history'],
+    ]) +
+    `<div class="ldp-section-title">Pin Status</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px">
+      ${pins.map(p => `
+        <div style="background:var(--bg-card);border:1px solid ${p.status==='active'?'rgba(34,197,94,0.3)':'rgba(239,68,68,0.2)'};border-radius:6px;padding:6px 8px;text-align:center">
+          <div style="font-size:11px;font-weight:700;color:var(--text-1)">${p.id}</div>
+          <div style="font-size:9px;color:${p.status==='active'?'#22c55e':'#ef4444'};margin-top:2px">${p.status==='active'?'● Online':'○ Offline'}</div>
+          <div style="font-size:9px;color:var(--text-3)">Z${p.zone}</div>
+        </div>`).join('')}
+    </div>` +
+    (latest ? `
+    <div class="ldp-section-title">Latest Analysis — ${latest.pin_id || '—'}</div>
+    ${_ldpMetrics([
+      ['Veg Cover', latest.vegetation_cover_percent != null ? latest.vegetation_cover_percent + '%' : '—', ''],
+      ['Severity', latest.erosion_severity || '—', ''],
+      ['Moisture', latest.moisture_estimate || '—', ''],
+      ['Confidence', latest.confidence != null ? (latest.confidence*100).toFixed(0)+'%' : '—', ''],
+    ])}
+    <div style="font-size:9px;color:var(--text-3);font-family:IBM Plex Mono,monospace;margin-top:4px">${latest.timestamp || ''}</div>
+    ` : '<div style="color:var(--text-3);font-size:11px;padding:12px 0">No pin analyses recorded yet.</div>') +
+    (recentAnalyses.length > 0 ? `
+    <div class="ldp-section-title">Recent Records (${Math.min(recentAnalyses.length, 10)})</div>
+    <table class="ldp-table">
+      <tr><th>Pin</th><th>Severity</th><th>Veg%</th><th>Moisture</th><th>Time</th></tr>
+      ${recentAnalyses.slice(-10).reverse().map(a => `
+        <tr>
+          <td>${a.pin_id || '—'}</td>
+          <td style="color:${a.erosion_severity==='severe'||a.erosion_severity==='high'?'#ef4444':a.erosion_severity==='moderate'?'#f59e0b':'#22c55e'}">${a.erosion_severity || '—'}</td>
+          <td>${a.vegetation_cover_percent ?? '—'}%</td>
+          <td>${a.moisture_estimate || '—'}</td>
+          <td>${(a.timestamp||'').slice(0,16).replace('T',' ')}</td>
+        </tr>`).join('')}
+    </table>` : '');
+
+  _setIntChip('pins', onlineCount > 0 ? 'ok' : 'err', `${onlineCount}/${pins.length} online`);
+}
+
+// ── 3. Open-Meteo Weather Detail ─────────────────────────────────────────────
+async function _renderLayerWeather(panel) {
+  const data = await apiFetch('/weather');
+  const sum  = data?.summary || _lastDash?.weather || {};
+  const hist = data?.historical || {};
+  const fc   = data?.forecast || {};
+
+  const times  = hist.time || [];
+  const precip = hist.precipitation || [];
+  const temps  = hist.temperature || [];
+
+  // Build daily totals for last 14 days
+  const daily = {};
+  times.forEach((t, i) => {
+    const day = t.slice(0, 10);
+    if (!daily[day]) daily[day] = { precip: 0, temps: [] };
+    daily[day].precip += (precip[i] || 0);
+    if (temps[i] != null) daily[day].temps.push(temps[i]);
+  });
+  const days    = Object.keys(daily).slice(-14);
+  const precipV = days.map(d => +daily[d].precip.toFixed(1));
+  const tempV   = days.map(d => daily[d].temps.length ? +(daily[d].temps.reduce((a,v)=>a+v,0)/daily[d].temps.length).toFixed(1) : null);
+
+  const alerts = sum.rainfall_alerts || [];
+
+  panel.innerHTML =
+    _ldpHeader('🌦', 'Weather & Precipitation', 'Open-Meteo · No API key required', 'Live API', true) +
+    _ldpMetrics([
+      ['58d Precip', sum.total_precipitation_mm != null ? sum.total_precipitation_mm.toFixed(0)+'mm' : '—', 'total'],
+      ['Avg Temp',   sum.avg_temperature_c != null ? sum.avg_temperature_c.toFixed(1)+'°C' : '—', ''],
+      ['Next Rain',  sum.next_rain_date || '—', sum.next_rain_mm != null ? sum.next_rain_mm.toFixed(1)+'mm' : ''],
+      ['Rain Alerts', alerts.length, alerts.length ? 'active' : 'none'],
+    ]) +
+    _ldpChartWrap('ldp-weather-chart', '14-day Precipitation + Temperature') +
+    (alerts.length > 0 ? `
+    <div class="ldp-section-title">⚠ Rainfall Alerts (${alerts.length})</div>
+    ${alerts.slice(0, 5).map(a => `
+      <div class="ldp-record-row">
+        <span style="color:#ef4444">💧</span>
+        <span style="color:var(--text-2)">${a.date?.slice(0,10) || 'Recent'}</span>
+        <span style="color:var(--text-3)">${a.hourly_precipitation_mm?.toFixed(1) ?? '?'}mm/hr</span>
+      </div>`).join('')}` : '') +
+    (fc.time ? `
+    <div class="ldp-section-title" style="margin-top:10px">7-Day Forecast</div>
+    <table class="ldp-table">
+      <tr><th>Date</th><th>Precip (mm)</th><th>Max°C</th><th>Wind (km/h)</th></tr>
+      ${(fc.time || []).slice(0,7).map((t,i) => `
+        <tr>
+          <td>${t}</td>
+          <td style="color:${(fc.precipitation_sum||[])[i]>15?'#ef4444':(fc.precipitation_sum||[])[i]>5?'#f59e0b':'var(--text-2)'}">${fc.precipitation_sum?.[i]?.toFixed(1) ?? '—'}</td>
+          <td>${fc.temperature_2m_max?.[i]?.toFixed(1) ?? '—'}</td>
+          <td>${fc.windspeed_10m_max?.[i]?.toFixed(1) ?? '—'}</td>
+        </tr>`).join('')}
+    </table>` : '');
+
+  // Dual-axis chart: precip bars + temp line
+  if (days.length > 0) {
+    const ctx = document.getElementById('ldp-weather-chart');
+    if (ctx) _layerChartInst = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: days.map(d => new Date(d).toLocaleDateString('en',{month:'short',day:'numeric'})),
+        datasets: [
+          { type:'bar', label:'Precip (mm)', data: precipV, backgroundColor: precipV.map(v => v>15?'rgba(239,68,68,0.7)':v>5?'rgba(245,158,11,0.7)':'rgba(59,130,246,0.5)'), yAxisID:'y', borderRadius:2 },
+          { type:'line', label:'Avg Temp (°C)', data: tempV, borderColor:'#f59e0b', borderWidth:1.5, pointRadius:2, tension:0.4, yAxisID:'y2', fill:false },
+        ]
+      },
+      options: {
+        responsive:true, interaction:{mode:'index'},
+        plugins:{ legend:{ labels:{ color:'#94a3b8', font:{size:9} } } },
+        scales:{
+          y:  { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#64748b',font:{size:9}}, title:{display:true,text:'mm',color:'#64748b',font:{size:9}} },
+          y2: { position:'right', grid:{display:false}, ticks:{color:'#64748b',font:{size:9}}, title:{display:true,text:'°C',color:'#64748b',font:{size:9}} },
+          x:  { grid:{display:false}, ticks:{color:'#94a3b8',font:{size:9}} },
+        }
+      }
+    });
+  }
+
+  _setIntChip('weather', 'ok', `${sum.avg_temperature_c?.toFixed(1)??'—'}°C · ${sum.total_precipitation_mm?.toFixed(0)??'—'}mm`);
+}
+
+// ── 4. NASA POWER Detail ─────────────────────────────────────────────────────
+async function _renderLayerNASA(panel) {
+  const data = await apiFetch('/nasa-power');
+  if (!data?.daily?.length) {
+    panel.innerHTML = _ldpHeader('🚀','NASA POWER','NASA Langley Research Center','Fetching…',false) +
+      `<div class="ldp-error">NASA POWER data unavailable. The server may still be fetching it.</div>`;
+    return;
+  }
+
+  const sum   = data.summary;
+  const daily = data.daily;
+  const last30 = daily.slice(-30);
+
+  panel.innerHTML =
+    _ldpHeader('🚀', 'NASA POWER', 'NASA Langley · Renewable Energy Dataset · Free', 'Live', true) +
+    _ldpMetrics([
+      ['Total Precip', sum.total_precip_mm != null ? sum.total_precip_mm.toFixed(0)+'mm' : '—', `${sum.period_days}d`],
+      ['Max Daily Precip', sum.max_daily_precip_mm != null ? sum.max_daily_precip_mm.toFixed(1)+'mm' : '—', 'peak'],
+      ['Avg Solar', sum.avg_solar_wm2 != null ? sum.avg_solar_wm2.toFixed(0)+' W/m²' : '—', 'irradiance'],
+      ['Avg Max Temp', sum.avg_temp_max_c != null ? sum.avg_temp_max_c.toFixed(1)+'°C' : '—', '2m height'],
+      ['High Rain Days', sum.high_rain_days ?? '—', '>10mm/day'],
+      ['Drought Days',   sum.drought_days  ?? '—', '<1mm/day'],
+    ]) +
+    _ldpChartWrap('ldp-nasa-chart', 'Daily Solar Irradiance & Precipitation', ' (30 days)') +
+    `<div class="ldp-section-title">Recent Daily Records</div>
+    <table class="ldp-table">
+      <tr><th>Date</th><th>Precip mm</th><th>Solar W/m²</th><th>T-max °C</th><th>Wind m/s</th></tr>
+      ${last30.slice(-10).reverse().map(d => `
+        <tr>
+          <td>${d.date}</td>
+          <td style="color:${(d.precip_mm||0)>15?'#ef4444':(d.precip_mm||0)>5?'#f59e0b':'var(--text-2)'}">${d.precip_mm?.toFixed(1) ?? '—'}</td>
+          <td>${d.solar_wm2?.toFixed(0) ?? '—'}</td>
+          <td>${d.t2m_max_c?.toFixed(1) ?? '—'}</td>
+          <td>${d.wind_ms?.toFixed(1) ?? '—'}</td>
+        </tr>`).join('')}
+    </table>`;
+
+  const solarV  = last30.map(d => d.solar_wm2);
+  const precipV = last30.map(d => d.precip_mm);
+  const labels  = last30.map(d => d.date.slice(5));
+
+  const ctx = document.getElementById('ldp-nasa-chart');
+  if (ctx) _layerChartInst = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { type:'line', label:'Solar (W/m²)', data:solarV, borderColor:'#f59e0b', borderWidth:1.5, pointRadius:0, tension:0.4, yAxisID:'y2', fill:false },
+        { type:'bar',  label:'Precip (mm)', data:precipV, backgroundColor:'rgba(59,130,246,0.55)', yAxisID:'y', borderRadius:2 },
+      ]
+    },
+    options: {
+      responsive:true, interaction:{mode:'index'},
+      plugins:{ legend:{ labels:{color:'#94a3b8',font:{size:9}} } },
+      scales:{
+        y:  { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#64748b',font:{size:9}}, title:{display:true,text:'mm',color:'#64748b',font:{size:9}} },
+        y2: { position:'right', grid:{display:false}, ticks:{color:'#64748b',font:{size:9}}, title:{display:true,text:'W/m²',color:'#64748b',font:{size:9}} },
+        x:  { grid:{display:false}, ticks:{color:'#94a3b8',font:{size:9},maxTicksLimit:10} },
       }
     }
   });
+
+  _setIntChip('nasa', 'ok', `${sum.total_precip_mm?.toFixed(0)??'—'}mm · ${sum.avg_solar_wm2?.toFixed(0)??'—'}W/m²`);
+  _setMeta('nasa', `30d: ${sum.total_precip_mm?.toFixed(0)??'—'}mm precip · ${sum.avg_solar_wm2?.toFixed(0)??'—'} W/m² solar avg`);
+  _setBadge('nasa', 'success', 'Live');
+}
+
+// ── 5. PVGIS Solar Resource Detail ──────────────────────────────────────────
+async function _renderLayerPVGIS(panel) {
+  const data = await apiFetch('/pvgis/monthly');
+  if (!data?.monthly?.length) {
+    panel.innerHTML = _ldpHeader('☀️','PVGIS Solar Resource','EU JRC · PVGIS-SARAH3','Fetching…',false) +
+      `<div class="ldp-error">PVGIS data unavailable.</div>`;
+    return;
+  }
+
+  const monthly = data.monthly;
+  const annualHh = monthly.reduce((s, m) => s + (m.Hh_kwh_m2 || 0), 0);
+  const peakMonth = monthly.reduce((max, m) => (m.Hh_kwh_m2 || 0) > (max.Hh_kwh_m2 || 0) ? m : max, monthly[0]);
+
+  panel.innerHTML =
+    _ldpHeader('☀️', 'PVGIS Solar Resource', 'EU JRC · PVGIS-SARAH3 · 43.56°N 25.59°E', 'Live (cached 24h)', true) +
+    _ldpMetrics([
+      ['Annual Irrad.',  annualHh.toFixed(0)+' kWh/m²', 'horizontal'],
+      ['Peak Month',     peakMonth?.month || '—', (peakMonth?.Hh_kwh_m2||0).toFixed(0)+' kWh/m²'],
+      ['Site Lat',       '43.56°N', 'Tsenovo'],
+      ['Site Lon',       '25.59°E', 'Bulgaria'],
+    ]) +
+    _ldpChartWrap('ldp-pvgis-chart', 'Monthly Horizontal Irradiance (kWh/m²)') +
+    `<div class="ldp-section-title">Monthly Data</div>
+    <table class="ldp-table">
+      <tr><th>Month</th><th>Hh kWh/m²</th><th>Direct</th><th>Diffuse</th><th>Avg T °C</th></tr>
+      ${monthly.map(m => `
+        <tr>
+          <td>${m.month}</td>
+          <td style="color:#f59e0b">${m.Hh_kwh_m2?.toFixed(1) ?? '—'}</td>
+          <td style="color:var(--text-3)">${m.H_direct?.toFixed(1) ?? '—'}</td>
+          <td style="color:var(--text-3)">${m.H_diffuse?.toFixed(1) ?? '—'}</td>
+          <td>${m.T2m_avg?.toFixed(1) ?? '—'}</td>
+        </tr>`).join('')}
+    </table>`;
+
+  const ctx = document.getElementById('ldp-pvgis-chart');
+  if (ctx) _layerChartInst = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: monthly.map(m => m.month),
+      datasets: [{
+        label: 'Hh (kWh/m²)',
+        data: monthly.map(m => m.Hh_kwh_m2),
+        backgroundColor: monthly.map(m => {
+          const v = m.Hh_kwh_m2 || 0;
+          return v > 180 ? 'rgba(245,158,11,0.85)' : v > 100 ? 'rgba(245,158,11,0.55)' : 'rgba(245,158,11,0.3)';
+        }),
+        borderColor: '#f59e0b88', borderWidth: 1, borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive:true, plugins:{legend:{display:false}},
+      scales:{
+        y:{ grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#64748b',font:{size:9}} },
+        x:{ grid:{display:false}, ticks:{color:'#94a3b8',font:{size:9}} }
+      }
+    }
+  });
+
+  _setIntChip('pvgis', 'ok', `${annualHh.toFixed(0)} kWh/m²/yr`);
+  _setMeta('pvgis', `Annual: ${annualHh.toFixed(0)} kWh/m²/yr · Peak: ${peakMonth?.month}`);
+  _setBadge('pvgis', 'success', 'Live');
+}
+
+// ── 6. SoilGrids Detail ──────────────────────────────────────────────────────
+async function _renderLayerSoil(panel) {
+  const data = await apiFetch('/soil');
+  const soil = data?.properties || _lastDash?.soil || {};
+  const health = data?.health || _lastDash?.soil_health || {};
+
+  const _prop = (key, divisor = 10, unit = '') => {
+    const v = soil[key];
+    return v != null ? (v / divisor).toFixed(divisor > 1 ? 1 : 0) + unit : '—';
+  };
+
+  panel.innerHTML =
+    _ldpHeader('🌱', 'SoilGrids ISRIC', 'ISRIC World Soil Information · REST API · No key', `Health ${health.soil_health_score ?? '—'}/100`, (health.soil_health_score ?? 0) > 50) +
+    _ldpMetrics([
+      ['Soil Health', (health.soil_health_score ?? '—') + '/100', ''],
+      ['SOC', _prop('soc', 10, '‰'), 'organic carbon'],
+      ['pH (H₂O)', _prop('phh2o', 10, ''), ''],
+      ['Clay', _prop('clay', 10, '%'), ''],
+      ['Silt', _prop('silt', 10, '%'), ''],
+      ['Sand', _prop('sand', 10, '%'), ''],
+    ]) +
+    _ldpChartWrap('ldp-soil-chart', 'Soil Texture Profile') +
+    `<div class="ldp-section-title">All Properties</div>
+    <table class="ldp-table">
+      <tr><th>Property</th><th>Value</th><th>Unit</th></tr>
+      ${[
+        ['SOC', _prop('soc',10,''), 'g/kg (‰)'],
+        ['pH (H₂O)', _prop('phh2o',10,''), ''],
+        ['Clay', _prop('clay',10,''), '%'],
+        ['Silt', _prop('silt',10,''), '%'],
+        ['Sand', _prop('sand',10,''), '%'],
+        ['Bulk Density', _prop('bdod',100,''), 'g/cm³'],
+        ['CEC', _prop('cec',10,''), 'cmol/kg'],
+        ['Nitrogen', _prop('nitrogen',100,''), 'g/kg'],
+      ].map(([lbl,val,unit]) => `<tr><td>${lbl}</td><td style="color:var(--text-1)">${val}</td><td style="color:var(--text-3)">${unit}</td></tr>`).join('')}
+    </table>`;
+
+  // Doughnut: texture
+  const clay = soil.clay != null ? soil.clay / 10 : null;
+  const silt = soil.silt != null ? soil.silt / 10 : null;
+  const sand = soil.sand != null ? soil.sand / 10 : null;
+  if (clay != null) {
+    const ctx = document.getElementById('ldp-soil-chart');
+    if (ctx) _layerChartInst = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Clay','Silt','Sand'],
+        datasets: [{ data:[clay,silt,sand], backgroundColor:['#ef444488','#f59e0b88','#22c55e88'], borderColor:['#ef4444','#f59e0b','#22c55e'], borderWidth:1 }]
+      },
+      options: { responsive:true, plugins:{ legend:{ labels:{color:'#94a3b8',font:{size:9}} } } }
+    });
+  }
+
+  _setIntChip('soil', 'ok', `pH ${_prop('phh2o',10)} · SOC ${_prop('soc',10)}‰`);
+}
+
+// ── 7. GBIF Biodiversity Detail ──────────────────────────────────────────────
+async function _renderLayerGBIF(panel) {
+  const [stats, speciesData] = await Promise.all([
+    apiFetch('/biodiversity'),
+    apiFetch('/biodiversity/species'),
+  ]);
+
+  const shannon    = stats?.shannon_h;
+  const richness   = stats?.species_richness ?? speciesData?.count ?? 0;
+  const invasive   = stats?.invasive_risk ?? 'Low';
+  const groups     = stats?.groups || {};
+  const species    = (speciesData?.species || []).slice(0, 20);
+
+  panel.innerHTML =
+    _ldpHeader('🦋', 'GBIF Biodiversity', 'Global Biodiversity Information Facility · Free', `${richness} species`, richness > 0) +
+    _ldpMetrics([
+      ['Shannon H′', shannon != null ? shannon.toFixed(2) : '—', 'diversity index'],
+      ['Species', richness, 'total observed'],
+      ['Invasive Risk', invasive, ''],
+      ['Radius', '5 km', 'from site'],
+    ]) +
+    _ldpChartWrap('ldp-gbif-chart', 'Occurrences by Taxonomic Group') +
+    `<div class="ldp-section-title">Species Observed (sample)</div>
+    <table class="ldp-table">
+      <tr><th>Scientific Name</th><th>Kingdom</th><th>Count</th></tr>
+      ${species.map(s => `
+        <tr>
+          <td style="font-style:italic">${s.name || s.species || '—'}</td>
+          <td style="color:var(--text-3)">${s.kingdom || '—'}</td>
+          <td>${s.count ?? s.occurrences ?? 1}</td>
+        </tr>`).join('')}
+    </table>`;
+
+  // Bar chart: occurrences by group
+  const groupEntries = Object.entries(groups).filter(([,v]) => v > 0);
+  if (groupEntries.length > 0) {
+    const ctx = document.getElementById('ldp-gbif-chart');
+    if (ctx) _layerChartInst = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: groupEntries.map(([k]) => k),
+        datasets: [{ data: groupEntries.map(([,v]) => v), backgroundColor:'rgba(34,197,94,0.5)', borderColor:'#22c55e', borderWidth:1, borderRadius:3 }]
+      },
+      options: {
+        indexAxis: 'y', responsive:true, plugins:{legend:{display:false}},
+        scales:{ x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#64748b',font:{size:9}}}, y:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:9}}} }
+      }
+    });
+  }
+
+  _setIntChip('gbif', 'ok', `${richness} spp · H′ ${shannon?.toFixed(2)??'—'}`);
+}
+
+// ── 8. Soil Lab Carbon Records Detail ────────────────────────────────────────
+async function _renderLayerCarbon(panel) {
+  const data = await apiFetch('/carbon/history');
+  if (!data?.records?.length) {
+    panel.innerHTML = _ldpHeader('⚗️','Soil Lab Records','On-site sampling · JSON store','No data',false) +
+      `<div class="ldp-error">No soil lab records found. Use the Settings → Upload tab to add samples.</div>`;
+    return;
+  }
+
+  const records = data.records.slice().sort((a,b) =>
+    (a.timestamp||a.created_at||'').localeCompare(b.timestamp||b.created_at||''));
+  const latest  = records[records.length-1];
+  const seq     = data.sequestration_rate;
+  const trend   = seq?.trend || 'stable';
+  const rate    = seq?.annual_sequestration_t_per_ha;
+
+  // Zone 3 only records for chart
+  const z3recs  = records.filter(r => r.zone === 3 || r.zone == null);
+
+  panel.innerHTML =
+    _ldpHeader('⚗️', 'Soil Lab Records', 'On-site quarterly sampling · JSON flat-file store', `${records.length} records · ${trend}`, trend === 'increasing') +
+    _ldpMetrics([
+      ['Latest Stock', latest?.carbon_stock_t_per_ha?.toFixed(2)??'—', 'tC/ha'],
+      ['Latest SOM',   latest?.som_pct != null ? latest.som_pct.toFixed(1)+'%' : '—', ''],
+      ['Seq. Rate',    rate != null ? (rate>0?'+':'')+rate.toFixed(3)+' tC/ha/yr' : '—', trend],
+      ['Period',       seq?.period_years?.toFixed(1)??'—', 'years tracked'],
+      ['Records',      records.length, 'total'],
+      ['Zones',        [...new Set(records.map(r=>r.zone))].length, 'monitored'],
+    ]) +
+    _ldpChartWrap('ldp-carbon-chart', 'Zone 3 Carbon Stock Over Time') +
+    `<div class="ldp-section-title">All Records</div>
+    <table class="ldp-table">
+      <tr><th>Date</th><th>Zone</th><th>SOM%</th><th>BD g/cm³</th><th>tC/ha</th><th>tCO₂/ha</th></tr>
+      ${records.slice().reverse().slice(0,15).map(r => `
+        <tr>
+          <td>${(r.sampling_date||r.timestamp||'').slice(0,10)}</td>
+          <td>Z${r.zone}</td>
+          <td>${r.som_pct?.toFixed(1)??'—'}%</td>
+          <td>${r.bulk_density_g_cm3?.toFixed(2)??'—'}</td>
+          <td style="color:#22c55e">${r.carbon_stock_t_per_ha?.toFixed(2)??'—'}</td>
+          <td style="color:var(--text-3)">${r.co2_equivalent_t_per_ha?.toFixed(2)??'—'}</td>
+        </tr>`).join('')}
+    </table>`;
+
+  // Line chart: Z3 carbon stock over time
+  if (z3recs.length > 0) {
+    const ctx = document.getElementById('ldp-carbon-chart');
+    if (ctx) _layerChartInst = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: z3recs.map(r => (r.sampling_date||r.timestamp||'').slice(0,7)),
+        datasets: [{
+          label: 'Carbon Stock (tC/ha)',
+          data:  z3recs.map(r => r.carbon_stock_t_per_ha),
+          borderColor: '#22c55e', borderWidth: 2,
+          pointRadius: 4, pointBackgroundColor: '#22c55e',
+          fill: { target:'origin', above:'rgba(34,197,94,0.08)' }, tension:0.3,
+        }]
+      },
+      options: {
+        responsive:true, plugins:{legend:{display:false}},
+        scales:{
+          y:{ grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#64748b',font:{size:9}} },
+          x:{ grid:{display:false}, ticks:{color:'#94a3b8',font:{size:9}} }
+        }
+      }
+    });
+  }
+
+  _setIntChip('carbon', 'ok', `${latest?.carbon_stock_t_per_ha?.toFixed(2)??'—'} tC/ha`);
+  _setMeta('carbon', `${records.length} records · Latest: ${latest?.carbon_stock_t_per_ha?.toFixed(2)??'—'} tC/ha · SOM ${latest?.som_pct?.toFixed(1)??'—'}%`);
+  _setBadge('carbon', 'success', 'Live');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1918,41 +2656,231 @@ async function fetchAndRenderUploadHistory() {
 }
 
 // ── 11. Photo Upload → backend AI analysis ────────────────────────────────────
+// ── Photo upload — drag/drop helpers ──────────────────────────────────────────
+function photoFileSelected(input) {
+  const file = input.files[0];
+  if (file) _setPhotoPreview(file);
+}
+
+function photoDrop(event) {
+  event.preventDefault();
+  const dz = document.getElementById('photo-dropzone');
+  if (dz) dz.classList.remove('drag-over');
+  const file = event.dataTransfer?.files[0];
+  if (!file || !file.type.startsWith('image/')) { showToast('⚠ Please drop an image file'); return; }
+  // Inject into the file input so submitPhotoForAnalysis can read it
+  const input = document.getElementById('upload-photo-file');
+  if (input) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+  }
+  _setPhotoPreview(file);
+}
+
+function _setPhotoPreview(file) {
+  const inner   = document.getElementById('photo-dropzone-inner');
+  const preview = document.getElementById('photo-preview-img');
+  if (inner)   inner.style.display   = 'none';
+  if (preview) {
+    preview.src    = URL.createObjectURL(file);
+    preview.style.display = 'block';
+  }
+  // Re-enable analyse button
+  const btn = document.getElementById('photo-analyze-btn');
+  if (btn) btn.disabled = false;
+}
+
+function _photoProgress(phase) {
+  const wrap  = document.getElementById('photo-progress-wrap');
+  const bar   = document.getElementById('photo-progress-bar');
+  const label = document.getElementById('photo-progress-label');
+  const btn   = document.getElementById('photo-analyze-btn');
+  const btnTxt = document.getElementById('photo-analyze-btn-text');
+
+  if (phase === 'start') {
+    if (wrap) wrap.style.display = 'flex';
+    if (bar)  { bar.style.width = '0%'; bar.classList.add('progress-anim'); }
+    if (label) label.textContent = 'Uploading photo…';
+    if (btn)  btn.disabled = true;
+    if (btnTxt) btnTxt.textContent = '⏳ Analyzing…';
+    // Simulate progress: 0→40% quickly (upload), then stall at 70% (AI thinking)
+    let pct = 0;
+    bar._timer = setInterval(() => {
+      pct += pct < 40 ? 4 : pct < 70 ? 1 : 0.2;
+      if (bar) bar.style.width = Math.min(pct, 92) + '%';
+      if (label && pct > 40) label.textContent = '🤖 Gemini is analyzing…';
+    }, 120);
+  } else if (phase === 'done') {
+    if (bar?._timer) clearInterval(bar._timer);
+    if (bar)  { bar.style.width = '100%'; bar.classList.remove('progress-anim'); }
+    if (label) label.textContent = '✅ Analysis complete';
+    if (btn)  btn.disabled = false;
+    if (btnTxt) btnTxt.textContent = '🤖 Analyze with AI';
+    setTimeout(() => { if (wrap) wrap.style.display = 'none'; }, 2000);
+  } else if (phase === 'error') {
+    if (bar?._timer) clearInterval(bar._timer);
+    if (bar)  { bar.style.width = '100%'; bar.style.background = '#ef4444'; }
+    if (label) label.textContent = '⚠ Analysis failed';
+    if (btn)  btn.disabled = false;
+    if (btnTxt) btnTxt.textContent = '🤖 Analyze with AI';
+    setTimeout(() => { if (wrap) { wrap.style.display = 'none'; if (bar) bar.style.background = ''; } }, 3000);
+  }
+}
+
+async function submitPhotoForAnalysis() {
+  const fileInput = document.getElementById('upload-photo-file');
+  const file      = fileInput?.files[0];
+  if (!file) { showToast('📷 Please select or drop a photo first'); return; }
+
+  const zone  = parseInt(document.getElementById('upload-photo-zone')?.value) || 3;
+  const pinId = document.getElementById('upload-photo-pin')?.value || 'manual';
+  const notes = document.getElementById('upload-photo-notes')?.value || '';
+
+  _photoProgress('start');
+  await handlePhotoUpload(file, zone, pinId, notes);
+}
+
 async function handlePhotoUpload(file, zone, pinId, notes) {
-  showToast('📤 Uploading photo for AI analysis…');
   const result = await uploadMonitoringPhoto(file, zone, pinId, notes);
+  _photoProgress(result?.analysis ? 'done' : 'error');
+
+  const emptyEl   = document.getElementById('photo-result-empty');
+  const contentEl = document.getElementById('photo-result-content');
 
   if (result?.analysis) {
-    const a = result.analysis;
-    const sev = a.erosion_severity || 'unknown';
-    const color = sev === 'severe' || sev === 'high' ? '#ef4444' : sev === 'moderate' ? '#f59e0b' : '#22c55e';
-    openModal('Photo Upload — AI Analysis Result', `
-      <div style="text-align:center;margin-bottom:12px">
-        <img src="${URL.createObjectURL(file)}" style="max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border)">
-      </div>
-      <div class="modal-zone-hero" style="border-left:4px solid ${color}">
-        <div class="modal-zone-badge" style="background:${color}22;color:${color}">${sev.toUpperCase()}</div>
-        <div class="detail-modal-grid" style="margin-top:10px">
-          ${_dmStat('Vegetation Cover', (a.vegetation_cover_percent ?? '—') + '%', '')}
-          ${_dmStat('Moisture', a.moisture_estimate ?? '—', '')}
-          ${_dmStat('Confidence', a.confidence != null ? (a.confidence * 100).toFixed(0) + '%' : '—', '')}
-          ${_dmStat('Soil Color', a.soil_color ?? '—', '')}
+    const a     = result.analysis;
+    const sev   = a.erosion_severity || 'unknown';
+    const sevUC = sev.charAt(0).toUpperCase() + sev.slice(1);
+    const color = sev === 'severe' || sev === 'high' ? '#ef4444'
+                : sev === 'moderate' ? '#f59e0b'
+                : '#22c55e';
+
+    const vegPct = a.vegetation_cover_percent ?? null;
+    const conf   = a.confidence != null ? (a.confidence * 100).toFixed(0) + '%' : '—';
+    const features = (a.erosion_features || []).filter(f => f && f !== 'none');
+
+    // Build severity percentage bar
+    const sevPct = sev === 'severe' || sev === 'high' ? 90 : sev === 'moderate' ? 55 : 20;
+
+    if (emptyEl)   emptyEl.style.display   = 'none';
+    if (contentEl) {
+      contentEl.style.display = 'flex';
+      contentEl.innerHTML = `
+        <!-- Uploaded thumbnail -->
+        <div class="par-thumb-wrap">
+          <img class="par-thumb" src="${URL.createObjectURL(file)}" alt="Uploaded photo">
+          <div class="par-thumb-meta">
+            <span>Zone ${zone}</span>
+            <span>${pinId}</span>
+            <span>${new Date().toLocaleDateString('en',{month:'short',day:'numeric'})}</span>
+          </div>
         </div>
-      </div>
-      ${a.erosion_features?.filter(f => f !== 'none').length > 0 ? `
-        <div class="dm-section-title">Erosion Features</div>
-        <div class="modal-tags">${a.erosion_features.filter(f => f !== 'none').map(f => `<span class="modal-tag danger">${f.replace('_',' ')}</span>`).join('')}</div>
-      ` : ''}
-      ${a.change_notes ? `<div class="dm-section-title">Notes</div><p style="font-size:11px;color:var(--text-2)">${a.change_notes}</p>` : ''}
-      <div class="modal-actions">
-        <button class="btn-secondary btn-sm" onclick="closeModal()">Close</button>
-      </div>
-    `);
-    showToast('✅ Photo analyzed successfully');
-    fetchAndRenderUploadHistory();
+
+        <!-- Analysis results -->
+        <div class="par-stats">
+
+          <!-- Severity banner -->
+          <div class="par-severity-banner" style="border-color:${color};background:${color}18">
+            <span class="par-sev-dot" style="background:${color}"></span>
+            <span class="par-sev-label" style="color:${color}">${sevUC} Erosion</span>
+            <span class="par-conf">AI confidence: ${conf}</span>
+          </div>
+
+          <!-- Key metrics row -->
+          <div class="par-metrics-row">
+            <div class="par-metric">
+              <div class="par-metric-val" style="color:${vegPct != null && vegPct < 30 ? '#ef4444' : '#22c55e'}">${vegPct != null ? vegPct + '%' : '—'}</div>
+              <div class="par-metric-lbl">Vegetation</div>
+            </div>
+            <div class="par-metric">
+              <div class="par-metric-val">${a.moisture_estimate ?? '—'}</div>
+              <div class="par-metric-lbl">Moisture</div>
+            </div>
+            <div class="par-metric">
+              <div class="par-metric-val" style="font-size:14px">${a.soil_color ?? '—'}</div>
+              <div class="par-metric-lbl">Soil Color</div>
+            </div>
+          </div>
+
+          <!-- Severity bar -->
+          <div class="par-bar-row">
+            <span class="par-bar-label">Severity</span>
+            <div class="par-bar-track">
+              <div class="par-bar-fill" style="width:${sevPct}%;background:${color}"></div>
+            </div>
+            <span class="par-bar-val" style="color:${color}">${sevUC}</span>
+          </div>
+
+          ${features.length > 0 ? `
+          <!-- Erosion features -->
+          <div class="par-features-label">Detected features</div>
+          <div class="par-features-tags">
+            ${features.map(f => `<span class="par-tag" style="border-color:${color}40;color:${color}">${f.replace(/_/g,' ')}</span>`).join('')}
+          </div>` : ''}
+
+          ${a.vegetation_types?.length > 0 ? `
+          <div class="par-features-label">Vegetation types</div>
+          <div class="par-features-tags">
+            ${a.vegetation_types.map(v => `<span class="par-tag" style="border-color:rgba(34,197,94,0.3);color:#22c55e">${v.replace(/_/g,' ')}</span>`).join('')}
+          </div>` : ''}
+
+          ${a.change_notes ? `
+          <div class="par-notes">
+            <span class="par-notes-label">AI Notes</span>
+            <span class="par-notes-text">${a.change_notes}</span>
+          </div>` : ''}
+
+          <button class="btn-secondary btn-sm" style="margin-top:8px;width:100%"
+                  onclick="loadPhotoHistory()">View in History ↓</button>
+        </div>
+      `;
+    }
+
+    showToast('✅ AI analysis complete');
+    loadPhotoHistory();
   } else {
-    showToast(result?.message || '⚠ Upload failed');
+    if (emptyEl) {
+      emptyEl.style.display = 'flex';
+      emptyEl.innerHTML = `<div style="font-size:28px">⚠</div><div style="font-size:12px;color:var(--red);margin-top:6px">${result?.message || 'Upload failed. Check backend is running.'}</div>`;
+    }
+    showToast(result?.message || '⚠ Upload failed — is the backend running?');
   }
+}
+
+// ── Photo history gallery ──────────────────────────────────────────────────────
+async function loadPhotoHistory() {
+  const grid = document.getElementById('photo-history-grid');
+  if (!grid) return;
+  grid.innerHTML = '<div style="color:var(--text-3);font-size:11px;padding:8px">Loading…</div>';
+
+  const data = await apiFetch('/uploads?upload_type=photo&limit=12');
+  const records = data?.records || data || [];
+
+  if (!records.length) {
+    grid.innerHTML = '<div style="color:var(--text-3);font-size:11px;padding:8px">No photo uploads yet.</div>';
+    return;
+  }
+
+  grid.innerHTML = records.map(r => {
+    const a    = r.data || r.analysis || {};
+    const sev  = a.erosion_severity || 'unknown';
+    const color = sev === 'severe' || sev === 'high' ? '#ef4444' : sev === 'moderate' ? '#f59e0b' : '#22c55e';
+    const date = (r.timestamp || r.created_at || '').slice(0, 10);
+    const vegPct = a.vegetation_cover_percent;
+    return `
+      <div class="ph-card">
+        <div class="ph-card-top">
+          <span class="ph-sev-badge" style="background:${color}22;color:${color}">${sev}</span>
+          <span class="ph-date">${date}</span>
+        </div>
+        <div class="ph-filename">${r.filename || '—'}</div>
+        <div class="ph-zone">Zone ${r.zone || '—'}</div>
+        ${vegPct != null ? `<div class="ph-veg">🌿 ${vegPct}% vegetation</div>` : ''}
+        ${a.change_notes ? `<div class="ph-notes">${a.change_notes.slice(0,80)}…</div>` : ''}
+      </div>
+    `;
+  }).join('');
 }
 
 // ── Card detail modals ────────────────────────────────────────────────────────
@@ -2444,6 +3372,9 @@ function _initCardModalDelegation() {
 
 // ── Start the live engine ─────────────────────────────────────────────────────
 function startLiveEngine() {
+  // Stamp today's date immediately (before any API response)
+  updateWeatherCard(null);
+
   // Initial fetch
   fetchAndRender();
   fetchTimelapseImages();
@@ -2530,8 +3461,12 @@ function initSectionContentLive(id) {
       break;
     case 'data-layers':
       initLayersMap();
-      setTimeout(updateDataLayersFeed, 200);
-      setTimeout(fetchAndUpdateNDVIAllZones, 600);
+      setTimeout(() => {
+        refreshAllLayers();                 // populate strip badges
+        updateDataLayersFeed();             // update sidebar metas from cached data
+        selectLayer('ndvi');                // open NDVI panel by default
+      }, 300);
+      setTimeout(fetchAndUpdateNDVIAllZones, 800);
       break;
     case 'reports':
       // Wire generate button and populate report table

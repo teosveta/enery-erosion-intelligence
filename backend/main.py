@@ -25,6 +25,7 @@ from config import (
 )
 import db
 from services import gemini, weather, copernicus, soilgrids, gbif, carbon
+from services import nasa_power, pvgis
 from watchers import timelapse
 
 # ── Logging ──────────────────────────────────────────────────────────────────
@@ -358,12 +359,16 @@ class RiskInput(BaseModel):
 
 @app.post("/api/ai/risk-score")
 async def ai_risk_score(data: RiskInput):
-    result = await gemini.compute_risk_score(
-        data.precipitation_mm, data.ndvi, data.vegetation_cover_pct,
-        data.slope_deg, data.soil_type, data.zone_id,
-    )
-    record = await db.save_risk_score(data.zone_id, result)
-    return result
+    try:
+        result = await gemini.compute_risk_score(
+            data.precipitation_mm, data.ndvi, data.vegetation_cover_pct,
+            data.slope_deg, data.soil_type, data.zone_id,
+        )
+        await db.save_risk_score(data.zone_id, result)
+        return result
+    except Exception as exc:
+        log.error("AI risk-score failed: %s", exc)
+        raise HTTPException(503, f"AI service unavailable: {exc}")
 
 # ── AI ESG Report ─────────────────────────────────────────────────────────────
 @app.post("/api/ai/report")
@@ -375,28 +380,43 @@ async def generate_report(site_id: str = DEFAULT_SITE_ID):
     analyses  = await db.get_analysis_history(limit=20)
     soil_recs = await db.get_soil_lab()
     risk      = await db.get_latest_risk()
-    ndvi      = await copernicus.fetch_ndvi(site["zones"][2]["polygon"], zone_id=3)
+
+    ndvi_val = None
+    try:
+        ndvi_data = await copernicus.fetch_ndvi(site["zones"][2]["polygon"], zone_id=3)
+        ndvi_val = ndvi_data.get("ndvi_mean") if isinstance(ndvi_data, dict) else None
+    except Exception as e:
+        log.warning("NDVI fetch failed for report: %s", e)
 
     agg = {
         "site_name":       site["name"],
         "report_date":     date.today().isoformat(),
-        "zone3_ndvi":      ndvi.get("ndvi_mean"),
+        "zone3_ndvi":      ndvi_val,
         "recent_analyses": analyses[-5:],
         "soil_records":    soil_recs[-3:],
         "risk_scores":     risk,
         "total_area_ha":   site["total_area_ha"],
         "capacity_mwp":    site["capacity_mwp"],
     }
-    report = await gemini.generate_esg_report(agg)
+    try:
+        report = await gemini.generate_esg_report(agg)
+    except Exception as exc:
+        log.error("Gemini ESG report failed: %s", exc)
+        report = gemini._build_fallback_report(agg)
+
     return {"report": report, "generated_at": date.today().isoformat()}
 
 # ── AI Biodiversity Analysis ──────────────────────────────────────────────────
 @app.post("/api/ai/biodiversity")
 async def ai_biodiversity(site_id: str = DEFAULT_SITE_ID):
     site = ALL_SITES.get(site_id, TSENOVO_SITE)
-    records = await gbif.fetch_occurrences(site["lat"], site["lon"], limit=50)
-    result = await gemini.analyze_biodiversity_data(records, site["name"])
-    return result
+    try:
+        records = await gbif.fetch_occurrences(site["lat"], site["lon"], limit=50)
+        result = await gemini.analyze_biodiversity_data(records, site["name"])
+        return result
+    except Exception as exc:
+        log.error("AI biodiversity analysis failed: %s", exc)
+        raise HTTPException(503, f"AI service unavailable: {exc}")
 
 # ── File Upload — Photo Monitoring ────────────────────────────────────────────
 @app.post("/api/upload/photo")
@@ -587,8 +607,12 @@ async def change_detection(
     async with aiofiles.open(before_path, "wb") as f: await f.write(before_bytes)
     async with aiofiles.open(after_path,  "wb") as f: await f.write(after_bytes)
 
-    result = await gemini.detect_change(before_path, after_path)
-    return result
+    try:
+        result = await gemini.detect_change(before_path, after_path)
+        return result
+    except Exception as exc:
+        log.error("AI change detection failed: %s", exc)
+        raise HTTPException(503, f"AI service unavailable: {exc}")
 
 # ── Timelapse image listing and serving ───────────────────────────────────────
 @app.get("/api/timelapse/images")
@@ -616,6 +640,55 @@ async def serve_timelapse_image(filename: str):
     if not path.exists() or not path.is_file():
         raise HTTPException(404, "Image not found")
     return FileResponse(str(path), media_type="image/jpeg")
+
+# ── NASA POWER — high-res solar & precipitation ───────────────────────────────
+@app.get("/api/nasa-power")
+async def get_nasa_power(
+    lat: float = TSENOVO_SITE["lat"],
+    lon: float = TSENOVO_SITE["lon"],
+    days_back: int = 30,
+):
+    try:
+        data = await nasa_power.fetch_power_data(lat, lon, days_back=days_back)
+        return data
+    except Exception as exc:
+        log.error("NASA POWER fetch failed: %s", exc)
+        raise HTTPException(503, f"NASA POWER service unavailable: {exc}")
+
+@app.get("/api/nasa-power/summary")
+async def get_nasa_power_summary(
+    lat: float = TSENOVO_SITE["lat"],
+    lon: float = TSENOVO_SITE["lon"],
+):
+    try:
+        return await nasa_power.fetch_power_summary(lat, lon)
+    except Exception as exc:
+        log.error("NASA POWER summary failed: %s", exc)
+        raise HTTPException(503, str(exc))
+
+# ── PVGIS — EU JRC Solar Resource ────────────────────────────────────────────
+@app.get("/api/pvgis")
+async def get_pvgis(
+    lat: float = TSENOVO_SITE["lat"],
+    lon: float = TSENOVO_SITE["lon"],
+    peakpower: float = TSENOVO_SITE["capacity_mwp"],
+):
+    try:
+        return await pvgis.fetch_pv_output(lat, lon, peakpower)
+    except Exception as exc:
+        log.error("PVGIS fetch failed: %s", exc)
+        raise HTTPException(503, f"PVGIS unavailable: {exc}")
+
+@app.get("/api/pvgis/monthly")
+async def get_pvgis_monthly(
+    lat: float = TSENOVO_SITE["lat"],
+    lon: float = TSENOVO_SITE["lon"],
+):
+    try:
+        return await pvgis.fetch_monthly_radiation(lat, lon)
+    except Exception as exc:
+        log.error("PVGIS monthly fetch failed: %s", exc)
+        raise HTTPException(503, str(exc))
 
 # ── Frontend catch-all (MUST be last — catches everything not matched above) ───
 @app.get("/", response_class=FileResponse)

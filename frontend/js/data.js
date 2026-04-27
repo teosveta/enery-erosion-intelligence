@@ -120,9 +120,9 @@ const ZONES = [
 ];
 
 const NDVI_TREND = {
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-  z2: [0.52, 0.49, 0.44, 0.41, 0.38, 0.36],
-  z3: [0.38, 0.34, 0.32, 0.29, 0.27, 0.24]
+  labels: ['Jul\'25', 'Oct\'25', 'Jan\'26', 'Apr\'26'],
+  z2: [0.41, 0.38, 0.35, 0.36],
+  z3: [0.29, 0.31, 0.34, 0.38]
 };
 
 const VEGETATION_BY_ZONE = {
@@ -132,14 +132,27 @@ const VEGETATION_BY_ZONE = {
 };
 
 const CARBON_TREND = {
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-  values: [58.2, 60.1, 63.5, 68.4, null, null]
+  labels: ['Jul\'25', 'Oct\'25', 'Jan\'26', 'Apr\'26'],
+  values: [3.44, 3.78, 3.99, 4.30]
 };
 
+// Rainfall data — last 8 days relative to today; updated dynamically by live.js from NASA POWER / Open-Meteo
 const RAINFALL_DATA = {
   labels: ['Apr 20','Apr 21','Apr 22','Apr 23','Apr 24','Apr 25','Apr 26','Apr 27'],
   values: [2, 0, 5, 0, 8, 3, 12, 18]
 };
+
+// Helper: rebuild RAINFALL_DATA labels relative to today (called at runtime)
+function buildRainfallLabels(daysBack = 8) {
+  const today = new Date();
+  const labels = [];
+  for (let i = daysBack - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    labels.push(d.toLocaleDateString('en', { month: 'short', day: 'numeric' }));
+  }
+  return labels;
+}
 
 const ALERTS_DATA = [
   {
@@ -186,18 +199,41 @@ const ALERTS_DATA = [
   }
 ];
 
+// Static fallback — mirrors soil_lab.json values (tC/ha scale is ~3–6 t/ha at 15cm depth)
 const CARBON_TABLE_DATA = [
-  { field: 'Tsenovo Farm', date: '2026-03-15', depth: '0–15', som: '3.51', bd: '1.34', carbon: '68.42', co2: '251.1', change: '+12.3' },
-  { field: 'Tsenovo Farm', date: '2026-01-10', depth: '0–15', som: '3.12', bd: '1.36', carbon: '60.32', co2: '221.4', change: '+5.7' },
-  { field: 'Tsenovo Farm', date: '2025-10-20', depth: '5–15', som: '2.89', bd: '1.38', carbon: '55.91', co2: '205.2', change: 'ref' },
-  { field: 'Tsenovo Farm', date: '2025-06-01', depth: '0–15', som: '2.71', bd: '1.41', carbon: '49.18', co2: '180.5', change: '-3.1' },
-  { field: 'Tsenovo Farm', date: '2025-03-14', depth: '5–15', som: '2.55', bd: '1.42', carbon: '43.92', co2: '161.2', change: 'ref' }
+  { field: 'Tsenovo Z3 — Erosion Focus', date: '2026-04-27', depth: '15', som: '3.60%', bd: '1.37', carbon: '4.30', co2: '15.79', change: '+24.9' },
+  { field: 'Tsenovo Z3 — Erosion Focus', date: '2026-04-05', depth: '15', som: '3.50%', bd: '1.38', carbon: '4.20', co2: '15.42', change: '+11.1' },
+  { field: 'Tsenovo Z8 — Reference Zone', date: '2026-04-06', depth: '15', som: '5.60%', bd: '1.29', carbon: '6.30', co2: '23.12', change: '+6.2' },
+  { field: 'Tsenovo Z1 — North Cluster',  date: '2026-01-25', depth: '15', som: '4.30%', bd: '1.35', carbon: '5.05', co2: '18.54', change: '+4.3' },
+  { field: 'Tsenovo Z3 — Erosion Focus', date: '2026-01-20', depth: '15', som: '3.30%', bd: '1.39', carbon: '3.99', co2: '14.63', change: '+5.6' },
+  { field: 'Tsenovo Z8 — Reference Zone', date: '2025-10-12', depth: '15', som: '5.40%', bd: '1.30', carbon: '6.11', co2: '22.43', change: 'ref' },
+  { field: 'Tsenovo Z3 — Erosion Focus', date: '2025-10-10', depth: '15', som: '3.10%', bd: '1.40', carbon: '3.78', co2: '13.87', change: '+9.9' },
+  { field: 'Tsenovo Z3 — Erosion Focus', date: '2025-07-15', depth: '15', som: '2.80%', bd: '1.41', carbon: '3.44', co2: '12.62', change: 'ref' }
 ];
 
 const BIRD_DATA = [
-  { name: 'Eurasian Skylark', species: 'Alauda arvensis', count: 8, trend: '↑' },
-  { name: 'Common Buzzard', species: 'Buteo buteo', count: 3, trend: '→' },
-  { name: 'European Bee-eater', species: 'Merops apiaster', count: 12, trend: '↑' },
-  { name: 'Black Kite', species: 'Milvus migrans', count: 2, trend: '↓' },
-  { name: 'Northern Lapwing', species: 'Vanellus vanellus', count: 6, trend: '→' }
+  { name: 'Eurasian Skylark',    species: 'Alauda arvensis',    count: 8,  trend: '↑', status: 'protected',      iucn: 'LC', zone: 'Z3', confidence: 0.94, history: [5,6,6,7,7,8]  },
+  { name: 'Common Buzzard',      species: 'Buteo buteo',        count: 3,  trend: '→', status: 'protected',      iucn: 'LC', zone: 'Z1', confidence: 0.88, history: [3,3,4,3,3,3]  },
+  { name: 'European Bee-eater',  species: 'Merops apiaster',    count: 12, trend: '↑', status: 'keystone',       iucn: 'LC', zone: 'Z4', confidence: 0.97, history: [7,8,9,10,11,12]},
+  { name: 'Black Kite',          species: 'Milvus migrans',     count: 2,  trend: '↓', status: 'protected',      iucn: 'LC', zone: 'Z2', confidence: 0.79, history: [5,4,4,3,3,2]  },
+  { name: 'Northern Lapwing',    species: 'Vanellus vanellus',  count: 6,  trend: '→', status: 'near-threatened',iucn: 'NT', zone: 'Z3', confidence: 0.91, history: [6,5,6,6,5,6]  },
+];
+
+const SPECIES_DATA = [
+  { name: 'Eurasian Skylark',   latin: 'Alauda arvensis',        group: 'birds',      status: 'protected',       iucn: 'LC', count: 8,   trend: '↑', zone: 'Z3'  },
+  { name: 'Common Buzzard',     latin: 'Buteo buteo',            group: 'birds',      status: 'protected',       iucn: 'LC', count: 3,   trend: '→', zone: 'Z1'  },
+  { name: 'European Bee-eater', latin: 'Merops apiaster',        group: 'birds',      status: 'keystone',        iucn: 'LC', count: 12,  trend: '↑', zone: 'Z4'  },
+  { name: 'Black Kite',         latin: 'Milvus migrans',         group: 'birds',      status: 'protected',       iucn: 'LC', count: 2,   trend: '↓', zone: 'Z2'  },
+  { name: 'Northern Lapwing',   latin: 'Vanellus vanellus',      group: 'birds',      status: 'near-threatened', iucn: 'NT', count: 6,   trend: '→', zone: 'Z3'  },
+  { name: 'Field Bindweed',     latin: 'Convolvulus arvensis',   group: 'plants',     status: 'invasive',        iucn: '—',  count: 210, trend: '↑', zone: 'Z7'  },
+  { name: 'Common Poppy',       latin: 'Papaver rhoeas',         group: 'plants',     status: 'common',          iucn: 'LC', count: 320, trend: '↑', zone: 'Z3'  },
+  { name: 'Yellow Bedstraw',    latin: 'Galium verum',           group: 'plants',     status: 'keystone',        iucn: 'LC', count: 180, trend: '→', zone: 'Z3'  },
+  { name: 'Wild Thyme',         latin: 'Thymus serpyllum',       group: 'plants',     status: 'protected',       iucn: 'LC', count: 95,  trend: '↑', zone: 'Z5'  },
+  { name: 'Meadow Sage',        latin: 'Salvia pratensis',       group: 'plants',     status: 'common',          iucn: 'LC', count: 67,  trend: '→', zone: 'Z6'  },
+  { name: 'Honey Bee',          latin: 'Apis mellifera',         group: 'insects',    status: 'keystone',        iucn: 'NT', count: 850, trend: '↑', zone: 'All' },
+  { name: 'Common Blue',        latin: 'Polyommatus icarus',     group: 'insects',    status: 'protected',       iucn: 'LC', count: 44,  trend: '↑', zone: 'Z4'  },
+  { name: 'Mole Cricket',       latin: 'Gryllotalpa gryllotalpa',group: 'insects',    status: 'near-threatened', iucn: 'NT', count: 12,  trend: '↓', zone: 'Z3'  },
+  { name: 'Brown Hare',         latin: 'Lepus europaeus',        group: 'mammals',    status: 'common',          iucn: 'LC', count: 7,   trend: '→', zone: 'Z2'  },
+  { name: 'European Badger',    latin: 'Meles meles',            group: 'mammals',    status: 'protected',       iucn: 'LC', count: 2,   trend: '↑', zone: 'Z1'  },
+  { name: 'Green Toad',         latin: 'Bufotes viridis',        group: 'amphibians', status: 'protected',       iucn: 'LC', count: 14,  trend: '↑', zone: 'Z8'  },
 ];
