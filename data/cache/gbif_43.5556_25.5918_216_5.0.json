@@ -1,0 +1,2231 @@
+{
+  "_cached_at": "2026-04-27T09:29:36.084288+00:00",
+  "payload": [
+    {
+      "key": 6178715746,
+      "datasetKey": "50c9509d-22c7-4a22-a47d-8c48425ef4a7",
+      "publishingOrgKey": "28eb1a3f-1c15-4a95-931a-4af90ecb574d",
+      "installationKey": "997448a8-f762-11e1-a439-00145eb45e9a",
+      "hostingOrganizationKey": "28eb1a3f-1c15-4a95-931a-4af90ecb574d",
+      "publishingCountry": "US",
+      "protocol": "DWC_ARCHIVE",
+      "lastCrawled": "2026-04-17T19:39:17.972+00:00",
+      "lastParsed": "2026-04-18T08:14:42.448+00:00",
+      "crawlId": 589,
+      "extensions": {
+        "http://rs.gbif.org/terms/1.0/Multimedia": [
+          {
+            "http://purl.org/dc/terms/creator": "Radostin",
+            "http://purl.org/dc/terms/publisher": "iNaturalist",
+            "http://rs.tdwg.org/dwc/terms/catalogNumber": "622034242",
+            "http://purl.org/dc/terms/format": "image/jpeg",
+            "http://purl.org/dc/terms/license": "https://creativecommons.org/licenses/by-nc/4.0/",
+            "http://purl.org/dc/terms/rightsHolder": "Radostin",
+            "http://purl.org/dc/terms/identifier": "https://inaturalist-open-data.s3.amazonaws.com/photos/622034242/original.jpg",
+            "http://purl.org/dc/terms/references": "https://www.inaturalist.org/photos/622034242",
+            "http://purl.org/dc/terms/created": "2026-03-07T13:10:39-08:00",
+            "http://purl.org/dc/terms/type": "StillImage"
+          },
+          {
+            "http://purl.org/dc/terms/creator": "Radostin",
+            "http://purl.org/dc/terms/publisher": "iNaturalist",
+            "http://rs.tdwg.org/dwc/terms/catalogNumber": "622034267",
+            "http://purl.org/dc/terms/format": "image/jpeg",
+            "http://purl.org/dc/terms/license": "https://creativecommons.org/licenses/by-nc/4.0/",
+            "http://purl.org/dc/terms/rightsHolder": "Radostin",
+            "http://purl.org/dc/terms/identifier": "https://inaturalist-open-data.s3.amazonaws.com/photos/622034267/original.jpg",
+            "http://purl.org/dc/terms/references": "https://www.inaturalist.org/photos/622034267",
+            "http://purl.org/dc/terms/created": "2026-03-07T13:10:42-08:00",
+            "http://purl.org/dc/terms/type": "StillImage"
+          }
+        ]
+      },
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "TQMJW",
+            "name": "Tritomegas bicolor (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Tritomegas",
+            "specificEpithet": "bicolor",
+            "formattedName": "<i>Tritomegas</i> <i>bicolor</i> (Linnaeus, 1758)"
+          },
+          "acceptedUsage": {
+            "key": "TQMJW",
+            "name": "Tritomegas bicolor (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Tritomegas",
+            "specificEpithet": "bicolor",
+            "formattedName": "<i>Tritomegas</i> <i>bicolor</i> (Linnaeus, 1758)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "BXVWV",
+              "name": "Hemiptera",
+              "rank": "ORDER"
+            },
+            {
+              "key": "BXWCX",
+              "name": "Heteroptera",
+              "rank": "SUBORDER"
+            },
+            {
+              "key": "BXWDD",
+              "name": "Pentatomomorpha",
+              "rank": "INFRAORDER"
+            },
+            {
+              "key": "BXWDQ",
+              "name": "Pentatomoidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "BXWHY",
+              "name": "Cydnidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "TQMJP",
+              "name": "Tritomegas",
+              "rank": "GENUS"
+            },
+            {
+              "key": "TQMJW",
+              "name": "Tritomegas bicolor",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": [
+            "TAXON_ID_NOT_FOUND"
+          ]
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "5758805",
+            "name": "Tritomegas bicolor (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Tritomegas",
+            "specificEpithet": "bicolor",
+            "formattedName": "<i>Tritomegas</i> <i>bicolor</i> (Linnaeus, 1758)"
+          },
+          "acceptedUsage": {
+            "key": "5758805",
+            "name": "Tritomegas bicolor (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Tritomegas",
+            "specificEpithet": "bicolor",
+            "formattedName": "<i>Tritomegas</i> <i>bicolor</i> (Linnaeus, 1758)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "809",
+              "name": "Hemiptera",
+              "rank": "ORDER"
+            },
+            {
+              "key": "6989",
+              "name": "Cydnidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "3265258",
+              "name": "Tritomegas",
+              "rank": "GENUS"
+            },
+            {
+              "key": "5758805",
+              "name": "Tritomegas bicolor",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": [
+            "TAXON_ID_NOT_FOUND"
+          ]
+        }
+      },
+      "taxonKey": 5758805,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 809,
+      "familyKey": 6989,
+      "genusKey": 3265258,
+      "speciesKey": 5758805,
+      "acceptedTaxonKey": 5758805,
+      "scientificName": "Tritomegas bicolor (Linnaeus, 1758)",
+      "scientificNameAuthorship": "(Linnaeus, 1758)",
+      "acceptedScientificName": "Tritomegas bicolor (Linnaeus, 1758)",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Hemiptera",
+      "family": "Cydnidae",
+      "genus": "Tritomegas",
+      "species": "Tritomegas bicolor",
+      "genericName": "Tritomegas",
+      "specificEpithet": "bicolor",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "dateIdentified": "2026-03-07T13:38:43",
+      "decimalLatitude": 43.605589,
+      "decimalLongitude": 25.586035,
+      "coordinateUncertaintyInMeters": 986.0,
+      "continent": "EUROPE",
+      "stateProvince": "Ruse",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 2026,
+      "month": 3,
+      "day": 7,
+      "eventDate": "2026-03-07T13:10:39",
+      "startDayOfYear": 66,
+      "endDayOfYear": 66,
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "CONTINENT_DERIVED_FROM_COORDINATES",
+        "TAXON_ID_NOT_FOUND"
+      ],
+      "modified": "2026-03-07T15:56:07.000+00:00",
+      "lastInterpreted": "2026-04-18T08:14:42.448+00:00",
+      "references": "https://www.inaturalist.org/observations/341662815",
+      "license": "http://creativecommons.org/licenses/by-nc/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "341662815"
+        }
+      ],
+      "media": [
+        {
+          "type": "StillImage",
+          "format": "image/jpeg",
+          "references": "https://www.inaturalist.org/photos/622034267",
+          "created": "2026-03-07T21:10:42.000+00:00",
+          "creator": "Radostin",
+          "publisher": "iNaturalist",
+          "license": "http://creativecommons.org/licenses/by-nc/4.0/",
+          "rightsHolder": "Radostin",
+          "identifier": "https://inaturalist-open-data.s3.amazonaws.com/photos/622034267/original.jpg"
+        },
+        {
+          "type": "StillImage",
+          "format": "image/jpeg",
+          "references": "https://www.inaturalist.org/photos/622034242",
+          "created": "2026-03-07T21:10:39.000+00:00",
+          "creator": "Radostin",
+          "publisher": "iNaturalist",
+          "license": "http://creativecommons.org/licenses/by-nc/4.0/",
+          "rightsHolder": "Radostin",
+          "identifier": "https://inaturalist-open-data.s3.amazonaws.com/photos/622034242/original.jpg"
+        }
+      ],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "datasetName": "iNaturalist research-grade observations",
+      "recordedBy": "Radostin",
+      "identifiedBy": "Lupoli Roland",
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "NORTH_AMERICA",
+      "rightsHolder": "Radostin",
+      "identifier": "341662815",
+      "http://unknown.org/nick": "blightedfella",
+      "verbatimEventDate": "2026-03-07 13:10:39",
+      "verbatimLocality": "7133 Novgrad, Bulgaria",
+      "collectionCode": "Observations",
+      "gbifID": "6178715746",
+      "occurrenceID": "https://www.inaturalist.org/observations/341662815",
+      "taxonID": "57839",
+      "http://unknown.org/captive_cultivated": "wild",
+      "catalogNumber": "341662815",
+      "institutionCode": "iNaturalist",
+      "eventTime": "13:10:39+02:00",
+      "identificationID": "770824648"
+    },
+    {
+      "key": 3338707703,
+      "datasetKey": "17298ce5-235a-4da7-ae6f-bd6cd26282ab",
+      "publishingOrgKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "installationKey": "8e10b660-a44b-4071-87dc-09fbd513d4a2",
+      "hostingOrganizationKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "publishingCountry": "NL",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-04T03:51:07.757+00:00",
+      "lastParsed": "2026-03-04T03:51:42.088+00:00",
+      "crawlId": 223,
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "6T9LD",
+            "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "cancellatum",
+            "formattedName": "<i>Orthetrum</i> <i>cancellatum</i> (Linnaeus, 1758)"
+          },
+          "acceptedUsage": {
+            "key": "6T9LD",
+            "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "cancellatum",
+            "formattedName": "<i>Orthetrum</i> <i>cancellatum</i> (Linnaeus, 1758)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "B6LCL",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "9WLT3",
+              "name": "Anisoptera",
+              "rank": "SUBORDER"
+            },
+            {
+              "key": "V5PXK",
+              "name": "Libelluloidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "9WKKB",
+              "name": "Libellulidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "9WMPJ",
+              "name": "Orthetrum",
+              "rank": "GENUS"
+            },
+            {
+              "key": "6T9LD",
+              "name": "Orthetrum cancellatum",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "1428686",
+            "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "cancellatum",
+            "formattedName": "<i>Orthetrum</i> <i>cancellatum</i> (Linnaeus, 1758)"
+          },
+          "acceptedUsage": {
+            "key": "1428686",
+            "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "cancellatum",
+            "formattedName": "<i>Orthetrum</i> <i>cancellatum</i> (Linnaeus, 1758)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "789",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "5936",
+              "name": "Libellulidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "1428581",
+              "name": "Orthetrum",
+              "rank": "GENUS"
+            },
+            {
+              "key": "1428686",
+              "name": "Orthetrum cancellatum",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        }
+      },
+      "taxonKey": 1428686,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 789,
+      "familyKey": 5936,
+      "genusKey": 1428581,
+      "speciesKey": 1428686,
+      "acceptedTaxonKey": 1428686,
+      "scientificName": "Orthetrum cancellatum (Linnaeus, 1758)",
+      "scientificNameAuthorship": "(Linnaeus, 1758)",
+      "acceptedScientificName": "Orthetrum cancellatum (Linnaeus, 1758)",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Odonata",
+      "family": "Libellulidae",
+      "genus": "Orthetrum",
+      "species": "Orthetrum cancellatum",
+      "genericName": "Orthetrum",
+      "specificEpithet": "cancellatum",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "iucnRedListCategory": "LC",
+      "decimalLatitude": 43.6,
+      "decimalLongitude": 25.56667,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 1962,
+      "month": 5,
+      "day": 30,
+      "eventDate": "1962-05-30",
+      "startDayOfYear": 150,
+      "endDayOfYear": 150,
+      "issues": [
+        "GEODETIC_DATUM_ASSUMED_WGS84",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-04T03:51:42.088+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "dvs_odo_48245"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "dvs_odo_48245",
+      "verbatimEventDate": "30/05/1962",
+      "associatedReferences": "Beschovski V. 1965",
+      "locality": "village of Novgrad; swamp by the Danube River",
+      "occurrenceRemarks": "1 f",
+      "gbifID": "3338707703",
+      "occurrenceID": "dvs_odo_48245"
+    },
+    {
+      "key": 3338707708,
+      "datasetKey": "17298ce5-235a-4da7-ae6f-bd6cd26282ab",
+      "publishingOrgKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "installationKey": "8e10b660-a44b-4071-87dc-09fbd513d4a2",
+      "hostingOrganizationKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "publishingCountry": "NL",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-04T03:51:07.757+00:00",
+      "lastParsed": "2026-03-04T03:51:42.100+00:00",
+      "crawlId": 223,
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "6T9LD",
+            "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "cancellatum",
+            "formattedName": "<i>Orthetrum</i> <i>cancellatum</i> (Linnaeus, 1758)"
+          },
+          "acceptedUsage": {
+            "key": "6T9LD",
+            "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "cancellatum",
+            "formattedName": "<i>Orthetrum</i> <i>cancellatum</i> (Linnaeus, 1758)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "B6LCL",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "9WLT3",
+              "name": "Anisoptera",
+              "rank": "SUBORDER"
+            },
+            {
+              "key": "V5PXK",
+              "name": "Libelluloidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "9WKKB",
+              "name": "Libellulidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "9WMPJ",
+              "name": "Orthetrum",
+              "rank": "GENUS"
+            },
+            {
+              "key": "6T9LD",
+              "name": "Orthetrum cancellatum",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "1428686",
+            "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "cancellatum",
+            "formattedName": "<i>Orthetrum</i> <i>cancellatum</i> (Linnaeus, 1758)"
+          },
+          "acceptedUsage": {
+            "key": "1428686",
+            "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Linnaeus, 1758)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "cancellatum",
+            "formattedName": "<i>Orthetrum</i> <i>cancellatum</i> (Linnaeus, 1758)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "789",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "5936",
+              "name": "Libellulidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "1428581",
+              "name": "Orthetrum",
+              "rank": "GENUS"
+            },
+            {
+              "key": "1428686",
+              "name": "Orthetrum cancellatum",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        }
+      },
+      "taxonKey": 1428686,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 789,
+      "familyKey": 5936,
+      "genusKey": 1428581,
+      "speciesKey": 1428686,
+      "acceptedTaxonKey": 1428686,
+      "scientificName": "Orthetrum cancellatum (Linnaeus, 1758)",
+      "scientificNameAuthorship": "(Linnaeus, 1758)",
+      "acceptedScientificName": "Orthetrum cancellatum (Linnaeus, 1758)",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Odonata",
+      "family": "Libellulidae",
+      "genus": "Orthetrum",
+      "species": "Orthetrum cancellatum",
+      "genericName": "Orthetrum",
+      "specificEpithet": "cancellatum",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "iucnRedListCategory": "LC",
+      "decimalLatitude": 43.6,
+      "decimalLongitude": 25.56667,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 1961,
+      "month": 6,
+      "day": 15,
+      "eventDate": "1961-06-15",
+      "startDayOfYear": 166,
+      "endDayOfYear": 166,
+      "issues": [
+        "GEODETIC_DATUM_ASSUMED_WGS84",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-04T03:51:42.100+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "dvs_odo_48242"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "dvs_odo_48242",
+      "verbatimEventDate": "15/06/1961",
+      "associatedReferences": "Beschovski V. 1965",
+      "locality": "village of Novgrad; swamp by the Danube River",
+      "occurrenceRemarks": "1 f",
+      "gbifID": "3338707708",
+      "occurrenceID": "dvs_odo_48242"
+    },
+    {
+      "key": 3338741757,
+      "datasetKey": "17298ce5-235a-4da7-ae6f-bd6cd26282ab",
+      "publishingOrgKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "installationKey": "8e10b660-a44b-4071-87dc-09fbd513d4a2",
+      "hostingOrganizationKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "publishingCountry": "NL",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-04T03:51:07.757+00:00",
+      "lastParsed": "2026-03-04T03:51:49.153+00:00",
+      "crawlId": 223,
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "6GRQM",
+            "name": "Erythromma lindenii (Selys, 1840)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1840)",
+            "genericName": "Erythromma",
+            "specificEpithet": "lindenii",
+            "formattedName": "<i>Erythromma</i> <i>lindenii</i> (Selys, 1840)"
+          },
+          "acceptedUsage": {
+            "key": "6GRQM",
+            "name": "Erythromma lindenii (Selys, 1840)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1840)",
+            "genericName": "Erythromma",
+            "specificEpithet": "lindenii",
+            "formattedName": "<i>Erythromma</i> <i>lindenii</i> (Selys, 1840)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "B6LCL",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "B6NHX",
+              "name": "Zygoptera",
+              "rank": "SUBORDER"
+            },
+            {
+              "key": "V58WK",
+              "name": "Coenagrionoidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "9WKK4",
+              "name": "Coenagrionidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "9WM6H",
+              "name": "Erythromma",
+              "rank": "GENUS"
+            },
+            {
+              "key": "6GRQM",
+              "name": "Erythromma lindenii",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "1423027",
+            "name": "Erythromma lindenii (Selys, 1840)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1840)",
+            "genericName": "Erythromma",
+            "specificEpithet": "lindenii",
+            "formattedName": "<i>Erythromma</i> <i>lindenii</i> (Selys, 1840)"
+          },
+          "acceptedUsage": {
+            "key": "1423027",
+            "name": "Erythromma lindenii (Selys, 1840)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1840)",
+            "genericName": "Erythromma",
+            "specificEpithet": "lindenii",
+            "formattedName": "<i>Erythromma</i> <i>lindenii</i> (Selys, 1840)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "789",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "8577",
+              "name": "Coenagrionidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "8167819",
+              "name": "Erythromma",
+              "rank": "GENUS"
+            },
+            {
+              "key": "1423027",
+              "name": "Erythromma lindenii",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        }
+      },
+      "taxonKey": 1423027,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 789,
+      "familyKey": 8577,
+      "genusKey": 8167819,
+      "speciesKey": 1423027,
+      "acceptedTaxonKey": 1423027,
+      "scientificName": "Erythromma lindenii (Selys, 1840)",
+      "scientificNameAuthorship": "(Selys, 1840)",
+      "acceptedScientificName": "Erythromma lindenii (Selys, 1840)",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Odonata",
+      "family": "Coenagrionidae",
+      "genus": "Erythromma",
+      "species": "Erythromma lindenii",
+      "genericName": "Erythromma",
+      "specificEpithet": "lindenii",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "iucnRedListCategory": "LC",
+      "decimalLatitude": 43.6,
+      "decimalLongitude": 25.56667,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 1961,
+      "month": 6,
+      "day": 18,
+      "eventDate": "1961-06-18",
+      "startDayOfYear": 169,
+      "endDayOfYear": 169,
+      "issues": [
+        "GEODETIC_DATUM_ASSUMED_WGS84",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-04T03:51:49.153+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "dvs_odo_26754"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "dvs_odo_26754",
+      "verbatimEventDate": "18/06/1961",
+      "associatedReferences": "Beschovski",
+      "locality": "village of Novgrad; swamp by the Danube River",
+      "occurrenceRemarks": "1 Larva",
+      "gbifID": "3338741757",
+      "occurrenceID": "dvs_odo_26754"
+    },
+    {
+      "key": 3338733075,
+      "datasetKey": "17298ce5-235a-4da7-ae6f-bd6cd26282ab",
+      "publishingOrgKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "installationKey": "8e10b660-a44b-4071-87dc-09fbd513d4a2",
+      "hostingOrganizationKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "publishingCountry": "NL",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-04T03:51:07.757+00:00",
+      "lastParsed": "2026-03-04T03:51:47.695+00:00",
+      "crawlId": 223,
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "5ZJR2",
+            "name": "Coenagrion ornatum (Selys, 1850)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1850)",
+            "genericName": "Coenagrion",
+            "specificEpithet": "ornatum",
+            "formattedName": "<i>Coenagrion</i> <i>ornatum</i> (Selys, 1850)"
+          },
+          "acceptedUsage": {
+            "key": "5ZJR2",
+            "name": "Coenagrion ornatum (Selys, 1850)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1850)",
+            "genericName": "Coenagrion",
+            "specificEpithet": "ornatum",
+            "formattedName": "<i>Coenagrion</i> <i>ornatum</i> (Selys, 1850)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "B6LCL",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "B6NHX",
+              "name": "Zygoptera",
+              "rank": "SUBORDER"
+            },
+            {
+              "key": "V58WK",
+              "name": "Coenagrionoidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "9WKK4",
+              "name": "Coenagrionidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "9WLWY",
+              "name": "Coenagrion",
+              "rank": "GENUS"
+            },
+            {
+              "key": "5ZJR2",
+              "name": "Coenagrion ornatum",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "1422002",
+            "name": "Coenagrion ornatum (Selys, 1850)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1850)",
+            "genericName": "Coenagrion",
+            "specificEpithet": "ornatum",
+            "formattedName": "<i>Coenagrion</i> <i>ornatum</i> (Selys, 1850)"
+          },
+          "acceptedUsage": {
+            "key": "1422002",
+            "name": "Coenagrion ornatum (Selys, 1850)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1850)",
+            "genericName": "Coenagrion",
+            "specificEpithet": "ornatum",
+            "formattedName": "<i>Coenagrion</i> <i>ornatum</i> (Selys, 1850)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "789",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "8577",
+              "name": "Coenagrionidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "1421959",
+              "name": "Coenagrion",
+              "rank": "GENUS"
+            },
+            {
+              "key": "1422002",
+              "name": "Coenagrion ornatum",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        }
+      },
+      "taxonKey": 1422002,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 789,
+      "familyKey": 8577,
+      "genusKey": 1421959,
+      "speciesKey": 1422002,
+      "acceptedTaxonKey": 1422002,
+      "scientificName": "Coenagrion ornatum (Selys, 1850)",
+      "scientificNameAuthorship": "(Selys, 1850)",
+      "acceptedScientificName": "Coenagrion ornatum (Selys, 1850)",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Odonata",
+      "family": "Coenagrionidae",
+      "genus": "Coenagrion",
+      "species": "Coenagrion ornatum",
+      "genericName": "Coenagrion",
+      "specificEpithet": "ornatum",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "iucnRedListCategory": "LC",
+      "decimalLatitude": 43.6,
+      "decimalLongitude": 25.56667,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "issues": [
+        "GEODETIC_DATUM_ASSUMED_WGS84",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-04T03:51:47.695+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "dvs_odo_16416"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "dvs_odo_16416",
+      "verbatimEventDate": "<1990",
+      "associatedReferences": "Beschovski V. 1968",
+      "locality": "village of Novgrad; swamp by the Danube River",
+      "occurrenceRemarks": "Larva",
+      "gbifID": "3338733075",
+      "occurrenceID": "dvs_odo_16416"
+    },
+    {
+      "key": 3338759617,
+      "datasetKey": "17298ce5-235a-4da7-ae6f-bd6cd26282ab",
+      "publishingOrgKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "installationKey": "8e10b660-a44b-4071-87dc-09fbd513d4a2",
+      "hostingOrganizationKey": "21c07296-77a8-4adf-aba1-e1035429be3a",
+      "publishingCountry": "NL",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-04T03:51:07.757+00:00",
+      "lastParsed": "2026-03-04T03:51:55.507+00:00",
+      "crawlId": 223,
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "6SXKX",
+            "name": "Orthetrum albistylum (Selys, 1848)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1848)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "albistylum",
+            "formattedName": "<i>Orthetrum</i> <i>albistylum</i> (Selys, 1848)"
+          },
+          "acceptedUsage": {
+            "key": "6SXKX",
+            "name": "Orthetrum albistylum (Selys, 1848)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1848)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "albistylum",
+            "formattedName": "<i>Orthetrum</i> <i>albistylum</i> (Selys, 1848)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "B6LCL",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "9WLT3",
+              "name": "Anisoptera",
+              "rank": "SUBORDER"
+            },
+            {
+              "key": "V5PXK",
+              "name": "Libelluloidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "9WKKB",
+              "name": "Libellulidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "9WMPJ",
+              "name": "Orthetrum",
+              "rank": "GENUS"
+            },
+            {
+              "key": "6SXKX",
+              "name": "Orthetrum albistylum",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "1428595",
+            "name": "Orthetrum albistylum (Selys, 1848)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1848)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "albistylum",
+            "formattedName": "<i>Orthetrum</i> <i>albistylum</i> (Selys, 1848)"
+          },
+          "acceptedUsage": {
+            "key": "1428595",
+            "name": "Orthetrum albistylum (Selys, 1848)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Selys, 1848)",
+            "genericName": "Orthetrum",
+            "specificEpithet": "albistylum",
+            "formattedName": "<i>Orthetrum</i> <i>albistylum</i> (Selys, 1848)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "789",
+              "name": "Odonata",
+              "rank": "ORDER"
+            },
+            {
+              "key": "5936",
+              "name": "Libellulidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "1428581",
+              "name": "Orthetrum",
+              "rank": "GENUS"
+            },
+            {
+              "key": "1428595",
+              "name": "Orthetrum albistylum",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        }
+      },
+      "taxonKey": 1428595,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 789,
+      "familyKey": 5936,
+      "genusKey": 1428581,
+      "speciesKey": 1428595,
+      "acceptedTaxonKey": 1428595,
+      "scientificName": "Orthetrum albistylum (Selys, 1848)",
+      "scientificNameAuthorship": "(Selys, 1848)",
+      "acceptedScientificName": "Orthetrum albistylum (Selys, 1848)",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Odonata",
+      "family": "Libellulidae",
+      "genus": "Orthetrum",
+      "species": "Orthetrum albistylum",
+      "genericName": "Orthetrum",
+      "specificEpithet": "albistylum",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "iucnRedListCategory": "LC",
+      "decimalLatitude": 43.6,
+      "decimalLongitude": 25.56667,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "issues": [
+        "GEODETIC_DATUM_ASSUMED_WGS84",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-04T03:51:55.507+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "dvs_odo_45184"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "dvs_odo_45184",
+      "verbatimEventDate": "<1990",
+      "associatedReferences": "Beschovski V. 1968",
+      "locality": "village of Novgrad; swamp by the Danube River",
+      "occurrenceRemarks": "Larva",
+      "gbifID": "3338759617",
+      "occurrenceID": "dvs_odo_45184"
+    },
+    {
+      "key": 3883493489,
+      "datasetKey": "857bce66-f762-11e1-a439-00145eb45e9a",
+      "publishingOrgKey": "2d6e0e40-2aee-11d8-aa2d-b8a03c50a862",
+      "networkKeys": [
+        "80edc711-19b9-464c-a8b3-2cc15be80e26"
+      ],
+      "installationKey": "75c5d4ef-378e-4f25-984a-f32510926d7c",
+      "hostingOrganizationKey": "2d6e0e40-2aee-11d8-aa2d-b8a03c50a862",
+      "publishingCountry": "AT",
+      "protocol": "DWC_ARCHIVE",
+      "lastCrawled": "2026-04-17T12:55:10.401+00:00",
+      "lastParsed": "2026-04-17T13:39:27.903+00:00",
+      "crawlId": 353,
+      "extensions": {
+        "http://rs.tdwg.org/dwc/terms/MeasurementOrFact": [
+          {
+            "http://rs.tdwg.org/dwc/terms/measurementValue": "1",
+            "http://rs.tdwg.org/dwc/terms/measurementType": "count"
+          }
+        ]
+      },
+      "basisOfRecord": "OCCURRENCE",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "69FLY",
+            "name": "Catocala puerpera (Giorna, 1791)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Giorna, 1791)",
+            "genericName": "Catocala",
+            "specificEpithet": "puerpera",
+            "formattedName": "<i>Catocala</i> <i>puerpera</i> (Giorna, 1791)"
+          },
+          "acceptedUsage": {
+            "key": "69FLY",
+            "name": "Catocala puerpera (Giorna, 1791)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Giorna, 1791)",
+            "genericName": "Catocala",
+            "specificEpithet": "puerpera",
+            "formattedName": "<i>Catocala</i> <i>puerpera</i> (Giorna, 1791)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "B6L67",
+              "name": "Lepidoptera",
+              "rank": "ORDER"
+            },
+            {
+              "key": "CQR9T",
+              "name": "Noctuoidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "92529",
+              "name": "Erebidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "93MTY",
+              "name": "Erebinae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "924T3",
+              "name": "Catocala",
+              "rank": "GENUS"
+            },
+            {
+              "key": "69FLY",
+              "name": "Catocala puerpera",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "1797454",
+            "name": "Catocala puerpera (Giorna, 1791)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Giorna, 1791)",
+            "genericName": "Catocala",
+            "specificEpithet": "puerpera",
+            "formattedName": "<i>Catocala</i> <i>puerpera</i> (Giorna, 1791)"
+          },
+          "acceptedUsage": {
+            "key": "1797454",
+            "name": "Catocala puerpera (Giorna, 1791)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Giorna, 1791)",
+            "genericName": "Catocala",
+            "specificEpithet": "puerpera",
+            "formattedName": "<i>Catocala</i> <i>puerpera</i> (Giorna, 1791)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "797",
+              "name": "Lepidoptera",
+              "rank": "ORDER"
+            },
+            {
+              "key": "4532185",
+              "name": "Erebidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "1797073",
+              "name": "Catocala",
+              "rank": "GENUS"
+            },
+            {
+              "key": "1797454",
+              "name": "Catocala puerpera",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 1797454,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 797,
+      "familyKey": 4532185,
+      "genusKey": 1797073,
+      "speciesKey": 1797454,
+      "acceptedTaxonKey": 1797454,
+      "scientificName": "Catocala puerpera (Giorna, 1791)",
+      "scientificNameAuthorship": "(Giorna, 1791)",
+      "acceptedScientificName": "Catocala puerpera (Giorna, 1791)",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Lepidoptera",
+      "family": "Erebidae",
+      "genus": "Catocala",
+      "species": "Catocala puerpera",
+      "genericName": "Catocala",
+      "specificEpithet": "puerpera",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "decimalLatitude": 43.560001,
+      "decimalLongitude": 25.58,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COORDINATE_UNCERTAINTY_METERS_INVALID",
+        "COUNTRY_COORDINATE_MISMATCH",
+        "COUNTRY_INVALID",
+        "CONTINENT_DERIVED_FROM_COORDINATES",
+        "RECORDED_DATE_INVALID"
+      ],
+      "modified": "2025-08-20T00:00:00.000+00:00",
+      "lastInterpreted": "2026-04-17T13:39:27.903+00:00",
+      "license": "http://creativecommons.org/publicdomain/zero/1.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "10034754"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "RO",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Romania",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "10034754",
+      "catalogNumber": "10034754",
+      "institutionCode": "LI",
+      "locality": "Giurgiu",
+      "collectionCode": "ZOBODAT",
+      "gbifID": "3883493489",
+      "occurrenceID": "https://www.zobodat.at/belege.php?id=10034754"
+    },
+    {
+      "key": 3883498441,
+      "datasetKey": "857bce66-f762-11e1-a439-00145eb45e9a",
+      "publishingOrgKey": "2d6e0e40-2aee-11d8-aa2d-b8a03c50a862",
+      "networkKeys": [
+        "80edc711-19b9-464c-a8b3-2cc15be80e26"
+      ],
+      "installationKey": "75c5d4ef-378e-4f25-984a-f32510926d7c",
+      "hostingOrganizationKey": "2d6e0e40-2aee-11d8-aa2d-b8a03c50a862",
+      "publishingCountry": "AT",
+      "protocol": "DWC_ARCHIVE",
+      "lastCrawled": "2026-04-17T12:55:10.401+00:00",
+      "lastParsed": "2026-04-17T13:39:27.947+00:00",
+      "crawlId": 353,
+      "extensions": {
+        "http://rs.tdwg.org/dwc/terms/MeasurementOrFact": [
+          {
+            "http://rs.tdwg.org/dwc/terms/measurementValue": "1",
+            "http://rs.tdwg.org/dwc/terms/measurementType": "count"
+          }
+        ]
+      },
+      "basisOfRecord": "OCCURRENCE",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "69FLY",
+            "name": "Catocala puerpera (Giorna, 1791)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Giorna, 1791)",
+            "genericName": "Catocala",
+            "specificEpithet": "puerpera",
+            "formattedName": "<i>Catocala</i> <i>puerpera</i> (Giorna, 1791)"
+          },
+          "acceptedUsage": {
+            "key": "69FLY",
+            "name": "Catocala puerpera (Giorna, 1791)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Giorna, 1791)",
+            "genericName": "Catocala",
+            "specificEpithet": "puerpera",
+            "formattedName": "<i>Catocala</i> <i>puerpera</i> (Giorna, 1791)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "B6L67",
+              "name": "Lepidoptera",
+              "rank": "ORDER"
+            },
+            {
+              "key": "CQR9T",
+              "name": "Noctuoidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "92529",
+              "name": "Erebidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "93MTY",
+              "name": "Erebinae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "924T3",
+              "name": "Catocala",
+              "rank": "GENUS"
+            },
+            {
+              "key": "69FLY",
+              "name": "Catocala puerpera",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "1797454",
+            "name": "Catocala puerpera (Giorna, 1791)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Giorna, 1791)",
+            "genericName": "Catocala",
+            "specificEpithet": "puerpera",
+            "formattedName": "<i>Catocala</i> <i>puerpera</i> (Giorna, 1791)"
+          },
+          "acceptedUsage": {
+            "key": "1797454",
+            "name": "Catocala puerpera (Giorna, 1791)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Giorna, 1791)",
+            "genericName": "Catocala",
+            "specificEpithet": "puerpera",
+            "formattedName": "<i>Catocala</i> <i>puerpera</i> (Giorna, 1791)"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "797",
+              "name": "Lepidoptera",
+              "rank": "ORDER"
+            },
+            {
+              "key": "4532185",
+              "name": "Erebidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "1797073",
+              "name": "Catocala",
+              "rank": "GENUS"
+            },
+            {
+              "key": "1797454",
+              "name": "Catocala puerpera",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 1797454,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 797,
+      "familyKey": 4532185,
+      "genusKey": 1797073,
+      "speciesKey": 1797454,
+      "acceptedTaxonKey": 1797454,
+      "scientificName": "Catocala puerpera (Giorna, 1791)",
+      "scientificNameAuthorship": "(Giorna, 1791)",
+      "acceptedScientificName": "Catocala puerpera (Giorna, 1791)",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Lepidoptera",
+      "family": "Erebidae",
+      "genus": "Catocala",
+      "species": "Catocala puerpera",
+      "genericName": "Catocala",
+      "specificEpithet": "puerpera",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "decimalLatitude": 43.560001,
+      "decimalLongitude": 25.58,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COORDINATE_UNCERTAINTY_METERS_INVALID",
+        "COUNTRY_COORDINATE_MISMATCH",
+        "COUNTRY_INVALID",
+        "CONTINENT_DERIVED_FROM_COORDINATES",
+        "RECORDED_DATE_INVALID"
+      ],
+      "modified": "2025-08-20T00:00:00.000+00:00",
+      "lastInterpreted": "2026-04-17T13:39:27.947+00:00",
+      "license": "http://creativecommons.org/publicdomain/zero/1.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "10034753"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "RO",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Romania",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "10034753",
+      "catalogNumber": "10034753",
+      "institutionCode": "LI",
+      "locality": "Giurgiu",
+      "collectionCode": "ZOBODAT",
+      "gbifID": "3883498441",
+      "occurrenceID": "https://www.zobodat.at/belege.php?id=10034753"
+    },
+    {
+      "key": 3883502882,
+      "datasetKey": "857bce66-f762-11e1-a439-00145eb45e9a",
+      "publishingOrgKey": "2d6e0e40-2aee-11d8-aa2d-b8a03c50a862",
+      "networkKeys": [
+        "80edc711-19b9-464c-a8b3-2cc15be80e26"
+      ],
+      "installationKey": "75c5d4ef-378e-4f25-984a-f32510926d7c",
+      "hostingOrganizationKey": "2d6e0e40-2aee-11d8-aa2d-b8a03c50a862",
+      "publishingCountry": "AT",
+      "protocol": "DWC_ARCHIVE",
+      "lastCrawled": "2026-04-17T12:55:10.401+00:00",
+      "lastParsed": "2026-04-17T13:39:27.934+00:00",
+      "crawlId": 353,
+      "extensions": {
+        "http://rs.tdwg.org/dwc/terms/MeasurementOrFact": [
+          {
+            "http://rs.tdwg.org/dwc/terms/measurementValue": "7",
+            "http://rs.tdwg.org/dwc/terms/measurementType": "count"
+          }
+        ]
+      },
+      "basisOfRecord": "OCCURRENCE",
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "NX8DZ",
+            "name": "Epizeuxis calvaria (Denis & Schiffermüller, 1775)",
+            "rank": "SPECIES",
+            "authorship": "(Denis & Schiffermüller, 1775)",
+            "genericName": "Epizeuxis",
+            "specificEpithet": "calvaria",
+            "formattedName": "<i>Epizeuxis</i> <i>calvaria</i> (Denis & Schiffermüller, 1775)"
+          },
+          "acceptedUsage": {
+            "key": "943QY",
+            "name": "Idia calvaria ([Denis & Schiffermüller], 1775)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "([Denis & Schiffermüller], 1775)",
+            "genericName": "Idia",
+            "specificEpithet": "calvaria",
+            "formattedName": "<i>Idia</i> <i>calvaria</i> ([Denis & Schiffermüller], 1775)"
+          },
+          "taxonomicStatus": "SYNONYM",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "RT",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "L2655",
+              "name": "Hexapoda",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "H6",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "B6L67",
+              "name": "Lepidoptera",
+              "rank": "ORDER"
+            },
+            {
+              "key": "CQR9T",
+              "name": "Noctuoidea",
+              "rank": "SUPERFAMILY"
+            },
+            {
+              "key": "92529",
+              "name": "Erebidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "93MWW",
+              "name": "Herminiinae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "8ZXK8",
+              "name": "Idia",
+              "rank": "GENUS"
+            },
+            {
+              "key": "943QY",
+              "name": "Idia calvaria",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "1781183",
+            "name": "Epizeuxis calvaria (Denis & Schiffermüller, 1775)",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Denis & Schiffermüller, 1775)",
+            "genericName": "Epizeuxis",
+            "specificEpithet": "calvaria",
+            "formattedName": "<i>Epizeuxis</i> <i>calvaria</i> (Denis & Schiffermüller, 1775)"
+          },
+          "acceptedUsage": {
+            "key": "6097254",
+            "name": "Idia calvaria (Denis & Schiffermüller) , 1775",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "(Denis & Schiffermüller) , 1775",
+            "genericName": "Idia",
+            "specificEpithet": "calvaria",
+            "formattedName": "<i>Idia</i> <i>calvaria</i> (Denis & Schiffermüller) , 1775"
+          },
+          "taxonomicStatus": "SYNONYM",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "54",
+              "name": "Arthropoda",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "216",
+              "name": "Insecta",
+              "rank": "CLASS"
+            },
+            {
+              "key": "797",
+              "name": "Lepidoptera",
+              "rank": "ORDER"
+            },
+            {
+              "key": "4532185",
+              "name": "Erebidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "7535296",
+              "name": "Idia",
+              "rank": "GENUS"
+            },
+            {
+              "key": "6097254",
+              "name": "Idia calvaria",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 1781183,
+      "kingdomKey": 1,
+      "phylumKey": 54,
+      "classKey": 216,
+      "orderKey": 797,
+      "familyKey": 4532185,
+      "genusKey": 7535296,
+      "speciesKey": 6097254,
+      "acceptedTaxonKey": 6097254,
+      "scientificName": "Epizeuxis calvaria (Denis & Schiffermüller, 1775)",
+      "scientificNameAuthorship": "(Denis & Schiffermüller, 1775)",
+      "acceptedScientificName": "Idia calvaria (Denis & Schiffermüller) , 1775",
+      "kingdom": "Animalia",
+      "phylum": "Arthropoda",
+      "order": "Lepidoptera",
+      "family": "Erebidae",
+      "genus": "Idia",
+      "species": "Idia calvaria",
+      "genericName": "Epizeuxis",
+      "specificEpithet": "calvaria",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "SYNONYM",
+      "decimalLatitude": 43.560001,
+      "decimalLongitude": 25.58,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COORDINATE_UNCERTAINTY_METERS_INVALID",
+        "COUNTRY_COORDINATE_MISMATCH",
+        "COUNTRY_INVALID",
+        "CONTINENT_DERIVED_FROM_COORDINATES",
+        "RECORDED_DATE_INVALID"
+      ],
+      "modified": "2025-08-20T00:00:00.000+00:00",
+      "lastInterpreted": "2026-04-17T13:39:27.934+00:00",
+      "license": "http://creativecommons.org/publicdomain/zero/1.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "10034755"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Insecta",
+      "countryCode": "RO",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Romania",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "10034755",
+      "catalogNumber": "10034755",
+      "institutionCode": "LI",
+      "locality": "Giurgiu",
+      "collectionCode": "ZOBODAT",
+      "gbifID": "3883502882",
+      "occurrenceID": "https://www.zobodat.at/belege.php?id=10034755"
+    }
+  ]
+}

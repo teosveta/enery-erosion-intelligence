@@ -1,0 +1,278 @@
+{
+  "_cached_at": "2026-04-27T09:29:36.699411+00:00",
+  "payload": [
+    {
+      "key": 4947502632,
+      "datasetKey": "5fd5f65d-e903-4a23-83e1-f34e15e17c93",
+      "publishingOrgKey": "826e5964-1925-48e4-a839-f4b418e75260",
+      "installationKey": "17a83780-3060-4851-9d6f-029d5fcb81c9",
+      "hostingOrganizationKey": "fbca90e3-8aed-48b1-84e3-369afbd000ce",
+      "publishingCountry": "BG",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-02T21:12:36.338+00:00",
+      "lastParsed": "2026-03-02T21:12:43.211+00:00",
+      "crawlId": 71,
+      "projectId": "nlbif2022.015",
+      "extensions": {},
+      "basisOfRecord": "MATERIAL_SAMPLE",
+      "individualCount": 1,
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "54M2V",
+            "name": "Talpa europaea Linnaeus, 1758",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "Linnaeus, 1758",
+            "genericName": "Talpa",
+            "specificEpithet": "europaea",
+            "formattedName": "<i>Talpa</i> <i>europaea</i> Linnaeus, 1758"
+          },
+          "acceptedUsage": {
+            "key": "54M2V",
+            "name": "Talpa europaea Linnaeus, 1758",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "Linnaeus, 1758",
+            "genericName": "Talpa",
+            "specificEpithet": "europaea",
+            "formattedName": "<i>Talpa</i> <i>europaea</i> Linnaeus, 1758"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "N",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "CH2",
+              "name": "Chordata",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "8V4V3",
+              "name": "Vertebrata",
+              "rank": "SUBPHYLUM"
+            },
+            {
+              "key": "8V4V5",
+              "name": "Gnathostomata",
+              "rank": "INFRAPHYLUM"
+            },
+            {
+              "key": "8VVWB",
+              "name": "Osteichthyes",
+              "rank": "PARVPHYLUM"
+            },
+            {
+              "key": "9CK8W",
+              "name": "Tetrapoda",
+              "rank": "MEGACLASS"
+            },
+            {
+              "key": "6224G",
+              "name": "Mammalia",
+              "rank": "CLASS"
+            },
+            {
+              "key": "6226C",
+              "name": "Theria",
+              "rank": "SUBCLASS"
+            },
+            {
+              "key": "LG",
+              "name": "Eutheria",
+              "rank": "INFRACLASS"
+            },
+            {
+              "key": "CFSF7",
+              "name": "Eulipotyphla",
+              "rank": "ORDER"
+            },
+            {
+              "key": "GWL",
+              "name": "Talpidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "62922",
+              "name": "Talpinae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "L9K",
+              "name": "Talpini",
+              "rank": "TRIBE"
+            },
+            {
+              "key": "7S8Q",
+              "name": "Talpa",
+              "rank": "GENUS"
+            },
+            {
+              "key": "54M2V",
+              "name": "Talpa europaea",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "7872906",
+            "name": "Talpa europaea Linnaeus, 1758",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "Linnaeus, 1758",
+            "genericName": "Talpa",
+            "specificEpithet": "europaea",
+            "formattedName": "<i>Talpa</i> <i>europaea</i> Linnaeus, 1758"
+          },
+          "acceptedUsage": {
+            "key": "7872906",
+            "name": "Talpa europaea Linnaeus, 1758",
+            "rank": "SPECIES",
+            "code": "ZOOLOGICAL",
+            "authorship": "Linnaeus, 1758",
+            "genericName": "Talpa",
+            "specificEpithet": "europaea",
+            "formattedName": "<i>Talpa</i> <i>europaea</i> Linnaeus, 1758"
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "1",
+              "name": "Animalia",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "44",
+              "name": "Chordata",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "359",
+              "name": "Mammalia",
+              "rank": "CLASS"
+            },
+            {
+              "key": "803",
+              "name": "Soricomorpha",
+              "rank": "ORDER"
+            },
+            {
+              "key": "9469",
+              "name": "Talpidae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "2436127",
+              "name": "Talpa",
+              "rank": "GENUS"
+            },
+            {
+              "key": "7872906",
+              "name": "Talpa europaea",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        }
+      },
+      "taxonKey": 7872906,
+      "kingdomKey": 1,
+      "phylumKey": 44,
+      "classKey": 359,
+      "orderKey": 803,
+      "familyKey": 9469,
+      "genusKey": 2436127,
+      "speciesKey": 7872906,
+      "acceptedTaxonKey": 7872906,
+      "scientificName": "Talpa europaea Linnaeus, 1758",
+      "scientificNameAuthorship": "Linnaeus, 1758",
+      "acceptedScientificName": "Talpa europaea Linnaeus, 1758",
+      "kingdom": "Animalia",
+      "phylum": "Chordata",
+      "order": "Soricomorpha",
+      "family": "Talpidae",
+      "genus": "Talpa",
+      "species": "Talpa europaea",
+      "genericName": "Talpa",
+      "specificEpithet": "europaea",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "iucnRedListCategory": "LC",
+      "decimalLatitude": 43.56905,
+      "decimalLongitude": 25.64022,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 1952,
+      "month": 4,
+      "day": 24,
+      "eventDate": "1952-04-24T00:00Z",
+      "startDayOfYear": 115,
+      "endDayOfYear": 115,
+      "issues": [
+        "CONTINENT_DERIVED_FROM_COORDINATES",
+        "INSTITUTION_MATCH_NONE"
+      ],
+      "lastInterpreted": "2026-03-02T21:12:43.211+00:00",
+      "license": "http://creativecommons.org/publicdomain/zero/1.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "NEDKO:SMoBG:OBS:915720"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "datasetID": "placeholder",
+      "datasetName": "Small mammals of Bulgaria",
+      "recordedBy": "Nedko Nedyalkov|BSPB Maрков",
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Mammalia",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "rightsHolder": "Bulgarian Society for the Protection of Birds",
+      "identifier": "NEDKO:SMoBG:OBS:915720",
+      "nomenclaturalCode": "ICZN",
+      "institutionCode": "Bulgarian Society for the Protection of Birds",
+      "municipality": "Белцов",
+      "associatedReferences": "Находище: Белцов. Източник: Мaрков, 1957",
+      "locality": "Beltsov, Ruse, Bulgaria",
+      "language": "en",
+      "gbifID": "4947502632",
+      "occurrenceID": "NEDKO:SMoBG:OBS:915720",
+      "type": "Event"
+    }
+  ]
+}

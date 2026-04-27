@@ -1,0 +1,74 @@
+{
+  "_cached_at": "2026-04-27T09:29:37.243648+00:00",
+  "payload": {
+    "shannon_h": 2.715,
+    "species_richness": 29,
+    "total_occurrences": 67,
+    "top_species": [
+      {
+        "name": "Ciconia ciconia (Linnaeus, 1758)",
+        "count": 20,
+        "proportion": 0.299
+      },
+      {
+        "name": "Buteo buteo (Linnaeus, 1758)",
+        "count": 10,
+        "proportion": 0.149
+      },
+      {
+        "name": "Corvus corax Linnaeus, 1758",
+        "count": 5,
+        "proportion": 0.075
+      },
+      {
+        "name": "Anser albifrons (Scopoli, 1769)",
+        "count": 3,
+        "proportion": 0.045
+      },
+      {
+        "name": "Egretta alba (Linnaeus, 1758)",
+        "count": 2,
+        "proportion": 0.03
+      },
+      {
+        "name": "Orthetrum cancellatum (Linnaeus, 1758)",
+        "count": 2,
+        "proportion": 0.03
+      },
+      {
+        "name": "Catocala puerpera (Giorna, 1791)",
+        "count": 2,
+        "proportion": 0.03
+      },
+      {
+        "name": "Ajuga chamaepitys (L.) Schreb.",
+        "count": 2,
+        "proportion": 0.03
+      },
+      {
+        "name": "Phalacrocorax carbo (Linnaeus, 1758)",
+        "count": 1,
+        "proportion": 0.015
+      },
+      {
+        "name": "Fringilla montifringilla Linnaeus, 1758",
+        "count": 1,
+        "proportion": 0.015
+      }
+    ],
+    "group_counts": {
+      "birds": 50,
+      "insects": 9,
+      "plants": 7,
+      "mammals": 1,
+      "amphibians": 0,
+      "reptiles": 0
+    },
+    "observed_per_group": {
+      "insects": 9,
+      "mammals": 1
+    },
+    "evenness": 0.806,
+    "source": "gbif"
+  }
+}

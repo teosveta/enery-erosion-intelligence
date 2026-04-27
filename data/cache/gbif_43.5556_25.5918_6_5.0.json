@@ -1,0 +1,1793 @@
+{
+  "_cached_at": "2026-04-27T09:29:36.416144+00:00",
+  "payload": [
+    {
+      "key": 3998163062,
+      "datasetKey": "14d5676a-2c54-4f94-9023-1e8dcd822aa0",
+      "publishingOrgKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "installationKey": "fe1a98a6-82b8-4652-86d6-d0f938207f67",
+      "hostingOrganizationKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "publishingCountry": "FR",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-03T08:17:52.416+00:00",
+      "lastParsed": "2026-03-03T11:16:49.809+00:00",
+      "crawlId": 283,
+      "projectId": "queries",
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "individualCount": 1,
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "5B786",
+            "name": "Veronica polita Fr.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "Fr.",
+            "genericName": "Veronica",
+            "specificEpithet": "polita",
+            "formattedName": "<i>Veronica</i> <i>polita</i> Fr."
+          },
+          "acceptedUsage": {
+            "key": "5B786",
+            "name": "Veronica polita Fr.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "Fr.",
+            "genericName": "Veronica",
+            "specificEpithet": "polita",
+            "formattedName": "<i>Veronica</i> <i>polita</i> Fr."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "P",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "CMQ8S",
+              "name": "Pteridobiotina",
+              "rank": "SUBKINGDOM"
+            },
+            {
+              "key": "TP",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "MG",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "3F4",
+              "name": "Lamiales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "6262K",
+              "name": "Plantaginaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "7NLQD",
+              "name": "Digitalidoideae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "KVWWH",
+              "name": "Veroniceae",
+              "rank": "TRIBE"
+            },
+            {
+              "key": "63VMN",
+              "name": "Veronica",
+              "rank": "GENUS"
+            },
+            {
+              "key": "5B786",
+              "name": "Veronica polita",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "3172074",
+            "name": "Veronica polita Fr.",
+            "rank": "SPECIES",
+            "authorship": "Fr.",
+            "genericName": "Veronica",
+            "specificEpithet": "polita",
+            "formattedName": "<i>Veronica</i> <i>polita</i> Fr."
+          },
+          "acceptedUsage": {
+            "key": "3172074",
+            "name": "Veronica polita Fr.",
+            "rank": "SPECIES",
+            "authorship": "Fr.",
+            "genericName": "Veronica",
+            "specificEpithet": "polita",
+            "formattedName": "<i>Veronica</i> <i>polita</i> Fr."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "6",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "7707728",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "220",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "408",
+              "name": "Lamiales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "2420",
+              "name": "Plantaginaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "3172047",
+              "name": "Veronica",
+              "rank": "GENUS"
+            },
+            {
+              "key": "3172074",
+              "name": "Veronica polita",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 3172074,
+      "kingdomKey": 6,
+      "phylumKey": 7707728,
+      "classKey": 220,
+      "orderKey": 408,
+      "familyKey": 2420,
+      "genusKey": 3172047,
+      "speciesKey": 3172074,
+      "acceptedTaxonKey": 3172074,
+      "scientificName": "Veronica polita Fr.",
+      "scientificNameAuthorship": "Fr.",
+      "acceptedScientificName": "Veronica polita Fr.",
+      "kingdom": "Plantae",
+      "phylum": "Tracheophyta",
+      "order": "Lamiales",
+      "family": "Plantaginaceae",
+      "genus": "Veronica",
+      "species": "Veronica polita",
+      "genericName": "Veronica",
+      "specificEpithet": "polita",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "decimalLatitude": 43.603512,
+      "decimalLongitude": 25.579884,
+      "coordinateUncertaintyInMeters": 19.0,
+      "elevation": 64.06,
+      "elevationAccuracy": 0.0,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 2022,
+      "month": 5,
+      "day": 24,
+      "eventDate": "2022-05-24T09:10:23.248Z",
+      "startDayOfYear": 144,
+      "endDayOfYear": 144,
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COUNTRY_DERIVED_FROM_COORDINATES",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-03T11:16:49.809+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "q-10597501444"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Magnoliopsida",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "q-10597501444",
+      "gbifID": "3998163062",
+      "occurrenceID": "q-10597501444"
+    },
+    {
+      "key": 3956110122,
+      "datasetKey": "14d5676a-2c54-4f94-9023-1e8dcd822aa0",
+      "publishingOrgKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "installationKey": "fe1a98a6-82b8-4652-86d6-d0f938207f67",
+      "hostingOrganizationKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "publishingCountry": "FR",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-03T08:17:52.416+00:00",
+      "lastParsed": "2026-03-03T11:17:23.921+00:00",
+      "crawlId": 283,
+      "projectId": "queries",
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "individualCount": 1,
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "5ZXFY",
+            "name": "Convolvulus arvensis L.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "L.",
+            "genericName": "Convolvulus",
+            "specificEpithet": "arvensis",
+            "formattedName": "<i>Convolvulus</i> <i>arvensis</i> L."
+          },
+          "acceptedUsage": {
+            "key": "5ZXFY",
+            "name": "Convolvulus arvensis L.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "L.",
+            "genericName": "Convolvulus",
+            "specificEpithet": "arvensis",
+            "formattedName": "<i>Convolvulus</i> <i>arvensis</i> L."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "P",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "CMQ8S",
+              "name": "Pteridobiotina",
+              "rank": "SUBKINGDOM"
+            },
+            {
+              "key": "TP",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "MG",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "43W",
+              "name": "Solanales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "8J9",
+              "name": "Convolvulaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "JD7",
+              "name": "Convolvuloideae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "KV6KW",
+              "name": "Convolvuleae",
+              "rank": "TRIBE"
+            },
+            {
+              "key": "3TL7",
+              "name": "Convolvulus",
+              "rank": "GENUS"
+            },
+            {
+              "key": "5ZXFY",
+              "name": "Convolvulus arvensis",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "2928390",
+            "name": "Convolvulus arvensis L.",
+            "rank": "SPECIES",
+            "authorship": "L.",
+            "genericName": "Convolvulus",
+            "specificEpithet": "arvensis",
+            "formattedName": "<i>Convolvulus</i> <i>arvensis</i> L."
+          },
+          "acceptedUsage": {
+            "key": "2928390",
+            "name": "Convolvulus arvensis L.",
+            "rank": "SPECIES",
+            "authorship": "L.",
+            "genericName": "Convolvulus",
+            "specificEpithet": "arvensis",
+            "formattedName": "<i>Convolvulus</i> <i>arvensis</i> L."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "6",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "7707728",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "220",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "1176",
+              "name": "Solanales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "2389",
+              "name": "Convolvulaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "2928386",
+              "name": "Convolvulus",
+              "rank": "GENUS"
+            },
+            {
+              "key": "2928390",
+              "name": "Convolvulus arvensis",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 2928390,
+      "kingdomKey": 6,
+      "phylumKey": 7707728,
+      "classKey": 220,
+      "orderKey": 1176,
+      "familyKey": 2389,
+      "genusKey": 2928386,
+      "speciesKey": 2928390,
+      "acceptedTaxonKey": 2928390,
+      "scientificName": "Convolvulus arvensis L.",
+      "scientificNameAuthorship": "L.",
+      "acceptedScientificName": "Convolvulus arvensis L.",
+      "kingdom": "Plantae",
+      "phylum": "Tracheophyta",
+      "order": "Solanales",
+      "family": "Convolvulaceae",
+      "genus": "Convolvulus",
+      "species": "Convolvulus arvensis",
+      "genericName": "Convolvulus",
+      "specificEpithet": "arvensis",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "decimalLatitude": 43.581716,
+      "decimalLongitude": 25.618453,
+      "coordinateUncertaintyInMeters": 31.0,
+      "elevation": 86.0,
+      "elevationAccuracy": 0.0,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 2022,
+      "month": 6,
+      "day": 26,
+      "eventDate": "2022-06-26T17:51:43.140Z",
+      "startDayOfYear": 177,
+      "endDayOfYear": 177,
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COUNTRY_DERIVED_FROM_COORDINATES",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-03T11:17:23.921+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "q-10634196599"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Magnoliopsida",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "q-10634196599",
+      "gbifID": "3956110122",
+      "occurrenceID": "q-10634196599"
+    },
+    {
+      "key": 3998442362,
+      "datasetKey": "14d5676a-2c54-4f94-9023-1e8dcd822aa0",
+      "publishingOrgKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "installationKey": "fe1a98a6-82b8-4652-86d6-d0f938207f67",
+      "hostingOrganizationKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "publishingCountry": "FR",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-03T08:17:52.416+00:00",
+      "lastParsed": "2026-03-03T10:24:16.014+00:00",
+      "crawlId": 283,
+      "projectId": "queries",
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "individualCount": 1,
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "BDMS",
+            "name": "Ajuga chamaepitys (L.) Schreb.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "(L.) Schreb.",
+            "genericName": "Ajuga",
+            "specificEpithet": "chamaepitys",
+            "formattedName": "<i>Ajuga</i> <i>chamaepitys</i> (L.) Schreb."
+          },
+          "acceptedUsage": {
+            "key": "BDMS",
+            "name": "Ajuga chamaepitys (L.) Schreb.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "(L.) Schreb.",
+            "genericName": "Ajuga",
+            "specificEpithet": "chamaepitys",
+            "formattedName": "<i>Ajuga</i> <i>chamaepitys</i> (L.) Schreb."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "P",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "CMQ8S",
+              "name": "Pteridobiotina",
+              "rank": "SUBKINGDOM"
+            },
+            {
+              "key": "TP",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "MG",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "3F4",
+              "name": "Lamiales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "PR82T",
+              "name": "Lamiaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "V5LVH",
+              "name": "Ajugoideae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "V5RHP",
+              "name": "Ajugeae",
+              "rank": "TRIBE"
+            },
+            {
+              "key": "8VTHH",
+              "name": "Ajuga",
+              "rank": "GENUS"
+            },
+            {
+              "key": "BDMS",
+              "name": "Ajuga chamaepitys",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "2927080",
+            "name": "Ajuga chamaepitys (L.) Schreb.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "(L.) Schreb.",
+            "genericName": "Ajuga",
+            "specificEpithet": "chamaepitys",
+            "formattedName": "<i>Ajuga</i> <i>chamaepitys</i> (L.) Schreb."
+          },
+          "acceptedUsage": {
+            "key": "2927080",
+            "name": "Ajuga chamaepitys (L.) Schreb.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "(L.) Schreb.",
+            "genericName": "Ajuga",
+            "specificEpithet": "chamaepitys",
+            "formattedName": "<i>Ajuga</i> <i>chamaepitys</i> (L.) Schreb."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "6",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "7707728",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "220",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "408",
+              "name": "Lamiales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "2497",
+              "name": "Lamiaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "2927077",
+              "name": "Ajuga",
+              "rank": "GENUS"
+            },
+            {
+              "key": "2927080",
+              "name": "Ajuga chamaepitys",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 2927080,
+      "kingdomKey": 6,
+      "phylumKey": 7707728,
+      "classKey": 220,
+      "orderKey": 408,
+      "familyKey": 2497,
+      "genusKey": 2927077,
+      "speciesKey": 2927080,
+      "acceptedTaxonKey": 2927080,
+      "scientificName": "Ajuga chamaepitys (L.) Schreb.",
+      "scientificNameAuthorship": "(L.) Schreb.",
+      "acceptedScientificName": "Ajuga chamaepitys (L.) Schreb.",
+      "kingdom": "Plantae",
+      "phylum": "Tracheophyta",
+      "order": "Lamiales",
+      "family": "Lamiaceae",
+      "genus": "Ajuga",
+      "species": "Ajuga chamaepitys",
+      "genericName": "Ajuga",
+      "specificEpithet": "chamaepitys",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "decimalLatitude": 43.59058,
+      "decimalLongitude": 25.630924,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 2022,
+      "month": 10,
+      "day": 17,
+      "eventDate": "2022-10-17T11:04:01.052Z",
+      "startDayOfYear": 290,
+      "endDayOfYear": 290,
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COUNTRY_DERIVED_FROM_COORDINATES",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-03T10:24:16.014+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "q-10709679310"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Magnoliopsida",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "q-10709679310",
+      "gbifID": "3998442362",
+      "occurrenceID": "q-10709679310"
+    },
+    {
+      "key": 3999013558,
+      "datasetKey": "14d5676a-2c54-4f94-9023-1e8dcd822aa0",
+      "publishingOrgKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "installationKey": "fe1a98a6-82b8-4652-86d6-d0f938207f67",
+      "hostingOrganizationKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "publishingCountry": "FR",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-03T08:17:52.416+00:00",
+      "lastParsed": "2026-03-03T10:43:21.700+00:00",
+      "crawlId": 283,
+      "projectId": "queries",
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "individualCount": 1,
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "3CGVN",
+            "name": "Euonymus europaeus L.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "L.",
+            "genericName": "Euonymus",
+            "specificEpithet": "europaeus",
+            "formattedName": "<i>Euonymus</i> <i>europaeus</i> L."
+          },
+          "acceptedUsage": {
+            "key": "3CGVN",
+            "name": "Euonymus europaeus L.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "L.",
+            "genericName": "Euonymus",
+            "specificEpithet": "europaeus",
+            "formattedName": "<i>Euonymus</i> <i>europaeus</i> L."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "P",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "CMQ8S",
+              "name": "Pteridobiotina",
+              "rank": "SUBKINGDOM"
+            },
+            {
+              "key": "TP",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "MG",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "W8",
+              "name": "Celastrales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "622JV",
+              "name": "Celastraceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "6275L",
+              "name": "Celastroideae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "KVZFV",
+              "name": "Euonymae",
+              "rank": "TRIBE"
+            },
+            {
+              "key": "4G5H",
+              "name": "Euonymus",
+              "rank": "GENUS"
+            },
+            {
+              "key": "3CGVN",
+              "name": "Euonymus europaeus",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "3169131",
+            "name": "Euonymus europaeus L.",
+            "rank": "SPECIES",
+            "authorship": "L.",
+            "genericName": "Euonymus",
+            "specificEpithet": "europaeus",
+            "formattedName": "<i>Euonymus</i> <i>europaeus</i> L."
+          },
+          "acceptedUsage": {
+            "key": "3169131",
+            "name": "Euonymus europaeus L.",
+            "rank": "SPECIES",
+            "authorship": "L.",
+            "genericName": "Euonymus",
+            "specificEpithet": "europaeus",
+            "formattedName": "<i>Euonymus</i> <i>europaeus</i> L."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "6",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "7707728",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "220",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "950",
+              "name": "Celastrales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "6715",
+              "name": "Celastraceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "3169115",
+              "name": "Euonymus",
+              "rank": "GENUS"
+            },
+            {
+              "key": "3169131",
+              "name": "Euonymus europaeus",
+              "rank": "SPECIES"
+            }
+          ],
+          "iucnRedListCategoryCode": "LC",
+          "issues": []
+        }
+      },
+      "taxonKey": 3169131,
+      "kingdomKey": 6,
+      "phylumKey": 7707728,
+      "classKey": 220,
+      "orderKey": 950,
+      "familyKey": 6715,
+      "genusKey": 3169115,
+      "speciesKey": 3169131,
+      "acceptedTaxonKey": 3169131,
+      "scientificName": "Euonymus europaeus L.",
+      "scientificNameAuthorship": "L.",
+      "acceptedScientificName": "Euonymus europaeus L.",
+      "kingdom": "Plantae",
+      "phylum": "Tracheophyta",
+      "order": "Celastrales",
+      "family": "Celastraceae",
+      "genus": "Euonymus",
+      "species": "Euonymus europaeus",
+      "genericName": "Euonymus",
+      "specificEpithet": "europaeus",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "iucnRedListCategory": "LC",
+      "decimalLatitude": 43.588161,
+      "decimalLongitude": 25.612362,
+      "elevation": 55.3,
+      "elevationAccuracy": 0.0,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 2022,
+      "month": 10,
+      "day": 10,
+      "eventDate": "2022-10-10T17:34:12.523Z",
+      "startDayOfYear": 283,
+      "endDayOfYear": 283,
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COUNTRY_DERIVED_FROM_COORDINATES",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-03T10:43:21.700+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "q-10706347673"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Magnoliopsida",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "q-10706347673",
+      "gbifID": "3999013558",
+      "occurrenceID": "q-10706347673"
+    },
+    {
+      "key": 3999185506,
+      "datasetKey": "14d5676a-2c54-4f94-9023-1e8dcd822aa0",
+      "publishingOrgKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "installationKey": "fe1a98a6-82b8-4652-86d6-d0f938207f67",
+      "hostingOrganizationKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "publishingCountry": "FR",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-03T08:17:52.416+00:00",
+      "lastParsed": "2026-03-03T11:19:37.861+00:00",
+      "crawlId": 283,
+      "projectId": "queries",
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "individualCount": 1,
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "BDMS",
+            "name": "Ajuga chamaepitys (L.) Schreb.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "(L.) Schreb.",
+            "genericName": "Ajuga",
+            "specificEpithet": "chamaepitys",
+            "formattedName": "<i>Ajuga</i> <i>chamaepitys</i> (L.) Schreb."
+          },
+          "acceptedUsage": {
+            "key": "BDMS",
+            "name": "Ajuga chamaepitys (L.) Schreb.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "(L.) Schreb.",
+            "genericName": "Ajuga",
+            "specificEpithet": "chamaepitys",
+            "formattedName": "<i>Ajuga</i> <i>chamaepitys</i> (L.) Schreb."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "P",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "CMQ8S",
+              "name": "Pteridobiotina",
+              "rank": "SUBKINGDOM"
+            },
+            {
+              "key": "TP",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "MG",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "3F4",
+              "name": "Lamiales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "PR82T",
+              "name": "Lamiaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "V5LVH",
+              "name": "Ajugoideae",
+              "rank": "SUBFAMILY"
+            },
+            {
+              "key": "V5RHP",
+              "name": "Ajugeae",
+              "rank": "TRIBE"
+            },
+            {
+              "key": "8VTHH",
+              "name": "Ajuga",
+              "rank": "GENUS"
+            },
+            {
+              "key": "BDMS",
+              "name": "Ajuga chamaepitys",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "2927080",
+            "name": "Ajuga chamaepitys (L.) Schreb.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "(L.) Schreb.",
+            "genericName": "Ajuga",
+            "specificEpithet": "chamaepitys",
+            "formattedName": "<i>Ajuga</i> <i>chamaepitys</i> (L.) Schreb."
+          },
+          "acceptedUsage": {
+            "key": "2927080",
+            "name": "Ajuga chamaepitys (L.) Schreb.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "(L.) Schreb.",
+            "genericName": "Ajuga",
+            "specificEpithet": "chamaepitys",
+            "formattedName": "<i>Ajuga</i> <i>chamaepitys</i> (L.) Schreb."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "6",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "7707728",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "220",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "408",
+              "name": "Lamiales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "2497",
+              "name": "Lamiaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "2927077",
+              "name": "Ajuga",
+              "rank": "GENUS"
+            },
+            {
+              "key": "2927080",
+              "name": "Ajuga chamaepitys",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 2927080,
+      "kingdomKey": 6,
+      "phylumKey": 7707728,
+      "classKey": 220,
+      "orderKey": 408,
+      "familyKey": 2497,
+      "genusKey": 2927077,
+      "speciesKey": 2927080,
+      "acceptedTaxonKey": 2927080,
+      "scientificName": "Ajuga chamaepitys (L.) Schreb.",
+      "scientificNameAuthorship": "(L.) Schreb.",
+      "acceptedScientificName": "Ajuga chamaepitys (L.) Schreb.",
+      "kingdom": "Plantae",
+      "phylum": "Tracheophyta",
+      "order": "Lamiales",
+      "family": "Lamiaceae",
+      "genus": "Ajuga",
+      "species": "Ajuga chamaepitys",
+      "genericName": "Ajuga",
+      "specificEpithet": "chamaepitys",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "decimalLatitude": 43.590556,
+      "decimalLongitude": 25.630833,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 2022,
+      "month": 10,
+      "day": 17,
+      "eventDate": "2022-10-17T11:08:41.618Z",
+      "startDayOfYear": 290,
+      "endDayOfYear": 290,
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COUNTRY_DERIVED_FROM_COORDINATES",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-03T11:19:37.861+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "q-10709681415"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Magnoliopsida",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "q-10709681415",
+      "gbifID": "3999185506",
+      "occurrenceID": "q-10709681415"
+    },
+    {
+      "key": 2976954958,
+      "datasetKey": "14d5676a-2c54-4f94-9023-1e8dcd822aa0",
+      "publishingOrgKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "installationKey": "fe1a98a6-82b8-4652-86d6-d0f938207f67",
+      "hostingOrganizationKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "publishingCountry": "FR",
+      "protocol": "EML",
+      "lastCrawled": "2026-03-03T08:17:52.416+00:00",
+      "lastParsed": "2026-03-03T11:22:45.595+00:00",
+      "crawlId": 283,
+      "projectId": "queries",
+      "extensions": {},
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "individualCount": 1,
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "6MFNY",
+            "name": "Humulus lupulus L.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "L.",
+            "genericName": "Humulus",
+            "specificEpithet": "lupulus",
+            "formattedName": "<i>Humulus</i> <i>lupulus</i> L."
+          },
+          "acceptedUsage": {
+            "key": "6MFNY",
+            "name": "Humulus lupulus L.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "L.",
+            "genericName": "Humulus",
+            "specificEpithet": "lupulus",
+            "formattedName": "<i>Humulus</i> <i>lupulus</i> L."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "P",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "CMQ8S",
+              "name": "Pteridobiotina",
+              "rank": "SUBKINGDOM"
+            },
+            {
+              "key": "TP",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "MG",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "3Z6",
+              "name": "Rosales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "7NV",
+              "name": "Cannabaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "4Z9F",
+              "name": "Humulus",
+              "rank": "GENUS"
+            },
+            {
+              "key": "6MFNY",
+              "name": "Humulus lupulus",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "2984535",
+            "name": "Humulus lupulus L.",
+            "rank": "SPECIES",
+            "authorship": "L.",
+            "genericName": "Humulus",
+            "specificEpithet": "lupulus",
+            "formattedName": "<i>Humulus</i> <i>lupulus</i> L."
+          },
+          "acceptedUsage": {
+            "key": "2984535",
+            "name": "Humulus lupulus L.",
+            "rank": "SPECIES",
+            "authorship": "L.",
+            "genericName": "Humulus",
+            "specificEpithet": "lupulus",
+            "formattedName": "<i>Humulus</i> <i>lupulus</i> L."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "6",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "7707728",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "220",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "691",
+              "name": "Rosales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "2384",
+              "name": "Cannabaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "2984534",
+              "name": "Humulus",
+              "rank": "GENUS"
+            },
+            {
+              "key": "2984535",
+              "name": "Humulus lupulus",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 2984535,
+      "kingdomKey": 6,
+      "phylumKey": 7707728,
+      "classKey": 220,
+      "orderKey": 691,
+      "familyKey": 2384,
+      "genusKey": 2984534,
+      "speciesKey": 2984535,
+      "acceptedTaxonKey": 2984535,
+      "scientificName": "Humulus lupulus L.",
+      "scientificNameAuthorship": "L.",
+      "acceptedScientificName": "Humulus lupulus L.",
+      "kingdom": "Plantae",
+      "phylum": "Tracheophyta",
+      "order": "Rosales",
+      "family": "Cannabaceae",
+      "genus": "Humulus",
+      "species": "Humulus lupulus",
+      "genericName": "Humulus",
+      "specificEpithet": "lupulus",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "decimalLatitude": 43.603432,
+      "decimalLongitude": 25.586039,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 2020,
+      "month": 5,
+      "day": 14,
+      "eventDate": "2020-05-14T07:44:43.041Z",
+      "startDayOfYear": 135,
+      "endDayOfYear": 135,
+      "issues": [
+        "COORDINATE_ROUNDED",
+        "COUNTRY_DERIVED_FROM_COORDINATES",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2026-03-03T11:22:45.595+00:00",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "q-10166002369"
+        }
+      ],
+      "media": [],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Magnoliopsida",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "q-10166002369",
+      "gbifID": "2976954958",
+      "occurrenceID": "q-10166002369"
+    },
+    {
+      "key": 5109471883,
+      "datasetKey": "7a3679ef-5582-4aaa-81f0-8c2545cafc81",
+      "publishingOrgKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "installationKey": "fe1a98a6-82b8-4652-86d6-d0f938207f67",
+      "hostingOrganizationKey": "da86174a-a605-43a4-a5e8-53d484152cd3",
+      "publishingCountry": "FR",
+      "protocol": "EML",
+      "lastCrawled": "2025-11-25T09:34:37.820+00:00",
+      "lastParsed": "2025-11-25T15:40:12.149+00:00",
+      "crawlId": 241,
+      "projectId": "observations",
+      "extensions": {
+        "http://rs.tdwg.org/ac/terms/Multimedia": [
+          {
+            "http://purl.org/dc/elements/1.1/rights": "Rossen Vassilev (cc-by-sa)",
+            "http://rs.tdwg.org/ac/terms/caption": "Astragalus ponticus Pall.: leaf",
+            "http://purl.org/dc/terms/modified": "2012-06-01T09:24:36.000Z",
+            "http://purl.org/dc/terms/format": "image/jpeg",
+            "http://purl.org/dc/elements/1.1/format": "image/jpeg",
+            "http://purl.org/dc/terms/source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/elements/1.1/creator": "Rossen Vassilev",
+            "http://purl.org/dc/elements/1.1/type": "StillImage",
+            "http://rs.tdwg.org/ac/terms/tag": "leaf",
+            "http://rs.tdwg.org/ac/terms/taxonCount": "1",
+            "http://rs.tdwg.org/ac/terms/accessURI": "https://bs.plantnet.org/image/o/117d8e4a5aa4f361c607d828a041ac7f68f5f656",
+            "http://rs.tdwg.org/ac/terms/subjectPart": "leaf",
+            "http://rs.tdwg.org/ac/terms/taxonCoverage": "Plantae",
+            "http://purl.org/dc/terms/title": "Astragalus ponticus Pall.: leaf",
+            "http://rs.tdwg.org/dwc/terms/scientificName": "Astragalus ponticus Pall.",
+            "http://ns.adobe.com/photoshop/1.0/Credit": "Rossen Vassilev (cc-by-sa)",
+            "http://ns.adobe.com/xap/1.0/rights/UsageTerms": "cc-by-sa",
+            "http://purl.org/dc/terms/identifier": "117d8e4a5aa4f361c607d828a041ac7f68f5f656",
+            "http://rs.tdwg.org/ac/terms/associatedObservationReference": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/elements/1.1/source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/terms/rights": "Rossen Vassilev (cc-by-sa)",
+            "http://ns.adobe.com/xap/1.0/rights/Owner": "Rossen Vassilev",
+            "http://purl.org/dc/terms/type": "StillImage",
+            "http://purl.org/dc/terms/creator": "Rossen Vassilev",
+            "http://ns.adobe.com/xap/1.0/CreateDate": "2012-06-01T09:24:36.000Z"
+          },
+          {
+            "http://purl.org/dc/elements/1.1/rights": "Rossen Vassilev (cc-by-sa)",
+            "http://rs.tdwg.org/ac/terms/caption": "Astragalus ponticus Pall.: flower",
+            "http://purl.org/dc/terms/modified": "2012-06-01T09:24:36.000Z",
+            "http://purl.org/dc/terms/format": "image/jpeg",
+            "http://purl.org/dc/elements/1.1/format": "image/jpeg",
+            "http://purl.org/dc/terms/source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/elements/1.1/creator": "Rossen Vassilev",
+            "http://purl.org/dc/elements/1.1/type": "StillImage",
+            "http://rs.tdwg.org/ac/terms/tag": "flower",
+            "http://rs.tdwg.org/ac/terms/taxonCount": "1",
+            "http://rs.tdwg.org/ac/terms/accessURI": "https://bs.plantnet.org/image/o/1bf5c9e896fb2bdf17f790e6338fe6078fc7e50d",
+            "http://rs.tdwg.org/ac/terms/subjectPart": "flower",
+            "http://rs.tdwg.org/ac/terms/taxonCoverage": "Plantae",
+            "http://purl.org/dc/terms/title": "Astragalus ponticus Pall.: flower",
+            "http://rs.tdwg.org/dwc/terms/scientificName": "Astragalus ponticus Pall.",
+            "http://ns.adobe.com/photoshop/1.0/Credit": "Rossen Vassilev (cc-by-sa)",
+            "http://ns.adobe.com/xap/1.0/rights/UsageTerms": "cc-by-sa",
+            "http://purl.org/dc/terms/identifier": "1bf5c9e896fb2bdf17f790e6338fe6078fc7e50d",
+            "http://rs.tdwg.org/ac/terms/associatedObservationReference": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/elements/1.1/source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/terms/rights": "Rossen Vassilev (cc-by-sa)",
+            "http://ns.adobe.com/xap/1.0/rights/Owner": "Rossen Vassilev",
+            "http://purl.org/dc/terms/type": "StillImage",
+            "http://purl.org/dc/terms/creator": "Rossen Vassilev",
+            "http://ns.adobe.com/xap/1.0/CreateDate": "2012-06-01T09:24:36.000Z"
+          },
+          {
+            "http://purl.org/dc/elements/1.1/rights": "Rossen Vassilev (cc-by-sa)",
+            "http://rs.tdwg.org/ac/terms/caption": "Astragalus ponticus Pall.: other",
+            "http://purl.org/dc/terms/modified": "2012-06-01T09:24:36.000Z",
+            "http://purl.org/dc/terms/format": "image/jpeg",
+            "http://purl.org/dc/elements/1.1/format": "image/jpeg",
+            "http://purl.org/dc/terms/source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/elements/1.1/creator": "Rossen Vassilev",
+            "http://purl.org/dc/elements/1.1/type": "StillImage",
+            "http://rs.tdwg.org/ac/terms/tag": "other",
+            "http://rs.tdwg.org/ac/terms/taxonCount": "1",
+            "http://rs.tdwg.org/ac/terms/accessURI": "https://bs.plantnet.org/image/o/bb1d00ea807dcd848b6eec9cec3d6bf6fc3a9e10",
+            "http://rs.tdwg.org/ac/terms/subjectPart": "other",
+            "http://rs.tdwg.org/ac/terms/taxonCoverage": "Plantae",
+            "http://purl.org/dc/terms/title": "Astragalus ponticus Pall.: other",
+            "http://rs.tdwg.org/dwc/terms/scientificName": "Astragalus ponticus Pall.",
+            "http://ns.adobe.com/photoshop/1.0/Credit": "Rossen Vassilev (cc-by-sa)",
+            "http://ns.adobe.com/xap/1.0/rights/UsageTerms": "cc-by-sa",
+            "http://purl.org/dc/terms/identifier": "bb1d00ea807dcd848b6eec9cec3d6bf6fc3a9e10",
+            "http://rs.tdwg.org/ac/terms/associatedObservationReference": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/elements/1.1/source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/terms/rights": "Rossen Vassilev (cc-by-sa)",
+            "http://ns.adobe.com/xap/1.0/rights/Owner": "Rossen Vassilev",
+            "http://purl.org/dc/terms/type": "StillImage",
+            "http://purl.org/dc/terms/creator": "Rossen Vassilev",
+            "http://ns.adobe.com/xap/1.0/CreateDate": "2012-06-01T09:24:36.000Z"
+          },
+          {
+            "http://purl.org/dc/elements/1.1/rights": "Rossen Vassilev (cc-by-sa)",
+            "http://rs.tdwg.org/ac/terms/caption": "Astragalus ponticus Pall.: habit",
+            "http://purl.org/dc/terms/modified": "2012-06-01T09:24:36.000Z",
+            "http://purl.org/dc/terms/format": "image/jpeg",
+            "http://purl.org/dc/elements/1.1/format": "image/jpeg",
+            "http://purl.org/dc/terms/source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/elements/1.1/creator": "Rossen Vassilev",
+            "http://purl.org/dc/elements/1.1/type": "StillImage",
+            "http://rs.tdwg.org/ac/terms/tag": "habit",
+            "http://rs.tdwg.org/ac/terms/taxonCount": "1",
+            "http://rs.tdwg.org/ac/terms/accessURI": "https://bs.plantnet.org/image/o/d09ce4105340f50a61ceaeb59c6560fa78e433b8",
+            "http://rs.tdwg.org/ac/terms/subjectPart": "habit",
+            "http://rs.tdwg.org/ac/terms/taxonCoverage": "Plantae",
+            "http://purl.org/dc/terms/title": "Astragalus ponticus Pall.: habit",
+            "http://rs.tdwg.org/dwc/terms/scientificName": "Astragalus ponticus Pall.",
+            "http://ns.adobe.com/photoshop/1.0/Credit": "Rossen Vassilev (cc-by-sa)",
+            "http://ns.adobe.com/xap/1.0/rights/UsageTerms": "cc-by-sa",
+            "http://purl.org/dc/terms/identifier": "d09ce4105340f50a61ceaeb59c6560fa78e433b8",
+            "http://rs.tdwg.org/ac/terms/associatedObservationReference": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/elements/1.1/source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+            "http://purl.org/dc/terms/rights": "Rossen Vassilev (cc-by-sa)",
+            "http://ns.adobe.com/xap/1.0/rights/Owner": "Rossen Vassilev",
+            "http://purl.org/dc/terms/type": "StillImage",
+            "http://purl.org/dc/terms/creator": "Rossen Vassilev",
+            "http://ns.adobe.com/xap/1.0/CreateDate": "2012-06-01T09:24:36.000Z"
+          }
+        ]
+      },
+      "basisOfRecord": "HUMAN_OBSERVATION",
+      "individualCount": 1,
+      "occurrenceStatus": "PRESENT",
+      "classifications": {
+        "7ddf754f-d193-4cc9-b351-99906754a03b": {
+          "usage": {
+            "key": "5W82F",
+            "name": "Astragalus ponticus Pall.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "Pall.",
+            "genericName": "Astragalus",
+            "specificEpithet": "ponticus",
+            "formattedName": "<i>Astragalus</i> <i>ponticus</i> Pall."
+          },
+          "acceptedUsage": {
+            "key": "5W82F",
+            "name": "Astragalus ponticus Pall.",
+            "rank": "SPECIES",
+            "code": "BOTANICAL",
+            "authorship": "Pall.",
+            "genericName": "Astragalus",
+            "specificEpithet": "ponticus",
+            "formattedName": "<i>Astragalus</i> <i>ponticus</i> Pall."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "CS5HF",
+              "name": "Eukaryota",
+              "rank": "DOMAIN"
+            },
+            {
+              "key": "P",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "CMQ8S",
+              "name": "Pteridobiotina",
+              "rank": "SUBKINGDOM"
+            },
+            {
+              "key": "TP",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "MG",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "383",
+              "name": "Fabales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "623QT",
+              "name": "Fabaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "34JM",
+              "name": "Astragalus",
+              "rank": "GENUS"
+            },
+            {
+              "key": "5W82F",
+              "name": "Astragalus ponticus",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        },
+        "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c": {
+          "usage": {
+            "key": "5344926",
+            "name": "Astragalus ponticus Pall.",
+            "rank": "SPECIES",
+            "authorship": "Pall.",
+            "genericName": "Astragalus",
+            "specificEpithet": "ponticus",
+            "formattedName": "<i>Astragalus</i> <i>ponticus</i> Pall."
+          },
+          "acceptedUsage": {
+            "key": "5344926",
+            "name": "Astragalus ponticus Pall.",
+            "rank": "SPECIES",
+            "authorship": "Pall.",
+            "genericName": "Astragalus",
+            "specificEpithet": "ponticus",
+            "formattedName": "<i>Astragalus</i> <i>ponticus</i> Pall."
+          },
+          "taxonomicStatus": "ACCEPTED",
+          "classification": [
+            {
+              "key": "6",
+              "name": "Plantae",
+              "rank": "KINGDOM"
+            },
+            {
+              "key": "7707728",
+              "name": "Tracheophyta",
+              "rank": "PHYLUM"
+            },
+            {
+              "key": "220",
+              "name": "Magnoliopsida",
+              "rank": "CLASS"
+            },
+            {
+              "key": "1370",
+              "name": "Fabales",
+              "rank": "ORDER"
+            },
+            {
+              "key": "5386",
+              "name": "Fabaceae",
+              "rank": "FAMILY"
+            },
+            {
+              "key": "2933951",
+              "name": "Astragalus",
+              "rank": "GENUS"
+            },
+            {
+              "key": "5344926",
+              "name": "Astragalus ponticus",
+              "rank": "SPECIES"
+            }
+          ],
+          "issues": []
+        }
+      },
+      "taxonKey": 5344926,
+      "kingdomKey": 6,
+      "phylumKey": 7707728,
+      "classKey": 220,
+      "orderKey": 1370,
+      "familyKey": 5386,
+      "genusKey": 2933951,
+      "speciesKey": 5344926,
+      "acceptedTaxonKey": 5344926,
+      "scientificName": "Astragalus ponticus Pall.",
+      "scientificNameAuthorship": "Pall.",
+      "acceptedScientificName": "Astragalus ponticus Pall.",
+      "kingdom": "Plantae",
+      "phylum": "Tracheophyta",
+      "order": "Fabales",
+      "family": "Fabaceae",
+      "genus": "Astragalus",
+      "species": "Astragalus ponticus",
+      "genericName": "Astragalus",
+      "specificEpithet": "ponticus",
+      "taxonRank": "SPECIES",
+      "taxonomicStatus": "ACCEPTED",
+      "decimalLatitude": 43.604495,
+      "decimalLongitude": 25.543492,
+      "elevation": 44.0,
+      "elevationAccuracy": 0.0,
+      "continent": "EUROPE",
+      "gadm": {
+        "level0": {
+          "gid": "BGR",
+          "name": "Bulgaria"
+        },
+        "level1": {
+          "gid": "BGR.16_1",
+          "name": "Ruse"
+        },
+        "level2": {
+          "gid": "BGR.16.7_1",
+          "name": "Tsenovo"
+        }
+      },
+      "year": 2012,
+      "month": 6,
+      "day": 1,
+      "eventDate": "2012-06-01T09:24:36Z",
+      "startDayOfYear": 153,
+      "endDayOfYear": 153,
+      "issues": [
+        "COUNTRY_DERIVED_FROM_COORDINATES",
+        "CONTINENT_DERIVED_FROM_COORDINATES"
+      ],
+      "lastInterpreted": "2025-11-25T15:40:12.149+00:00",
+      "references": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+      "license": "http://creativecommons.org/licenses/by/4.0/legalcode",
+      "isSequenced": false,
+      "identifiers": [
+        {
+          "identifier": "o-1016348422"
+        }
+      ],
+      "media": [
+        {
+          "type": "StillImage",
+          "format": "image/jpeg",
+          "title": "Astragalus ponticus Pall.: other",
+          "description": "Astragalus ponticus Pall.: other",
+          "source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+          "created": "2012-06-01T09:24:36.000+00:00",
+          "creator": "Rossen Vassilev",
+          "license": "Rossen Vassilev (cc-by-sa)",
+          "rightsHolder": "Rossen Vassilev",
+          "identifier": "https://bs.plantnet.org/image/o/bb1d00ea807dcd848b6eec9cec3d6bf6fc3a9e10"
+        },
+        {
+          "type": "StillImage",
+          "format": "image/jpeg",
+          "title": "Astragalus ponticus Pall.: flower",
+          "description": "Astragalus ponticus Pall.: flower",
+          "source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+          "created": "2012-06-01T09:24:36.000+00:00",
+          "creator": "Rossen Vassilev",
+          "license": "Rossen Vassilev (cc-by-sa)",
+          "rightsHolder": "Rossen Vassilev",
+          "identifier": "https://bs.plantnet.org/image/o/1bf5c9e896fb2bdf17f790e6338fe6078fc7e50d"
+        },
+        {
+          "type": "StillImage",
+          "format": "image/jpeg",
+          "title": "Astragalus ponticus Pall.: leaf",
+          "description": "Astragalus ponticus Pall.: leaf",
+          "source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+          "created": "2012-06-01T09:24:36.000+00:00",
+          "creator": "Rossen Vassilev",
+          "license": "Rossen Vassilev (cc-by-sa)",
+          "rightsHolder": "Rossen Vassilev",
+          "identifier": "https://bs.plantnet.org/image/o/117d8e4a5aa4f361c607d828a041ac7f68f5f656"
+        },
+        {
+          "type": "StillImage",
+          "format": "image/jpeg",
+          "title": "Astragalus ponticus Pall.: habit",
+          "description": "Astragalus ponticus Pall.: habit",
+          "source": "https://identify.plantnet.org/the-plant-list/observations/1016348422",
+          "created": "2012-06-01T09:24:36.000+00:00",
+          "creator": "Rossen Vassilev",
+          "license": "Rossen Vassilev (cc-by-sa)",
+          "rightsHolder": "Rossen Vassilev",
+          "identifier": "https://bs.plantnet.org/image/o/d09ce4105340f50a61ceaeb59c6560fa78e433b8"
+        }
+      ],
+      "facts": [],
+      "relations": [],
+      "isInCluster": false,
+      "dnaSequenceID": [],
+      "geodeticDatum": "WGS84",
+      "class": "Magnoliopsida",
+      "countryCode": "BG",
+      "recordedByIDs": [],
+      "identifiedByIDs": [],
+      "gbifRegion": "EUROPE",
+      "country": "Bulgaria",
+      "publishedByGbifRegion": "EUROPE",
+      "identifier": "o-1016348422",
+      "gbifID": "5109471883",
+      "occurrenceID": "o-1016348422"
+    }
+  ]
+}
