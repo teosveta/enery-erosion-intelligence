@@ -5,16 +5,19 @@ Serves the frontend static files + REST API endpoints.
 Start: uvicorn main:app --reload --host 0.0.0.0 --port 8000
 """
 import asyncio
+import csv
+import io
 import logging
-import mimetypes
-from datetime import date, timedelta
+import math
+from collections import Counter
+from datetime import date
 from pathlib import Path
 from typing import Dict, List, Optional
 
 import aiofiles
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -22,11 +25,13 @@ from config import (
     FRONTEND_DIR, DATA_DIR, UPLOADS_DIR,
     TSENOVO_SITE, ALL_SITES, DEFAULT_SITE_ID,
     NDVI_ALERT_THRESHOLD, VEG_COVER_ALERT_PCT, RAINFALL_ALERT_MM,
+    get_timelapse_path,
 )
 import db
-from services import gemini, weather, copernicus, soilgrids, gbif, carbon
+from services import ai, weather, copernicus, soilgrids, gbif, carbon
 from services import nasa_power, pvgis
 from watchers import timelapse
+from watchers.timelapse import IMAGE_EXTENSIONS
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -34,6 +39,19 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 log = logging.getLogger("main")
+
+
+def _compute_shannon_h(species_counts: Counter) -> float:
+    """Compute Shannon H′ diversity index from a species count mapping."""
+    total = sum(species_counts.values())
+    if total == 0:
+        return 0.0
+    return -sum(
+        (p := c / total) * math.log(p)
+        for c in species_counts.values()
+        if c > 0
+    )
+
 
 # ── App ───────────────────────────────────────────────────────────────────────
 app = FastAPI(
@@ -155,9 +173,7 @@ async def pin_analysis_history(pin_id: Optional[str] = None, limit: int = 50):
 
 @app.post("/api/smart-pin/analyze-now")
 async def trigger_manual_analysis(background_tasks: BackgroundTasks):
-    """Manually trigger analysis of the latest timelapse image."""
-    from config import get_timelapse_path
-    from watchers.timelapse import IMAGE_EXTENSIONS
+    """Manually trigger analysis of the latest timelapse image (background task)."""
     folder = get_timelapse_path()
     if not folder.exists():
         return {"message": "Timelapse folder not found", "path": str(folder)}
@@ -172,6 +188,30 @@ async def trigger_manual_analysis(background_tasks: BackgroundTasks):
 
     background_tasks.add_task(_do)
     return {"message": f"Analysis triggered for {latest.name}", "file": latest.name}
+
+
+@app.post("/api/smart-pin/analyze-image")
+async def analyze_image_now(filename: str):
+    """
+    Directly analyze a specific timelapse image by filename and return the result.
+    Used by the frontend when a user clicks a pin image and wants live AI analysis.
+    """
+    folder = get_timelapse_path()
+    path = folder / filename
+    if not path.exists() or not path.is_file():
+        raise HTTPException(404, f"Image '{filename}' not found in timelapse folder")
+    try:
+        from watchers.timelapse import _guess_pin_id
+        pin_id = _guess_pin_id(filename)
+        analysis = await ai.analyze_photo(path, context=f"Smart Erosion Pin {pin_id}, Zone 3, Tsenovo Solar Park")
+        analysis["pin_id"]   = pin_id
+        analysis["zone"]     = 3
+        analysis["filename"] = filename
+        record = await db.save_analysis(pin_id, filename, analysis)
+        return {"analysis": analysis, "record_id": record["id"]}
+    except Exception as exc:
+        log.error("analyze-image failed for %s: %s", filename, exc)
+        raise HTTPException(503, f"AI analysis failed: {exc}")
 
 # ── Weather ───────────────────────────────────────────────────────────────────
 @app.get("/api/weather")
@@ -216,11 +256,15 @@ async def get_ndvi(zone_id: int = 3, site_id: str = DEFAULT_SITE_ID):
 @app.get("/api/ndvi/all-zones")
 async def get_ndvi_all(site_id: str = DEFAULT_SITE_ID):
     site = ALL_SITES.get(site_id, TSENOVO_SITE)
-    results = {}
-    for zone in site["zones"]:
-        zid = zone["id"]
-        results[zid] = await copernicus.fetch_ndvi(zone["polygon"], zone_id=zid)
-    return results
+    zones = site["zones"]
+    ndvi_results = await asyncio.gather(
+        *[copernicus.fetch_ndvi(z["polygon"], zone_id=z["id"]) for z in zones],
+        return_exceptions=True,
+    )
+    return {
+        z["id"]: (r if not isinstance(r, Exception) else {"error": str(r)})
+        for z, r in zip(zones, ndvi_results)
+    }
 
 # ── Soil (SoilGrids) ──────────────────────────────────────────────────────────
 @app.get("/api/soil")
@@ -360,7 +404,7 @@ class RiskInput(BaseModel):
 @app.post("/api/ai/risk-score")
 async def ai_risk_score(data: RiskInput):
     try:
-        result = await gemini.compute_risk_score(
+        result = await ai.compute_risk_score(
             data.precipitation_mm, data.ndvi, data.vegetation_cover_pct,
             data.slope_deg, data.soil_type, data.zone_id,
         )
@@ -376,17 +420,20 @@ async def generate_report(site_id: str = DEFAULT_SITE_ID):
     site = ALL_SITES.get(site_id, TSENOVO_SITE)
     lat, lon = site["lat"], site["lon"]
 
-    # Collect data for report
-    analyses  = await db.get_analysis_history(limit=20)
-    soil_recs = await db.get_soil_lab()
-    risk      = await db.get_latest_risk()
-
-    ndvi_val = None
-    try:
-        ndvi_data = await copernicus.fetch_ndvi(site["zones"][2]["polygon"], zone_id=3)
-        ndvi_val = ndvi_data.get("ndvi_mean") if isinstance(ndvi_data, dict) else None
-    except Exception as e:
-        log.warning("NDVI fetch failed for report: %s", e)
+    # Collect data for report (concurrent)
+    analyses, soil_recs, risk, ndvi_data = await asyncio.gather(
+        db.get_analysis_history(limit=20),
+        db.get_soil_lab(),
+        db.get_latest_risk(),
+        copernicus.fetch_ndvi(site["zones"][2]["polygon"], zone_id=3),
+        return_exceptions=True,
+    )
+    analyses  = analyses  if not isinstance(analyses,  Exception) else []
+    soil_recs = soil_recs if not isinstance(soil_recs, Exception) else []
+    risk      = risk      if not isinstance(risk,      Exception) else []
+    ndvi_val  = ndvi_data.get("ndvi_mean") if isinstance(ndvi_data, dict) else None
+    if isinstance(ndvi_data, Exception):
+        log.warning("NDVI fetch failed for report: %s", ndvi_data)
 
     agg = {
         "site_name":       site["name"],
@@ -399,12 +446,33 @@ async def generate_report(site_id: str = DEFAULT_SITE_ID):
         "capacity_mwp":    site["capacity_mwp"],
     }
     try:
-        report = await gemini.generate_esg_report(agg)
+        report = await ai.generate_esg_report(agg)
     except Exception as exc:
-        log.error("Gemini ESG report failed: %s", exc)
-        report = gemini._build_fallback_report(agg)
+        log.error("ESG report generation failed: %s", exc)
+        report = ai._build_fallback_report(agg)
 
     return {"report": report, "generated_at": date.today().isoformat()}
+
+# ── AI Analytics Insights ────────────────────────────────────────────────────
+class AnalyticsInsightsInput(BaseModel):
+    ndvi:               float = Field(0.29, ge=-1, le=1)
+    risk_score:         float = Field(74,   ge=0, le=100)
+    carbon_tc_ha:       float = Field(4.30, ge=0)
+    shannon_h:          float = Field(3.82, ge=0)
+    species_richness:   int   = Field(41,   ge=0)
+    avg_vegetation_pct: float = Field(56,   ge=0, le=100)
+
+@app.post("/api/ai/analytics-insights")
+async def ai_analytics_insights(data: AnalyticsInsightsInput):
+    try:
+        result = await ai.generate_analytics_insights(
+            data.ndvi, data.risk_score, data.carbon_tc_ha,
+            data.shannon_h, data.species_richness, data.avg_vegetation_pct,
+        )
+        return result
+    except Exception as exc:
+        log.error("AI analytics insights failed: %s", exc)
+        raise HTTPException(503, f"AI service unavailable: {exc}")
 
 # ── AI Biodiversity Analysis ──────────────────────────────────────────────────
 @app.post("/api/ai/biodiversity")
@@ -412,7 +480,7 @@ async def ai_biodiversity(site_id: str = DEFAULT_SITE_ID):
     site = ALL_SITES.get(site_id, TSENOVO_SITE)
     try:
         records = await gbif.fetch_occurrences(site["lat"], site["lon"], limit=50)
-        result = await gemini.analyze_biodiversity_data(records, site["name"])
+        result = await ai.analyze_biodiversity_data(records, site["name"])
         return result
     except Exception as exc:
         log.error("AI biodiversity analysis failed: %s", exc)
@@ -434,17 +502,25 @@ async def upload_monitoring_photo(
     async with aiofiles.open(save_path, "wb") as f:
         await f.write(content)
 
-    analysis = await gemini.analyze_photo_bytes(
-        content, file.content_type, context=f"Photo Monitoring — Zone {zone}, pin {pin_id}"
-    )
+    analysis = None
+    ai_error = None
+    try:
+        analysis = await ai.analyze_photo_bytes(
+            content, file.content_type, context=f"Photo Monitoring — Zone {zone}, pin {pin_id}"
+        )
+    except Exception as exc:
+        ai_error = str(exc)
+        log.error("AI photo analysis failed for upload: %s", exc)
+
     record = await db.save_upload_record("photo", zone, file.filename, analysis)
 
     return {
-        "message": "Photo uploaded and analyzed successfully",
-        "file":    file.filename,
-        "zone":    zone,
-        "notes":   notes,
+        "message":  "Photo uploaded and analyzed successfully" if analysis else "Photo saved — AI analysis failed",
+        "file":     file.filename,
+        "zone":     zone,
+        "notes":    notes,
         "analysis": analysis,
+        "ai_error": ai_error,
         "record_id": record["id"],
     }
 
@@ -504,7 +580,6 @@ async def upload_soil_csv(
     return {"message": f"Imported {len(saved)} rows", "records": saved}
 
 def _parse_soil_csv(content: str) -> List[Dict]:
-    import csv, io
     rows = []
     reader = csv.DictReader(io.StringIO(content))
     for row in reader:
@@ -529,16 +604,8 @@ class PollenRecord(BaseModel):
 
 @app.post("/api/upload/pollen")
 async def upload_pollen(records: list[PollenRecord]):
-    import math
-    from collections import Counter
     species_counts = Counter({r.species: r.count for r in records})
-    total = sum(species_counts.values())
-    shannon_h = 0.0
-    if total > 0:
-        for c in species_counts.values():
-            p = c / total
-            if p > 0:
-                shannon_h -= p * math.log(p)
+    shannon_h = _compute_shannon_h(species_counts)
     saved = []
     for r in records:
         rec = await db.save_upload_record(
@@ -563,16 +630,8 @@ class BirdRecord(BaseModel):
 
 @app.post("/api/upload/birds")
 async def upload_birds(records: list[BirdRecord]):
-    import math
-    from collections import Counter
     species_counts = Counter({r.species: r.count for r in records})
-    total = sum(species_counts.values())
-    shannon_h = 0.0
-    if total > 0:
-        for c in species_counts.values():
-            p = c / total
-            if p > 0:
-                shannon_h -= p * math.log(p)
+    shannon_h = _compute_shannon_h(species_counts)
     saved = []
     for r in records:
         rec = await db.save_upload_record(
@@ -608,7 +667,7 @@ async def change_detection(
     async with aiofiles.open(after_path,  "wb") as f: await f.write(after_bytes)
 
     try:
-        result = await gemini.detect_change(before_path, after_path)
+        result = await ai.detect_change(before_path, after_path)
         return result
     except Exception as exc:
         log.error("AI change detection failed: %s", exc)
@@ -617,24 +676,19 @@ async def change_detection(
 # ── Timelapse image listing and serving ───────────────────────────────────────
 @app.get("/api/timelapse/images")
 async def list_timelapse_images(limit: int = 20):
-    from config import get_timelapse_path
     folder = get_timelapse_path()
     if not folder.exists():
         return {"images": [], "total": 0, "folder": str(folder)}
-    exts = {'.jpg', '.jpeg', '.png', '.bmp'}
-    images = sorted(
-        [f for f in folder.iterdir() if f.is_file() and f.suffix.lower() in exts],
-        key=lambda f: f.stat().st_mtime, reverse=True
-    )[:limit]
-    return {
-        "images": [{"filename": f.name, "url": f"/api/timelapse/image/{f.name}", "mtime": f.stat().st_mtime, "size": f.stat().st_size} for f in images],
-        "total": len(images),
-        "folder": str(folder)
-    }
+    files = [f for f in folder.iterdir() if f.is_file() and f.suffix.lower() in IMAGE_EXTENSIONS]
+    files.sort(key=lambda f: f.stat().st_mtime, reverse=True)
+    images = []
+    for f in files[:limit]:
+        st = f.stat()
+        images.append({"filename": f.name, "url": f"/api/timelapse/image/{f.name}", "mtime": st.st_mtime, "size": st.st_size})
+    return {"images": images, "total": len(images), "folder": str(folder)}
 
 @app.get("/api/timelapse/image/{filename}")
 async def serve_timelapse_image(filename: str):
-    from config import get_timelapse_path
     folder = get_timelapse_path()
     path = folder / filename
     if not path.exists() or not path.is_file():

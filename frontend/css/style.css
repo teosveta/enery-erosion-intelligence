@@ -3912,3 +3912,52 @@ html, body { font-size: 14px; }
 .ssb-common          { background: rgba(100,116,139,0.15);color: #94a3b8; }
 .iucn-nt { color: var(--yellow); font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; }
 .iucn-lc { color: var(--green);  font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; }
+
+/* ── AI Report output styles ──────────────────────────────────────── */
+.report-ai-banner {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(59,130,246,0.06));
+  border-radius: 8px; border: 1px solid rgba(34,197,94,0.2);
+  color: var(--text-2); font-size: 12px; margin-bottom: 4px;
+}
+.report-ai-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.report-ai-badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+  color: var(--green); text-transform: uppercase;
+}
+.report-ai-date { font-size: 10px; color: var(--text-3); }
+.report-section-live { padding: 12px 0; }
+.report-section-live .report-section-title {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+  color: var(--green); text-transform: uppercase; margin-bottom: 6px;
+}
+.report-recs-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.report-recs-list li {
+  font-size: 12px; color: var(--text-2); line-height: 1.55;
+  padding: 6px 10px; background: rgba(34,197,94,0.06);
+  border-left: 2px solid var(--green); border-radius: 0 4px 4px 0;
+}
+.report-ai-error {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px; color: var(--red); font-size: 12px;
+  background: rgba(239,68,68,0.06); border-radius: 8px;
+  border: 1px solid rgba(239,68,68,0.2); margin: 8px 0;
+}
+
+/* ── AI Change Detection inline result ──────────────────────────────── */
+.ba-ai-result {
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+  margin-top: -1px;
+}

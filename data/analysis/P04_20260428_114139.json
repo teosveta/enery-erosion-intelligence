@@ -1,0 +1,19 @@
+{
+  "id": "P04_20260428_114139",
+  "pin_id": "P04",
+  "filename": "2026-04-27_12-06-28.jpg",
+  "timestamp": "2026-04-28T08:41:39.480371+00:00",
+  "vegetation_cover_percent": 0,
+  "soil_color": "mixed",
+  "moisture_estimate": "dry",
+  "erosion_features": [],
+  "erosion_severity": "none",
+  "vegetation_types": [],
+  "vegetation_health": "poor",
+  "soil_stability": "stable",
+  "water_runoff_signs": false,
+  "change_notes": "The image shows a plain wall with no visible vegetation or soil features. The surface appears smooth and dry, lacking any signs of erosion or plant life. There are no notable textures or patterns present.",
+  "recommended_action": "Consider planting vegetation to improve soil cover and prevent erosion.",
+  "confidence": 0.9,
+  "zone": 3
+}

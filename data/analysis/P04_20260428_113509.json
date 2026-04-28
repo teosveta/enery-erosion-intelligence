@@ -1,0 +1,23 @@
+{
+  "id": "P04_20260428_113509",
+  "pin_id": "P04",
+  "filename": "2026-04-28_11-09-15.jpg",
+  "timestamp": "2026-04-28T08:35:09.091425+00:00",
+  "vegetation_cover_percent": 60,
+  "soil_color": "medium",
+  "moisture_estimate": "moist",
+  "erosion_features": [
+    "none"
+  ],
+  "erosion_severity": "none",
+  "vegetation_types": [
+    "grass",
+    "none"
+  ],
+  "change_notes": "Healthy growth observed with no visible erosion features.",
+  "confidence": 0.85,
+  "zone": 3,
+  "file_path": "\\\\wsl$\\Ubuntu\\home\\tea\\timelapse\\2026-04-28_11-09-15.jpg",
+  "file_size": 368252,
+  "captured_at": "2026-04-28T11:09:16.622770"
+}

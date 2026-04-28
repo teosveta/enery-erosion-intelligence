@@ -1,7 +1,7 @@
 """
 Smart Erosion Pin — Timelapse Folder Watcher.
 Monitors the WSL/local timelapse folder for new photos every 60 seconds,
-sends each new photo to Gemini AI, stores results in db.
+sends each new image to the AI service, stores results in db.
 """
 import asyncio
 import logging
@@ -10,7 +10,7 @@ from datetime import datetime
 
 from config import get_timelapse_path, TSENOVO_SITE
 import db
-from services.gemini import analyze_photo
+from services.ai import analyze_photo
 
 log = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ def _guess_pin_id(filename: str) -> str:
 
 
 async def _process_image(image_path: Path) -> None:
-    """Send a single image to Gemini and store the result."""
+    """Send a single image to the AI service and store the result."""
     pin_id = _guess_pin_id(image_path.name)
     log.info("Processing new timelapse image: %s (pin=%s)", image_path.name, pin_id)
 
@@ -102,7 +102,7 @@ async def run_watcher(poll_interval_secs: int = 60) -> None:
                 for img in new_images:
                     _seen_files.add(img.name)
                     await _process_image(img)
-                    await asyncio.sleep(2)   # Brief pause between Gemini calls
+                    await asyncio.sleep(2)   # Brief pause between AI calls
         except Exception as exc:
             log.error("Watcher loop error: %s", exc)
 

@@ -1,9 +1,9 @@
 {
-  "_cached_at": "2026-04-27T21:00:06.688139+00:00",
+  "_cached_at": "2026-04-28T08:43:21.242222+00:00",
   "payload": {
     "latitude": 43.550087,
     "longitude": 25.578949,
-    "generationtime_ms": 16.04640483856201,
+    "generationtime_ms": 8.4075927734375,
     "utc_offset_seconds": 10800,
     "timezone": "Europe/Sofia",
     "timezone_abbreviation": "GMT+3",

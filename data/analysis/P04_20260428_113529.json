@@ -1,0 +1,19 @@
+{
+  "id": "P04_20260428_113529",
+  "pin_id": "P04",
+  "filename": "2026-04-28_11-07-13.jpg",
+  "timestamp": "2026-04-28T08:35:29.320469+00:00",
+  "vegetation_cover_percent": 30,
+  "soil_color": "medium",
+  "moisture_estimate": "moist",
+  "erosion_features": [
+    "none"
+  ],
+  "erosion_severity": "none",
+  "vegetation_types": [
+    "none"
+  ],
+  "change_notes": "No significant erosion features observed.",
+  "confidence": 0.75,
+  "zone": 3
+}

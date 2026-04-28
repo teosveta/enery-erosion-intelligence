@@ -1,0 +1,19 @@
+{
+  "id": "P04_20260428_113519",
+  "pin_id": "P04",
+  "filename": "2026-04-28_11-04-11.jpg",
+  "timestamp": "2026-04-28T08:35:19.253949+00:00",
+  "vegetation_cover_percent": 10,
+  "soil_color": "dark_organic",
+  "moisture_estimate": "moist",
+  "erosion_features": [
+    "none"
+  ],
+  "erosion_severity": "none",
+  "vegetation_types": [
+    "none"
+  ],
+  "change_notes": "Minimal vegetation observed, soil appears healthy.",
+  "confidence": 0.85,
+  "zone": 3
+}

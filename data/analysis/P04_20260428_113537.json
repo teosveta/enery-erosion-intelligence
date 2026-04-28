@@ -1,0 +1,19 @@
+{
+  "id": "P04_20260428_113537",
+  "pin_id": "P04",
+  "filename": "2026-04-28_11-09-15.jpg",
+  "timestamp": "2026-04-28T08:35:37.881526+00:00",
+  "vegetation_cover_percent": 60,
+  "soil_color": "medium",
+  "moisture_estimate": "moist",
+  "erosion_features": [
+    "none"
+  ],
+  "erosion_severity": "none",
+  "vegetation_types": [
+    "crop_residue"
+  ],
+  "change_notes": "Healthy crop growth observed with no visible erosion features.",
+  "confidence": 0.85,
+  "zone": 3
+}

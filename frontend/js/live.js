@@ -527,6 +527,8 @@ async function fetchAndRender() {
 
     _lastDash    = dash;
     _lastWeather = weather;
+    window._lastDash    = dash;    // expose to app.js
+    window._lastWeather = weather;
 
     // ── Apply to dashboard ──────────────────────────────────────────────
     if (dash) {
@@ -1209,35 +1211,69 @@ async function calculateCarbonLive() {
 
 // ── ESG report wired to API ───────────────────────────────────────────────────
 async function generateReportLive() {
+  const btn = document.querySelector('.btn-generate-report');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generating…'; }
+
   showToast('🤖 Generating AI ESG Report…');
   const reportEl = document.getElementById('report-output');
-  if (reportEl) reportEl.innerHTML = '<div class="report-loading"><div class="spinner"></div><span>AI is analyzing all monitoring data…</span></div>';
+  const reportDoc = document.getElementById('report-doc');
+
+  if (reportEl) {
+    reportEl.innerHTML = `
+      <div class="report-ai-banner">
+        <div class="spinner"></div>
+        <span>AI is analyzing erosion data, NDVI trends, soil carbon, and biodiversity records…</span>
+      </div>`;
+    reportEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 
   try {
     const result = await generateESGReport();  // defined in api.js
     const report = result?.report || {};
 
-    if (reportEl) {
-      const sections = [
-        ['Executive Summary', report.executive_summary],
-        ['Erosion Risk Assessment', report.erosion_risk_assessment],
-        ['Vegetation & NDVI', report.vegetation_analysis],
-        ['Soil Carbon', report.carbon_accounting],
-        ['Biodiversity', report.biodiversity_assessment],
-        ['Recommendations', Array.isArray(report.recommendations) ? report.recommendations.join('\n') : report.recommendations],
-      ].filter(([, v]) => v);
+    const sectionMap = [
+      { title: 'Executive Summary',       icon: '📋', key: 'executive_summary' },
+      { title: 'Erosion Risk Assessment', icon: '⚠️', key: 'erosion_risk_assessment' },
+      { title: 'Vegetation & NDVI',       icon: '🌿', key: 'vegetation_analysis' },
+      { title: 'Soil Carbon Accounting',  icon: '🌍', key: 'carbon_accounting' },
+      { title: 'Biodiversity Assessment', icon: '🦅', key: 'biodiversity_assessment' },
+    ].filter(s => report[s.key]);
 
-      reportEl.innerHTML = sections.map(([title, body]) => `
-        <div class="report-section">
-          <h3 class="report-section-title">${title}</h3>
-          <p class="report-section-body">${(body || '').replace(/\n/g, '<br>')}</p>
+    const recsRaw = report.recommendations;
+    const recs = Array.isArray(recsRaw) ? recsRaw : (recsRaw ? recsRaw.split(/\n|;/).filter(r => r.trim()) : []);
+
+    if (reportEl) {
+      reportEl.innerHTML = `
+        <div class="report-ai-header">
+          <span class="report-ai-badge">🤖 AI-Generated ESG Analysis</span>
+          <span class="report-ai-date">Generated ${new Date().toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
-      `).join('');
+        ${sectionMap.map(s => `
+          <div class="report-section report-section-live">
+            <h3 class="report-section-title">${s.icon} ${s.title}</h3>
+            <p class="report-section-body">${(report[s.key] || '').replace(/\n/g, '<br>')}</p>
+          </div>`).join('')}
+        ${recs.length ? `
+          <div class="report-section report-section-live">
+            <h3 class="report-section-title">✅ Recommendations</h3>
+            <ul class="report-recs-list">
+              ${recs.map(r => `<li>${r.trim().replace(/^[-•*]\s*/, '')}</li>`).join('')}
+            </ul>
+          </div>` : ''}
+      `;
+      // Hide the static template doc when live AI report is shown
+      if (reportDoc) reportDoc.style.display = 'none';
     }
+    if (btn) { btn.disabled = false; btn.textContent = '↻ Regenerate AI Report'; }
     showToast('✅ ESG Report generated successfully');
   } catch (err) {
-    if (reportEl) reportEl.innerHTML = '<div style="color:var(--text-3);padding:16px">Backend unavailable — connect to generate AI report.</div>';
-    showToast('⚠ Report generation failed — backend offline?');
+    if (reportEl) reportEl.innerHTML = `
+      <div class="report-ai-error">
+        <span>⚠</span>
+        <span>Report generation failed: ${err.message}</span>
+      </div>`;
+    if (btn) { btn.disabled = false; btn.textContent = 'Generate & AI Review'; }
+    showToast('⚠ Report generation failed — ' + err.message);
   }
 }
 
@@ -1285,56 +1321,229 @@ async function fetchTimelapseImages() {
   }
 }
 
+// ── Smart Pin image analysis modal ───────────────────────────────────────────
+
+const _SEV_COLOR = {
+  none: '#22c55e', low: '#86efac', moderate: '#f59e0b',
+  high: '#ef4444', severe: '#dc2626',
+};
+const _MOISTURE_ICON = { dry: '☀️', moist: '🌤️', wet: '💧', saturated: '🌊' };
+const _HEALTH_COLOR  = { poor: '#ef4444', fair: '#f59e0b', good: '#22c55e', excellent: '#10b981' };
+const _STABILITY_ICON = { unstable: '⚠️', at_risk: '🔶', stable: '✅', well_established: '🌱' };
+
+function _pinSevColor(sev) {
+  return _SEV_COLOR[sev] || '#6b7280';
+}
+
+function _pinResultHTML(analysis, filename) {
+  const sev      = analysis.erosion_severity || 'unknown';
+  const sevColor = _pinSevColor(sev);
+  const vegPct   = analysis.vegetation_cover_percent ?? 0;
+  const conf     = Math.round((analysis.confidence ?? 0) * 100);
+  const features = (analysis.erosion_features  || []).filter(f => f && f !== 'none');
+  const vegTypes = (analysis.vegetation_types  || []).filter(v => v && v !== 'none');
+  const ts       = filename.replace('.jpg','').replace(/_/g,' ');
+
+  const vegBarColor = vegPct > 50 ? '#22c55e' : vegPct > 25 ? '#f59e0b' : '#ef4444';
+
+  return `
+    <div style="animation:fadeIn .35s ease">
+
+      <!-- severity + timestamp row -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:11px;height:11px;border-radius:50%;background:${sevColor};box-shadow:0 0 8px ${sevColor}88;flex-shrink:0"></div>
+          <span style="font-size:13px;font-weight:700;color:${sevColor};text-transform:uppercase;letter-spacing:.04em">${sev} erosion</span>
+        </div>
+        <span style="font-size:10px;color:var(--text-3)">${ts}</span>
+      </div>
+
+      <!-- progress bars -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+            <span style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Vegetation Cover</span>
+            <span style="font-size:11px;font-weight:600;color:var(--text-1)">${vegPct}%</span>
+          </div>
+          <div style="height:7px;background:var(--surface-2);border-radius:4px;overflow:hidden">
+            <div class="pin-bar" style="height:100%;width:0;background:${vegBarColor};border-radius:4px;transition:width .9s cubic-bezier(.4,0,.2,1) .1s" data-w="${vegPct}%"></div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+            <span style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">AI Confidence</span>
+            <span style="font-size:11px;font-weight:600;color:var(--text-1)">${conf}%</span>
+          </div>
+          <div style="height:7px;background:var(--surface-2);border-radius:4px;overflow:hidden">
+            <div class="pin-bar" style="height:100%;width:0;background:var(--blue);border-radius:4px;transition:width .9s cubic-bezier(.4,0,.2,1) .25s" data-w="${conf}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- property grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px">
+        <div style="background:var(--surface-2);border-radius:7px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Moisture</div>
+          <div style="font-size:12px;color:var(--text-1)">${_MOISTURE_ICON[analysis.moisture_estimate] || ''} ${analysis.moisture_estimate || '—'}</div>
+        </div>
+        <div style="background:var(--surface-2);border-radius:7px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Soil Color</div>
+          <div style="font-size:12px;color:var(--text-1)">${(analysis.soil_color || '—').replace(/_/g,' ')}</div>
+        </div>
+        ${analysis.vegetation_health ? `
+        <div style="background:var(--surface-2);border-radius:7px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Plant Health</div>
+          <div style="font-size:12px;font-weight:600;color:${_HEALTH_COLOR[analysis.vegetation_health] || 'var(--text-1)'}">${analysis.vegetation_health}</div>
+        </div>` : ''}
+        ${analysis.soil_stability ? `
+        <div style="background:var(--surface-2);border-radius:7px;padding:8px 10px">
+          <div style="font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">Soil Stability</div>
+          <div style="font-size:12px;color:var(--text-1)">${_STABILITY_ICON[analysis.soil_stability] || ''} ${(analysis.soil_stability || '').replace(/_/g,' ')}</div>
+        </div>` : ''}
+      </div>
+
+      <!-- water runoff warning -->
+      ${analysis.water_runoff_signs ? `
+      <div style="background:#ef444414;border:1px solid #ef444435;border-radius:7px;padding:9px 12px;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:15px">⚠️</span>
+        <span style="font-size:11px;color:#ef4444;font-weight:600">Water runoff patterns detected in this image</span>
+      </div>` : ''}
+
+      <!-- erosion feature tags -->
+      ${features.length > 0 ? `
+      <div style="margin-bottom:10px">
+        <div style="font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px">Erosion Features</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          ${features.map(f => `<span style="background:#ef444420;color:#ef4444;border:1px solid #ef444440;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:600">${f.replace(/_/g,' ')}</span>`).join('')}
+        </div>
+      </div>` : ''}
+
+      <!-- vegetation type tags -->
+      ${vegTypes.length > 0 ? `
+      <div style="margin-bottom:10px">
+        <div style="font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px">Vegetation Types</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          ${vegTypes.map(v => `<span style="background:#22c55e20;color:#22c55e;border:1px solid #22c55e40;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:600">${v.replace(/_/g,' ')}</span>`).join('')}
+        </div>
+      </div>` : ''}
+
+      <!-- AI observations -->
+      ${analysis.change_notes ? `
+      <div style="background:var(--surface-2);border-left:3px solid var(--blue);border-radius:0 7px 7px 0;padding:10px 12px;margin-bottom:10px">
+        <div style="font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">AI Observations</div>
+        <div style="font-size:11px;color:var(--text-2);line-height:1.65">${analysis.change_notes}</div>
+      </div>` : ''}
+
+      <!-- recommended action -->
+      ${analysis.recommended_action ? `
+      <div style="background:#f59e0b12;border:1px solid #f59e0b30;border-radius:7px;padding:10px 12px">
+        <div style="font-size:9px;color:#f59e0b;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">⚡ Recommended Action</div>
+        <div style="font-size:11px;color:var(--text-1);line-height:1.55">${analysis.recommended_action}</div>
+      </div>` : ''}
+
+    </div>`;
+}
+
 async function openImageAnalysisModal(img) {
-  openModal(`📷 ${img.filename}`, `
-    <div style="text-align:center;margin-bottom:16px">
-      <img src="${img.url}" style="max-width:100%;max-height:350px;border-radius:8px;border:1px solid var(--border)" onerror="this.style.display='none'">
+  const ts = new Date(img.mtime * 1000).toLocaleString('en', {
+    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+  openModal(`📷 Smart Pin — ${ts}`, `
+    <div style="text-align:center;margin-bottom:14px">
+      <img src="${img.url}"
+           style="max-width:100%;max-height:280px;border-radius:8px;border:1px solid var(--border);object-fit:cover"
+           onerror="this.style.display='none'">
+      <div style="font-size:10px;color:var(--text-3);margin-top:5px">${img.filename} · ${(img.size/1024).toFixed(0)} KB</div>
     </div>
-    <div id="img-analysis-body" class="modal-zone-hero" style="border-left:3px solid var(--blue)">
-      <div style="display:flex;align-items:center;gap:8px;color:var(--text-3)">
-        <div class="spinner"></div> Fetching AI analysis…
+
+    <div id="img-analysis-body" style="border-left:3px solid var(--blue);border-radius:0 7px 7px 0;background:var(--surface-2);padding:12px 14px">
+      <div id="ai-loading-steps" style="display:flex;flex-direction:column;gap:9px">
+        ${['🔍 Scanning image quality &amp; lighting…','🌿 Analysing vegetation cover &amp; types…','🌊 Assessing erosion risk &amp; soil stability…'].map((txt, i) => `
+          <div class="ai-step" id="ai-step-${i}" style="display:flex;align-items:center;gap:10px;opacity:0;transition:opacity .4s ease ${i*0.55}s">
+            <span style="font-size:13px">${txt.split(' ')[0]}</span>
+            <span style="font-size:11px;color:var(--text-2)">${txt.split(' ').slice(1).join(' ')}</span>
+            <span class="step-check" style="margin-left:auto;color:#22c55e;font-size:13px;opacity:0;transition:opacity .3s ease">✓</span>
+          </div>`).join('')}
       </div>
     </div>
-    <div class="modal-actions">
-      <button class="btn-primary btn-sm" onclick="triggerImageAnalysis('${img.filename}')">🤖 Re-analyze</button>
+
+    <div class="modal-actions" style="margin-top:14px">
       <button class="btn-secondary btn-sm" onclick="closeModal()">Close</button>
     </div>
   `);
 
-  try {
-    const analysis = await apiFetch('/smart-pin/latest-analysis');
-    const bodyEl = document.getElementById('img-analysis-body');
-    if (!bodyEl) return;
+  // Reveal loading steps with stagger
+  [0, 1, 2].forEach(i => setTimeout(() => {
+    const el = document.getElementById(`ai-step-${i}`);
+    if (el) el.style.opacity = '1';
+  }, i * 550));
 
-    if (analysis && !analysis.message) {
-      const sev = analysis.erosion_severity || 'unknown';
-      const color = sev === 'severe' || sev === 'high' ? '#ef4444' : sev === 'moderate' ? '#f59e0b' : '#22c55e';
-      bodyEl.style.borderLeftColor = color;
-      bodyEl.innerHTML = `
-        <div class="modal-zone-badge" style="background:${color}22;color:${color}">${sev.toUpperCase()} EROSION</div>
-        <div class="modal-zone-stats" style="margin-top:10px">
-          <div class="mzs"><span class="mzs-label">Vegetation Cover</span><span class="mzs-val">${analysis.vegetation_cover_percent ?? '—'}%</span></div>
-          <div class="mzs"><span class="mzs-label">Moisture</span><span class="mzs-val">${analysis.moisture_estimate ?? '—'}</span></div>
-          <div class="mzs"><span class="mzs-label">Confidence</span><span class="mzs-val">${analysis.confidence != null ? (analysis.confidence * 100).toFixed(0) + '%' : '—'}</span></div>
-        </div>
-        ${analysis.erosion_features?.filter(f => f !== 'none').length > 0 ? `
-          <div style="margin-top:10px">
-            <div style="font-size:9px;color:var(--text-3);text-transform:uppercase;margin-bottom:5px">Erosion Features</div>
-            <div class="modal-tags">${analysis.erosion_features.filter(f => f !== 'none').map(f => `<span class="modal-tag danger">${f.replace('_', ' ')}</span>`).join('')}</div>
-          </div>
-        ` : ''}
-        ${analysis.change_notes ? `<div style="margin-top:10px;font-size:11px;color:var(--text-2);line-height:1.6">${analysis.change_notes}</div>` : ''}
-      `;
-    } else {
-      bodyEl.innerHTML = '<div style="color:var(--text-3);font-size:12px">No AI analysis available yet. Click "Re-analyze" to trigger Gemini analysis.</div>';
-    }
-  } catch {}
+  _runPinAnalysis(img.filename);
 }
 
-async function triggerImageAnalysis(filename) {
-  showToast('🤖 Triggering AI analysis…');
-  const result = await apiFetch('/smart-pin/analyze-now', { method: 'POST' });
-  showToast(result?.message || 'Analysis queued');
+async function _runPinAnalysis(filename) {
+  const bodyEl = document.getElementById('img-analysis-body');
+  if (!bodyEl) return;
+
+  try {
+    const resp = await fetch(
+      `http://localhost:8000/api/smart-pin/analyze-image?filename=${encodeURIComponent(filename)}`,
+      { method: 'POST' }
+    );
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.detail || `HTTP ${resp.status}`);
+    }
+    const data = await resp.json();
+    const analysis = data.analysis;
+    if (!analysis) throw new Error('No analysis returned');
+
+    // Mark all loading steps done
+    [0, 1, 2].forEach(i => {
+      const el = document.getElementById(`ai-step-${i}`);
+      if (el) {
+        el.style.opacity = '1';
+        const check = el.querySelector('.step-check');
+        if (check) check.style.opacity = '1';
+      }
+    });
+
+    // Short pause so the user sees the ✓ marks before results replace the loader
+    await new Promise(r => setTimeout(r, 420));
+
+    const sevColor = _pinSevColor(analysis.erosion_severity);
+    bodyEl.style.borderLeftColor = sevColor;
+    bodyEl.style.background = 'transparent';
+    bodyEl.style.padding = '0';
+    bodyEl.innerHTML = _pinResultHTML(analysis, filename);
+
+    // Trigger bar animations after paint
+    requestAnimationFrame(() => {
+      bodyEl.querySelectorAll('.pin-bar').forEach(bar => {
+        bar.style.width = bar.dataset.w;
+      });
+    });
+
+    updatePinCards(analysis, []);
+    showToast('✅ Smart Pin AI analysis complete');
+
+  } catch (err) {
+    if (!bodyEl) return;
+    const isDaily = err.message.includes('per day') || err.message.includes('midnight');
+    bodyEl.style.borderLeftColor = '#ef4444';
+    bodyEl.innerHTML = `
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:4px 0">
+        <span style="font-size:20px;flex-shrink:0">⚠️</span>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">AI Analysis Failed</div>
+          <div style="font-size:11px;color:var(--text-2);margin-bottom:6px">${err.message}</div>
+          <div style="font-size:11px;color:var(--text-3)">${isDaily
+            ? 'Daily limit reached — resets at midnight UTC. Add credits at <a href="https://openrouter.ai" target="_blank" style="color:var(--blue)">openrouter.ai</a> to continue.'
+            : 'The AI may be temporarily rate-limited. Wait a minute, then click the image again.'
+          }</div>
+        </div>
+      </div>`;
+  }
 }
 
 // Store images for click handlers (avoids JSON-in-onclick issues)
@@ -1347,16 +1556,24 @@ function updateZonesPinFeed(images) {
   if (countEl) countEl.textContent = `${images.length} recent images`;
 
   _zonesPinImages = images;
-  const slice = images.slice(0, 5);
+  const slice = images.slice(0, 12);
 
   feed.innerHTML = slice.map((img, i) => {
     const ts = new Date(img.mtime * 1000);
     return `
-      <div class="zones-pin-item" data-img-idx="${i}">
-        <img src="${img.url}" style="width:60px;height:45px;object-fit:cover;border-radius:4px;flex-shrink:0" onerror="this.style.display='none'">
+      <div class="zones-pin-item" data-img-idx="${i}" title="Click to analyse with AI"
+           style="cursor:pointer;position:relative;overflow:hidden">
+        <img src="${img.url}"
+             style="width:72px;height:54px;object-fit:cover;border-radius:5px;flex-shrink:0;transition:transform .2s ease"
+             onerror="this.style.display='none'">
         <div class="zones-pin-item-info">
-          <div style="font-size:11px;font-weight:600;color:var(--text-1)">${img.filename.slice(0, 20)}</div>
-          <div style="font-size:9px;color:var(--text-3)">${ts.toLocaleString('en', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+          <div style="font-size:11px;font-weight:600;color:var(--text-1)">
+            ${ts.toLocaleString('en', { month: 'short', day: 'numeric' })}
+          </div>
+          <div style="font-size:9px;color:var(--text-3)">
+            ${ts.toLocaleString('en', { hour: '2-digit', minute: '2-digit' })}
+          </div>
+          <div style="font-size:9px;color:var(--blue);margin-top:2px;font-weight:500">🤖 Analyse</div>
         </div>
       </div>
     `;
@@ -2509,14 +2726,15 @@ async function runAIRiskScore(zoneId = 3) {
     const factors = (result.contributing_factors || []).slice(0, 4);
     const actions = (result.recommended_actions || []).slice(0, 3);
 
-    // Update gauge with new score
+    // Update gauge with new score and store globally
     updateGauge(score);
+    window._lastRiskScore = score;
 
     openModal(`AI Risk Score — Zone ${zoneId}`, `
       <div class="modal-zone-hero" style="border-left:4px solid ${score >= 70 ? '#ef4444' : score >= 40 ? '#f59e0b' : '#22c55e'}">
         <div class="modal-zone-badge" style="background:${score >= 70 ? '#ef444422' : '#f59e0b22'};color:${score >= 70 ? '#ef4444' : '#f59e0b'}">${level.toUpperCase()} RISK — ${score}/100</div>
       </div>
-      ${factors.length ? `<div class="dm-section-title">Gemini AI Contributing Factors</div>${factors.map(f => `<div class="dm-row"><span>→</span><strong>${f}</strong></div>`).join('')}` : ''}
+      ${factors.length ? `<div class="dm-section-title">AI Contributing Factors</div>${factors.map(f => `<div class="dm-row"><span>→</span><strong>${f}</strong></div>`).join('')}` : ''}
       ${actions.length ? `<div class="dm-section-title">Recommended Actions</div>${actions.map(a => `<div class="dm-row" style="align-items:flex-start"><span>•</span><span style="color:var(--text-2)">${a}</span></div>`).join('')}` : ''}
       <div class="modal-actions">
         <button class="btn-secondary btn-sm" onclick="closeModal()">Close</button>
@@ -2545,11 +2763,25 @@ async function runAIBiodiversity() {
     const eco = result.ecological_assessment || '';
     const notes = result.conservation_notes || '';
 
-    // Update shannon display
-    const shannonEl = document.querySelector('.shannon-svg text');
-    if (shannonEl && h != null) shannonEl.textContent = h.toFixed(2);
+    // Update shannon display elements with live AI values
+    if (h != null) {
+      const shannonEl = document.querySelector('.shannon-svg text');
+      if (shannonEl) shannonEl.textContent = h.toFixed(2);
+      const shannonVal = document.getElementById('shannon-value');
+      if (shannonVal) shannonVal.textContent = h.toFixed(2);
+      const bkpiShannon = document.getElementById('bkpi-shannon');
+      if (bkpiShannon) bkpiShannon.textContent = h.toFixed(2);
+    }
+    if (rich != null) {
+      const specTotal = document.getElementById('species-total');
+      if (specTotal) specTotal.textContent = rich;
+      const bioTotal = document.getElementById('bio-total-species');
+      if (bioTotal) bioTotal.textContent = rich;
+    }
+    // Store for other functions
+    window._lastBioData = result;
 
-    openModal('AI Biodiversity Analysis — Gemini 2.0', `
+    openModal('🌿 AI Biodiversity Analysis', `
       <div class="detail-modal-grid">
         ${_dmStat("Shannon H′", h != null ? h.toFixed(2) : '—', 'AI computed', '#22c55e')}
         ${_dmStat('Species Richness', rich ?? '—', 'GBIF records')}
@@ -2572,24 +2804,41 @@ async function runAIBiodiversity() {
 // ── 9. AI Change Detection — /api/ai/change-detection ───────────────────────
 async function runAIChangeDetection() {
   const btn = document.getElementById('btn-ai-change');
-  if (btn) { btn.disabled = true; btn.textContent = 'Analyzing…'; }
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Analyzing…'; }
+
+  const baResult = document.getElementById('ba-ai-result');
 
   try {
-    const imgs = _zonesPinImages || [];
+    // Auto-fetch timelapse images if not yet loaded
+    let imgs = _zonesPinImages || [];
     if (imgs.length < 2) {
-      showToast('⚠ Need at least 2 timelapse images for change detection');
+      const resp = await apiFetch('/timelapse/images?limit=10');
+      if (resp?.images?.length >= 2) {
+        imgs = resp.images;
+        updateBeforeAfter(imgs);
+      }
+    }
+    if (imgs.length < 2) {
+      showToast('⚠ No timelapse images found — upload photos via Smart Pin section first');
       return;
     }
 
+    // Show inline loading in the ba-ai-result panel
+    if (baResult) {
+      baResult.style.display = '';
+      baResult.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:12px;color:var(--text-2);font-size:12px"><div class="spinner"></div> AI is comparing before &amp; after images…</div>';
+    }
+
     // Fetch the two images as blobs and upload as before/after
+    const olderIdx = Math.min(imgs.length - 1, 5);
     const [beforeResp, afterResp] = await Promise.all([
-      fetch(imgs[Math.min(imgs.length - 1, 5)].url),
+      fetch(imgs[olderIdx].url),
       fetch(imgs[0].url)
     ]);
     const [beforeBlob, afterBlob] = await Promise.all([beforeResp.blob(), afterResp.blob()]);
 
     const form = new FormData();
-    form.append('before', beforeBlob, imgs[Math.min(imgs.length - 1, 5)].filename);
+    form.append('before', beforeBlob, imgs[olderIdx].filename);
     form.append('after',  afterBlob,  imgs[0].filename);
 
     const resp = await fetch('http://localhost:8000/api/ai/change-detection', { method: 'POST', body: form });
@@ -2603,7 +2852,20 @@ async function runAIChangeDetection() {
     const summary = result.change_summary || '';
     const color = progression === 'improving' ? '#22c55e' : progression === 'worsening' ? '#ef4444' : '#f59e0b';
 
-    openModal('AI Change Detection — Gemini Vision', `
+    // Update inline ba-ai-result panel
+    if (baResult) {
+      baResult.innerHTML = `
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:${color}11;border-top:1px solid ${color}33;border-radius:0 0 10px 10px">
+          <span style="font-size:18px">${progression === 'improving' ? '✅' : progression === 'worsening' ? '⚠️' : '📊'}</span>
+          <div style="flex:1">
+            <div style="font-size:11px;font-weight:700;color:${color};letter-spacing:.05em;text-transform:uppercase">${progression}</div>
+            <div style="font-size:11px;color:var(--text-2);margin-top:2px">${summary || `Vegetation ${vegChange != null ? (vegChange > 0 ? '+' : '') + vegChange + '% change' : 'change detected'}`}</div>
+          </div>
+          ${vegChange != null ? `<span style="font-size:13px;font-weight:700;color:${vegChange > 0 ? '#22c55e' : '#ef4444'}">${vegChange > 0 ? '+' : ''}${vegChange}%</span>` : ''}
+        </div>`;
+    }
+
+    openModal('🤖 AI Change Detection', `
       <div class="modal-zone-hero" style="border-left:4px solid ${color}">
         <div class="modal-zone-badge" style="background:${color}22;color:${color}">${progression.toUpperCase()}</div>
       </div>
@@ -2621,6 +2883,7 @@ async function runAIChangeDetection() {
     `);
     showToast('✅ AI change detection complete');
   } catch (err) {
+    if (baResult) baResult.style.display = 'none';
     showToast('⚠ AI change detection failed — ' + err.message);
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = '🤖 AI Change Detection'; }
@@ -2709,7 +2972,7 @@ function _photoProgress(phase) {
     bar._timer = setInterval(() => {
       pct += pct < 40 ? 4 : pct < 70 ? 1 : 0.2;
       if (bar) bar.style.width = Math.min(pct, 92) + '%';
-      if (label && pct > 40) label.textContent = '🤖 Gemini is analyzing…';
+      if (label && pct > 40) label.textContent = '🤖 AI is analyzing…';
     }, 120);
   } else if (phase === 'done') {
     if (bar?._timer) clearInterval(bar._timer);
@@ -2743,7 +3006,9 @@ async function submitPhotoForAnalysis() {
 
 async function handlePhotoUpload(file, zone, pinId, notes) {
   const result = await uploadMonitoringPhoto(file, zone, pinId, notes);
-  _photoProgress(result?.analysis ? 'done' : 'error');
+  // "Photo saved — AI analysis failed" is a partial success (photo saved, AI rate-limited)
+  const partialOk = result?.message?.includes('Photo saved');
+  _photoProgress((result?.analysis || partialOk) ? 'done' : 'error');
 
   const emptyEl   = document.getElementById('photo-result-empty');
   const contentEl = document.getElementById('photo-result-content');
@@ -2839,10 +3104,24 @@ async function handlePhotoUpload(file, zone, pinId, notes) {
 
     showToast('✅ AI analysis complete');
     loadPhotoHistory();
+  } else if (result?.message?.includes('Photo saved')) {
+    // Photo saved but AI failed (rate limit). Show retry option.
+    if (emptyEl) {
+      emptyEl.style.display = 'flex';
+      emptyEl.innerHTML = `
+        <div style="font-size:28px">⏳</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:6px;text-align:center">
+          Photo saved successfully.<br>
+          <span style="color:var(--red)">${result.ai_error || 'AI analysis failed'}</span><br>
+          <span style="color:var(--text-3);font-size:11px">${(result.ai_error || '').includes('midnight') || (result.ai_error || '').includes('per day') ? 'Daily limit reached — resets at midnight UTC.' : 'Wait 1 minute and click Analyze again to retry.'}</span>
+        </div>`;
+    }
+    const isDaily = (result.ai_error || '').includes('midnight') || (result.ai_error || '').includes('per day');
+    showToast(isDaily ? '⏳ Photo saved — daily AI limit reached' : '⏳ Photo saved — AI rate-limited, retry in 1 min');
   } else {
     if (emptyEl) {
       emptyEl.style.display = 'flex';
-      emptyEl.innerHTML = `<div style="font-size:28px">⚠</div><div style="font-size:12px;color:var(--red);margin-top:6px">${result?.message || 'Upload failed. Check backend is running.'}</div>`;
+      emptyEl.innerHTML = `<div style="font-size:28px">⚠</div><div style="font-size:12px;color:var(--red);margin-top:6px">${result?.message || 'Upload failed. Is the backend running?'}</div>`;
     }
     showToast(result?.message || '⚠ Upload failed — is the backend running?');
   }
@@ -3410,7 +3689,6 @@ function startLiveEngine() {
     wireCardModals();
   }, 1000);
 
-  console.log('[live] Engine started. Refresh every', _refreshInterval, 's');
 }
 
 // ── Override section init to include live data ────────────────────────────────

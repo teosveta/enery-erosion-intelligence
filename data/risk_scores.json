@@ -1,0 +1,54 @@
+[
+  {
+    "zone": 3,
+    "timestamp": "2026-04-27T22:47:04.803190+00:00",
+    "risk_score": 68,
+    "risk_level": "high",
+    "contributing_factors": [
+      "Low vegetation cover (32%)",
+      "Low NDVI (0.290) indicating poor plant vigor",
+      "High precipitation (42.5 mm) relative to cover",
+      "Silty clay loam soil susceptibility to surface sealing"
+    ],
+    "recommended_actions": [
+      "Implement immediate reseeding or hydroseeding in bare patches",
+      "Install temporary biodegradable erosion control blankets",
+      "Inspect for rill formation following precipitation event",
+      "Evaluate nutrient supplementation to improve NDVI and biomass density"
+    ]
+  },
+  {
+    "zone": 3,
+    "timestamp": "2026-04-28T07:05:49.905004+00:00",
+    "risk_score": 42,
+    "risk_level": "moderate",
+    "contributing_factors": [
+      "Low NDVI (0.290) indicating stressed or sparse vegetation",
+      "Silty clay loam soil susceptibility to surface crusting",
+      "Sub-optimal vegetation cover (45%)"
+    ],
+    "recommended_actions": [
+      "Implement targeted reseeding in low NDVI patches",
+      "Apply organic mulch to reduce rainsplash erosion",
+      "Increase monitoring frequency of Smart Erosion Pins in Zone 3"
+    ]
+  },
+  {
+    "zone": 3,
+    "timestamp": "2026-04-28T09:00:33.823063+00:00",
+    "risk_score": 65,
+    "risk_level": "moderate",
+    "contributing_factors": [
+      "low vegetation cover",
+      "recent precipitation",
+      "moderate slope",
+      "NDVI value"
+    ],
+    "recommended_actions": [
+      "increase vegetation cover through planting",
+      "implement soil conservation practices",
+      "monitor erosion features regularly",
+      "apply mulch to reduce soil moisture evaporation"
+    ]
+  }
+]

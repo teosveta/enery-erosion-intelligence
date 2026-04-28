@@ -1,0 +1,24 @@
+{
+  "id": "P04_20260428_115225",
+  "pin_id": "P04",
+  "filename": "2026-04-28_11-09-15.jpg",
+  "timestamp": "2026-04-28T08:52:25.751888+00:00",
+  "vegetation_cover_percent": 30,
+  "soil_color": "dark_organic",
+  "moisture_estimate": "moist",
+  "erosion_features": [],
+  "erosion_severity": "none",
+  "vegetation_types": [
+    "crop_residue"
+  ],
+  "vegetation_health": "fair",
+  "soil_stability": "stable",
+  "water_runoff_signs": false,
+  "change_notes": "The soil appears dark and rich, indicating organic matter. The plant density is low, with visible crop residue around the base. The overall texture is smooth with no visible erosion features.",
+  "recommended_action": "Monitor moisture levels to ensure adequate hydration for plant growth.",
+  "confidence": 0.85,
+  "zone": 3,
+  "file_path": "\\\\wsl$\\Ubuntu\\home\\tea\\timelapse\\2026-04-28_11-09-15.jpg",
+  "file_size": 368252,
+  "captured_at": "2026-04-28T11:09:16.622770"
+}

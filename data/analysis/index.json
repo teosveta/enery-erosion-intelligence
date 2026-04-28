@@ -1,0 +1,371 @@
+[
+  {
+    "id": "P04_20260428_112941",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-09-15.jpg",
+    "timestamp": "2026-04-28T08:29:41.676838+00:00",
+    "vegetation_cover_percent": 70,
+    "soil_color": "medium",
+    "moisture_estimate": "moist",
+    "erosion_features": [
+      "none"
+    ],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "change_notes": "Healthy crop growth observed with no signs of erosion.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_113459",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-09-15.jpg",
+    "timestamp": "2026-04-28T08:34:59.642043+00:00",
+    "vegetation_cover_percent": 60,
+    "soil_color": "medium",
+    "moisture_estimate": "moist",
+    "erosion_features": [
+      "none"
+    ],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "change_notes": "Healthy growth observed with no visible erosion features.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_113509",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-09-15.jpg",
+    "timestamp": "2026-04-28T08:35:09.091425+00:00",
+    "vegetation_cover_percent": 60,
+    "soil_color": "medium",
+    "moisture_estimate": "moist",
+    "erosion_features": [
+      "none"
+    ],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "grass",
+      "none"
+    ],
+    "change_notes": "Healthy growth observed with no visible erosion features.",
+    "confidence": 0.85,
+    "zone": 3,
+    "file_path": "\\\\wsl$\\Ubuntu\\home\\tea\\timelapse\\2026-04-28_11-09-15.jpg",
+    "file_size": 368252,
+    "captured_at": "2026-04-28T11:09:16.622770"
+  },
+  {
+    "id": "P04_20260428_113512",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-08-14.jpg",
+    "timestamp": "2026-04-28T08:35:12.174613+00:00",
+    "vegetation_cover_percent": 30,
+    "soil_color": "medium",
+    "moisture_estimate": "moist",
+    "erosion_features": [
+      "none"
+    ],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "none"
+    ],
+    "change_notes": "No significant erosion features observed.",
+    "confidence": 0.75,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_113519",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-04-11.jpg",
+    "timestamp": "2026-04-28T08:35:19.253949+00:00",
+    "vegetation_cover_percent": 10,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [
+      "none"
+    ],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "none"
+    ],
+    "change_notes": "Minimal vegetation observed, soil appears healthy.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_113529",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-07-13.jpg",
+    "timestamp": "2026-04-28T08:35:29.320469+00:00",
+    "vegetation_cover_percent": 30,
+    "soil_color": "medium",
+    "moisture_estimate": "moist",
+    "erosion_features": [
+      "none"
+    ],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "none"
+    ],
+    "change_notes": "No significant erosion features observed.",
+    "confidence": 0.75,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_113537",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-09-15.jpg",
+    "timestamp": "2026-04-28T08:35:37.881526+00:00",
+    "vegetation_cover_percent": 60,
+    "soil_color": "medium",
+    "moisture_estimate": "moist",
+    "erosion_features": [
+      "none"
+    ],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "change_notes": "Healthy crop growth observed with no visible erosion features.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_114129",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-09-15.jpg",
+    "timestamp": "2026-04-28T08:41:29.083088+00:00",
+    "vegetation_cover_percent": 40,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and rich, indicating organic matter. The visible plant is healthy but not densely packed. There are no signs of erosion or runoff.",
+    "recommended_action": "Monitor moisture levels to ensure optimal growth conditions.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_114139",
+    "pin_id": "P04",
+    "filename": "2026-04-27_12-06-28.jpg",
+    "timestamp": "2026-04-28T08:41:39.480371+00:00",
+    "vegetation_cover_percent": 0,
+    "soil_color": "mixed",
+    "moisture_estimate": "dry",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [],
+    "vegetation_health": "poor",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The image shows a plain wall with no visible vegetation or soil features. The surface appears smooth and dry, lacking any signs of erosion or plant life. There are no notable textures or patterns present.",
+    "recommended_action": "Consider planting vegetation to improve soil cover and prevent erosion.",
+    "confidence": 0.9,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_114705",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-09-15.jpg",
+    "timestamp": "2026-04-28T08:47:05.577211+00:00",
+    "vegetation_cover_percent": 60,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "vegetation_health": "good",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and rich, indicating good organic content. The visible plant has healthy green shoots, suggesting adequate growth. There are no signs of erosion or bare patches in the immediate area.",
+    "recommended_action": "Continue monitoring moisture levels to ensure optimal growth conditions.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_114742",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-02-09.jpg",
+    "timestamp": "2026-04-28T08:47:42.643836+00:00",
+    "vegetation_cover_percent": 10,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "none"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and organic with a few small green shoots visible. The texture is relatively fine with some organic matter present. There are no visible signs of erosion or runoff.",
+    "recommended_action": "Monitor vegetation growth and consider introducing more diverse plant species to enhance cover.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_114843",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-06-13.jpg",
+    "timestamp": "2026-04-28T08:48:43.596922+00:00",
+    "vegetation_cover_percent": 30,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and rich, indicating organic matter. The visible plant has a fair health status with some green leaves. There are no signs of erosion or runoff.",
+    "recommended_action": "Monitor moisture levels to ensure optimal growth conditions.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_115219",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-06-13.jpg",
+    "timestamp": "2026-04-28T08:52:19.961566+00:00",
+    "vegetation_cover_percent": 30,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and rich, indicating good organic content. The visible plant has a healthy green color, but there is some browning at the base. The area shows no signs of erosion or runoff.",
+    "recommended_action": "Monitor moisture levels to ensure optimal growth conditions.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_115224",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-05-12.jpg",
+    "timestamp": "2026-04-28T08:52:24.517889+00:00",
+    "vegetation_cover_percent": 10,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "none"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and rich, with minimal visible vegetation. There are some small organic materials present, but overall, the ground is mostly bare. The texture is fine and crumbly, indicating some moisture retention.",
+    "recommended_action": "Consider introducing more vegetation to enhance soil cover and prevent potential erosion.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_115225",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-09-15.jpg",
+    "timestamp": "2026-04-28T08:52:25.751888+00:00",
+    "vegetation_cover_percent": 30,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and rich, indicating organic matter. The plant density is low, with visible crop residue around the base. The overall texture is smooth with no visible erosion features.",
+    "recommended_action": "Monitor moisture levels to ensure adequate hydration for plant growth.",
+    "confidence": 0.85,
+    "zone": 3,
+    "file_path": "\\\\wsl$\\Ubuntu\\home\\tea\\timelapse\\2026-04-28_11-09-15.jpg",
+    "file_size": 368252,
+    "captured_at": "2026-04-28T11:09:16.622770"
+  },
+  {
+    "id": "P04_20260428_115246",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-02-09.jpg",
+    "timestamp": "2026-04-28T08:52:46.129917+00:00",
+    "vegetation_cover_percent": 10,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "none"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and rich, with minimal visible vegetation. There are some small organic materials and leaves present, indicating a fair level of health. The texture is relatively smooth with no visible erosion features.",
+    "recommended_action": "Consider introducing more vegetation to enhance soil cover and health.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_115719",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-04-11.jpg",
+    "timestamp": "2026-04-28T08:57:19.541180+00:00",
+    "vegetation_cover_percent": 10,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "none"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and organic, with minimal visible vegetation. There are some small organic materials present, but overall plant density is low. The texture is relatively fine and consistent.",
+    "recommended_action": "Consider introducing more vegetation to improve ground cover and prevent potential erosion.",
+    "confidence": 0.85,
+    "zone": 3
+  },
+  {
+    "id": "P04_20260428_115850",
+    "pin_id": "P04",
+    "filename": "2026-04-28_11-09-15.jpg",
+    "timestamp": "2026-04-28T08:58:50.073952+00:00",
+    "vegetation_cover_percent": 30,
+    "soil_color": "dark_organic",
+    "moisture_estimate": "moist",
+    "erosion_features": [],
+    "erosion_severity": "none",
+    "vegetation_types": [
+      "crop_residue"
+    ],
+    "vegetation_health": "fair",
+    "soil_stability": "stable",
+    "water_runoff_signs": false,
+    "change_notes": "The soil appears dark and rich, indicating organic matter. The visible plant is a green onion with some brown residue at the base. The surrounding soil is relatively undisturbed with no visible erosion features.",
+    "recommended_action": "Monitor moisture levels to ensure optimal growth conditions.",
+    "confidence": 0.85,
+    "zone": 3
+  }
+]

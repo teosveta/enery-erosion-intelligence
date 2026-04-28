@@ -1,0 +1,21 @@
+{
+  "id": "P04_20260428_114705",
+  "pin_id": "P04",
+  "filename": "2026-04-28_11-09-15.jpg",
+  "timestamp": "2026-04-28T08:47:05.577211+00:00",
+  "vegetation_cover_percent": 60,
+  "soil_color": "dark_organic",
+  "moisture_estimate": "moist",
+  "erosion_features": [],
+  "erosion_severity": "none",
+  "vegetation_types": [
+    "crop_residue"
+  ],
+  "vegetation_health": "good",
+  "soil_stability": "stable",
+  "water_runoff_signs": false,
+  "change_notes": "The soil appears dark and rich, indicating good organic content. The visible plant has healthy green shoots, suggesting adequate growth. There are no signs of erosion or bare patches in the immediate area.",
+  "recommended_action": "Continue monitoring moisture levels to ensure optimal growth conditions.",
+  "confidence": 0.85,
+  "zone": 3
+}

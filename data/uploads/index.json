@@ -1,0 +1,154 @@
+[
+  {
+    "id": "photo_20260428_020110",
+    "type": "photo",
+    "zone": 3,
+    "filename": "arid-barren-cracks-ground.jpg",
+    "timestamp": "2026-04-27T23:01:10.861707+00:00",
+    "analysis": {
+      "vegetation_cover_percent": 5,
+      "soil_color": "medium",
+      "moisture_estimate": "dry",
+      "erosion_features": [
+        "bare_patch",
+        "crust"
+      ],
+      "erosion_severity": "moderate",
+      "vegetation_types": [
+        "grass",
+        "weeds"
+      ],
+      "change_notes": "Significant surface desiccation observed with prominent polygonal cracking (shrink-swell behavior). Very low vegetative cover increases vulnerability to aeolian and pluvial erosion.",
+      "confidence": 0.92
+    }
+  },
+  {
+    "id": "photo_20260428_020334",
+    "type": "photo",
+    "zone": 3,
+    "filename": "roman-synkevych-fjj7lVpCxRE-unsplash.jpg",
+    "timestamp": "2026-04-27T23:03:34.052117+00:00",
+    "analysis": {
+      "vegetation_cover_percent": 5,
+      "soil_color": "dark_organic",
+      "moisture_estimate": "moist",
+      "erosion_features": [
+        "bare_patch"
+      ],
+      "erosion_severity": "low",
+      "vegetation_types": [
+        "grass"
+      ],
+      "change_notes": "Early stage vegetation emergence observed. Soil structure appears aggregated with high organic content, though surface is predominantly bare, increasing vulnerability to splash erosion.",
+      "confidence": 0.92
+    }
+  },
+  {
+    "id": "photo_20260428_023512",
+    "type": "photo",
+    "zone": 3,
+    "filename": "arid-barren-cracks-ground.jpg",
+    "timestamp": "2026-04-27T23:35:12.780997+00:00",
+    "analysis": {
+      "vegetation_cover_percent": 5,
+      "soil_color": "medium",
+      "moisture_estimate": "dry",
+      "erosion_features": [
+        "bare_patch",
+        "crust"
+      ],
+      "erosion_severity": "moderate",
+      "vegetation_types": [
+        "grass",
+        "weeds"
+      ],
+      "change_notes": "Significant surface desiccation evidenced by polygonal cracking and soil crusting. Minimal active vegetation cover increases vulnerability to aeolian and pluvial erosion.",
+      "confidence": 0.92
+    }
+  },
+  {
+    "id": "photo_20260428_100658",
+    "type": "photo",
+    "zone": 3,
+    "filename": "photo_3_arid-barren-cracks-ground.jpg",
+    "timestamp": "2026-04-28T07:06:58.799686+00:00",
+    "analysis": {
+      "vegetation_cover_percent": 5,
+      "soil_color": "medium",
+      "moisture_estimate": "dry",
+      "erosion_features": [
+        "bare_patch",
+        "crust"
+      ],
+      "erosion_severity": "moderate",
+      "vegetation_types": [
+        "grass",
+        "weeds"
+      ],
+      "change_notes": "Significant surface desiccation observed with prominent polygonal cracking and soil crusting. Minimal live vegetation cover increases vulnerability to aeolian and pluvial erosion.",
+      "confidence": 0.92
+    }
+  },
+  {
+    "id": "photo_20260428_113115",
+    "type": "photo",
+    "zone": 3,
+    "filename": "2026-04-27_12-06-28.jpg",
+    "timestamp": "2026-04-28T08:31:15.104042+00:00",
+    "analysis": {
+      "vegetation_cover_percent": 0,
+      "soil_color": "mixed",
+      "moisture_estimate": "dry",
+      "erosion_features": [],
+      "erosion_severity": "none",
+      "vegetation_types": [],
+      "change_notes": "No visible vegetation or soil features.",
+      "confidence": 0.9
+    }
+  },
+  {
+    "id": "photo_20260428_113447",
+    "type": "photo",
+    "zone": 3,
+    "filename": "arid-barren-cracks-ground.jpg",
+    "timestamp": "2026-04-28T08:34:47.378241+00:00",
+    "analysis": {
+      "vegetation_cover_percent": 15,
+      "soil_color": "medium",
+      "moisture_estimate": "dry",
+      "erosion_features": [
+        "bare_patch"
+      ],
+      "erosion_severity": "moderate",
+      "vegetation_types": [
+        "grass",
+        "none"
+      ],
+      "change_notes": "Visible cracks and bare patches indicate moderate erosion; sparse grass growth.",
+      "confidence": 0.85
+    }
+  },
+  {
+    "id": "photo_20260428_114627",
+    "type": "photo",
+    "zone": 1,
+    "filename": "Plant-sprouting-in-soil-no-credit-needed-scaled.jpeg",
+    "timestamp": "2026-04-28T08:46:27.976421+00:00",
+    "analysis": {
+      "vegetation_cover_percent": 10,
+      "soil_color": "dark_organic",
+      "moisture_estimate": "moist",
+      "erosion_features": [],
+      "erosion_severity": "none",
+      "vegetation_types": [
+        "shrub"
+      ],
+      "vegetation_health": "good",
+      "soil_stability": "stable",
+      "water_runoff_signs": false,
+      "change_notes": "The soil appears dark and rich, indicating good organic content. A single healthy green plant is visible, suggesting recent growth. The soil texture is loose with some white particles present.",
+      "recommended_action": "Monitor the growth of the plant and ensure adequate moisture levels.",
+      "confidence": 0.85
+    }
+  }
+]

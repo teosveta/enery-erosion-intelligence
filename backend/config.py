@@ -4,6 +4,7 @@ All API keys, credentials, and site data live here.
 Secrets are loaded from backend/.env (never commit that file).
 """
 import os
+import warnings
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -36,30 +37,21 @@ def get_timelapse_path() -> Path:
     mock.mkdir(parents=True, exist_ok=True)
     return mock
 
-# ── Gemini ──────────────────────────────────────────────────────────────────
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
-    import warnings
+# ── OpenRouter (AI) ─────────────────────────────────────────────────────────
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+if not OPENROUTER_API_KEY:
     warnings.warn(
-        "GEMINI_API_KEY is not set. AI features will be unavailable. "
-        "Create backend/.env with GEMINI_API_KEY=<your key>.",
+        "OPENROUTER_API_KEY is not set. AI features will be unavailable. "
+        "Create backend/.env with OPENROUTER_API_KEY=<your key>.",
         RuntimeWarning,
         stacklevel=2,
     )
 
-GEMINI_MODEL = "gemini-2.0-flash"
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+# Paid model — vision capable, costs ~$0.000003/call (well within $5 balance)
+OPENROUTER_MODEL    = "openai/gpt-4o-mini"
 
-def get_gemini_url() -> str:
-    """Build Gemini URL dynamically so key changes are picked up at runtime."""
-    key = os.getenv("GEMINI_API_KEY") or GEMINI_API_KEY or ""
-    return (
-        f"https://generativelanguage.googleapis.com/v1beta/models/"
-        f"{GEMINI_MODEL}:generateContent?key={key}"
-    )
-
-# Convenience alias — evaluated once at import but key is already loaded via load_dotenv()
-GEMINI_URL = get_gemini_url()
-GEMINI_SYSTEM_INSTRUCTION = """
+AI_SYSTEM_PROMPT = """
 You are the AI engine of the Erosion Intelligence Platform — a monitoring system for soil erosion at solar PV parks. Your primary tasks:
 
 1. PHOTO ANALYSIS: When given a photo from a Smart Erosion Pin or Photo Monitoring upload, analyze it and return a JSON object with:
@@ -89,7 +81,6 @@ Always respond with valid JSON when performing analysis tasks. Use scientific te
 COPERNICUS_CLIENT_ID     = os.getenv("COPERNICUS_CLIENT_ID")
 COPERNICUS_CLIENT_SECRET = os.getenv("COPERNICUS_CLIENT_SECRET")
 if not COPERNICUS_CLIENT_ID or not COPERNICUS_CLIENT_SECRET:
-    import warnings
     warnings.warn(
         "Copernicus credentials not set — NDVI satellite data will be unavailable. "
         "Set COPERNICUS_CLIENT_ID and COPERNICUS_CLIENT_SECRET in backend/.env.",

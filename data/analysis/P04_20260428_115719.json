@@ -1,0 +1,21 @@
+{
+  "id": "P04_20260428_115719",
+  "pin_id": "P04",
+  "filename": "2026-04-28_11-04-11.jpg",
+  "timestamp": "2026-04-28T08:57:19.541180+00:00",
+  "vegetation_cover_percent": 10,
+  "soil_color": "dark_organic",
+  "moisture_estimate": "moist",
+  "erosion_features": [],
+  "erosion_severity": "none",
+  "vegetation_types": [
+    "none"
+  ],
+  "vegetation_health": "fair",
+  "soil_stability": "stable",
+  "water_runoff_signs": false,
+  "change_notes": "The soil appears dark and organic, with minimal visible vegetation. There are some small organic materials present, but overall plant density is low. The texture is relatively fine and consistent.",
+  "recommended_action": "Consider introducing more vegetation to improve ground cover and prevent potential erosion.",
+  "confidence": 0.85,
+  "zone": 3
+}
